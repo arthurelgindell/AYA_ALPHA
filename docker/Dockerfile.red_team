@@ -1,0 +1,37 @@
+# GLADIATOR Red Team Combat Container
+# Base: Python 3.11 with ML capabilities
+# Purpose: Offensive combat operations with current threat intelligence
+
+FROM python:3.11-slim
+
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    curl \
+    wget \
+    git \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python packages for Red Team
+RUN pip install --no-cache-dir \
+    requests \
+    psycopg2-binary \
+    numpy \
+    pandas
+
+# Create working directory
+WORKDIR /gladiator/red_team
+
+# Copy persona framework
+COPY datasets/persona_framework.json /gladiator/config/
+
+# Copy armed exploits (when ready)
+# COPY datasets/armed_red_team/ /gladiator/exploits/
+
+# Red Team will use BETA's LM Studio via localhost
+# Models: Llama-3.3-70B, TinyLlama
+# Access: http://host.docker.internal:1234 (BETA host LM Studio)
+
+# Default command: keep running for combat
+CMD ["tail", "-f", "/dev/null"]
+

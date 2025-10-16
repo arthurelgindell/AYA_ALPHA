@@ -1,0 +1,39 @@
+GLADIATOR PHASE 0 - MLX MODELS FOR BETA
+========================================
+
+Download on BETA to: /Volumes/DATA/GLADIATOR/models/
+
+RED TEAM MODEL STACK (3 models):
+
+1. mlx-community/Llama-3.3-70B-Instruct-4bit
+   Purpose: Strategic attack planning (1 instance)
+   Size: ~40GB
+   RAM: 42GB
+
+2. mlx-community/CodeLlama-7b-Python-mlx
+   Purpose: Exploit code synthesis (10 instances)
+   Size: ~4GB
+   RAM: 45GB total
+
+3. mlx-community/TinyLlama-1.1B-Chat-v1.0-4bit
+   Purpose: Attack specialists (15 instances)
+   Size: ~0.7GB
+   RAM: 15GB total
+
+TOTAL: ~45GB download, 102GB RAM usage (256GB available)
+
+========================================
+ALTERNATIVES (if primary fails):
+
+Llama 70B:
+- mlx-community/Meta-Llama-3.1-70B-Instruct-4bit (695 downloads)
+- mlx-community/Meta-Llama-3-70B-Instruct-4bit (634 downloads)
+
+CodeLlama:
+- mlx-community/CodeLlama-7b-mlx (general, not Python-specific)
+
+TinyLlama:
+- mlx-community/TinyLlama-1.1B-Chat-v0.6 (earlier version)
+
+========================================
+

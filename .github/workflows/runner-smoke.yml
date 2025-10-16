@@ -1,0 +1,292 @@
+name: Runner Smoke Test
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/runner-smoke.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  diagnostics-alpha:
+    name: Diagnostics (ALPHA)
+    runs-on: [self-hosted, macOS, arm64, alpha, studio]
+    timeout-minutes: 10
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      
+      - name: System Information
+        run: |
+          echo "====== System Information ======"
+          echo "OS: $(sw_vers -productName) $(sw_vers -productVersion)"
+          echo "Architecture: $(uname -m)"
+          echo "Hostname: $(hostname)"
+          echo "CPU: $(sysctl -n machdep.cpu.brand_string)"
+          echo "CPU Cores: $(sysctl -n hw.ncpu)"
+          echo "Memory: $(sysctl -n hw.memsize | awk '{print $1/1024/1024/1024 " GB"}')"
+          echo ""
+          echo "====== Runner Information ======"
+          echo "Runner Name: ${{ runner.name }}"
+          echo "Runner OS: ${{ runner.os }}"
+          echo "Runner Arch: ${{ runner.arch }}"
+          echo "Runner Temp: ${{ runner.temp }}"
+          echo "Runner Tool Cache: ${{ runner.tool_cache }}"
+          echo ""
+          echo "====== Environment ======"
+          echo "PATH: $PATH"
+          echo "SHELL: $SHELL"
+          echo "USER: $USER"
+          echo "HOME: $HOME"
+      
+      - name: Validate Toolchain
+        run: |
+          echo "====== Toolchain Validation ======"
+          
+          # Clang
+          if command -v clang &>/dev/null; then
+            echo "✅ clang: $(clang --version | head -n 1)"
+          else
+            echo "❌ clang: NOT FOUND"
+            exit 1
+          fi
+          
+          # xcodebuild
+          if command -v xcodebuild &>/dev/null; then
+            echo "✅ xcodebuild: $(xcodebuild -version | head -n 1)"
+          else
+            echo "❌ xcodebuild: NOT FOUND"
+            exit 1
+          fi
+          
+          # Python3
+          if command -v python3 &>/dev/null; then
+            echo "✅ python3: $(python3 --version)"
+          else
+            echo "❌ python3: NOT FOUND"
+            exit 1
+          fi
+          
+          # Git
+          if command -v git &>/dev/null; then
+            echo "✅ git: $(git --version)"
+          else
+            echo "❌ git: NOT FOUND"
+            exit 1
+          fi
+          
+          # Optional: Check for other tools
+          for tool in make cmake ninja node npm; do
+            if command -v "$tool" &>/dev/null; then
+              echo "✅ $tool: $(command -v $tool)"
+            else
+              echo "⚠️  $tool: not installed (optional)"
+            fi
+          done
+      
+      - name: Cache Probe
+        uses: actions/cache@v4
+        id: cache-test
+        with:
+          path: |
+            ~/.cache-test
+          key: runner-smoke-test-${{ runner.os }}-${{ runner.arch }}-${{ github.run_id }}
+          restore-keys: |
+            runner-smoke-test-${{ runner.os }}-${{ runner.arch }}-
+      
+      - name: Create Cache Test File
+        if: steps.cache-test.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p ~/.cache-test
+          echo "Cache created at $(date)" > ~/.cache-test/timestamp.txt
+          echo "Runner: ${{ runner.name }}" >> ~/.cache-test/timestamp.txt
+      
+      - name: Verify Cache
+        run: |
+          if [[ -f ~/.cache-test/timestamp.txt ]]; then
+            echo "✅ Cache working:"
+            cat ~/.cache-test/timestamp.txt
+          else
+            echo "⚠️  Cache not found (expected on first run)"
+          fi
+      
+      - name: Disk Space Check
+        run: |
+          echo "====== Disk Space ======"
+          df -h | grep -E '(Filesystem|/dev/disk)'
+          echo ""
+          echo "====== Runner Work Directory ======"
+          du -sh ~/actions-runner/_work 2>/dev/null || echo "Work directory empty"
+      
+      - name: Network Connectivity
+        run: |
+          echo "====== Network Test ======"
+          ping -c 3 github.com || echo "⚠️  Ping failed (may be blocked)"
+          echo ""
+          curl -I https://github.com 2>&1 | head -n 1
+      
+      - name: Runner Operational
+        run: |
+          echo "======================================"
+          echo "✅ ALPHA Runner Operational"
+          echo "======================================"
+          echo "All checks passed successfully!"
+          echo "Timestamp: $(date)"
+
+  diagnostics-beta:
+    name: Diagnostics (BETA)
+    runs-on: [self-hosted, macOS, arm64, beta, studio]
+    timeout-minutes: 10
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      
+      - name: System Information
+        run: |
+          echo "====== System Information ======"
+          echo "OS: $(sw_vers -productName) $(sw_vers -productVersion)"
+          echo "Architecture: $(uname -m)"
+          echo "Hostname: $(hostname)"
+          echo "CPU: $(sysctl -n machdep.cpu.brand_string)"
+          echo "CPU Cores: $(sysctl -n hw.ncpu)"
+          echo "Memory: $(sysctl -n hw.memsize | awk '{print $1/1024/1024/1024 " GB"}')"
+          echo ""
+          echo "====== Runner Information ======"
+          echo "Runner Name: ${{ runner.name }}"
+          echo "Runner OS: ${{ runner.os }}"
+          echo "Runner Arch: ${{ runner.arch }}"
+          echo "Runner Temp: ${{ runner.temp }}"
+          echo "Runner Tool Cache: ${{ runner.tool_cache }}"
+          echo ""
+          echo "====== Environment ======"
+          echo "PATH: $PATH"
+          echo "SHELL: $SHELL"
+          echo "USER: $USER"
+          echo "HOME: $HOME"
+      
+      - name: Validate Toolchain
+        run: |
+          echo "====== Toolchain Validation ======"
+          
+          # Clang
+          if command -v clang &>/dev/null; then
+            echo "✅ clang: $(clang --version | head -n 1)"
+          else
+            echo "❌ clang: NOT FOUND"
+            exit 1
+          fi
+          
+          # xcodebuild
+          if command -v xcodebuild &>/dev/null; then
+            echo "✅ xcodebuild: $(xcodebuild -version | head -n 1)"
+          else
+            echo "❌ xcodebuild: NOT FOUND"
+            exit 1
+          fi
+          
+          # Python3
+          if command -v python3 &>/dev/null; then
+            echo "✅ python3: $(python3 --version)"
+          else
+            echo "❌ python3: NOT FOUND"
+            exit 1
+          fi
+          
+          # Git
+          if command -v git &>/dev/null; then
+            echo "✅ git: $(git --version)"
+          else
+            echo "❌ git: NOT FOUND"
+            exit 1
+          fi
+          
+          # Optional: Check for other tools
+          for tool in make cmake ninja node npm; do
+            if command -v "$tool" &>/dev/null; then
+              echo "✅ $tool: $(command -v $tool)"
+            else
+              echo "⚠️  $tool: not installed (optional)"
+            fi
+          done
+      
+      - name: Cache Probe
+        uses: actions/cache@v4
+        id: cache-test
+        with:
+          path: |
+            ~/.cache-test
+          key: runner-smoke-test-${{ runner.os }}-${{ runner.arch }}-${{ github.run_id }}
+          restore-keys: |
+            runner-smoke-test-${{ runner.os }}-${{ runner.arch }}-
+      
+      - name: Create Cache Test File
+        if: steps.cache-test.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p ~/.cache-test
+          echo "Cache created at $(date)" > ~/.cache-test/timestamp.txt
+          echo "Runner: ${{ runner.name }}" >> ~/.cache-test/timestamp.txt
+      
+      - name: Verify Cache
+        run: |
+          if [[ -f ~/.cache-test/timestamp.txt ]]; then
+            echo "✅ Cache working:"
+            cat ~/.cache-test/timestamp.txt
+          else
+            echo "⚠️  Cache not found (expected on first run)"
+          fi
+      
+      - name: Disk Space Check
+        run: |
+          echo "====== Disk Space ======"
+          df -h | grep -E '(Filesystem|/dev/disk)'
+          echo ""
+          echo "====== Runner Work Directory ======"
+          du -sh ~/actions-runner/_work 2>/dev/null || echo "Work directory empty"
+      
+      - name: Network Connectivity
+        run: |
+          echo "====== Network Test ======"
+          ping -c 3 github.com || echo "⚠️  Ping failed (may be blocked)"
+          echo ""
+          curl -I https://github.com 2>&1 | head -n 1
+      
+      - name: Runner Operational
+        run: |
+          echo "======================================"
+          echo "✅ BETA Runner Operational"
+          echo "======================================"
+          echo "All checks passed successfully!"
+          echo "Timestamp: $(date)"
+  
+  summary:
+    name: Test Summary
+    runs-on: ubuntu-latest
+    needs: [diagnostics-alpha, diagnostics-beta]
+    if: always()
+    
+    steps:
+      - name: Summary
+        run: |
+          echo "======================================"
+          echo "Self-Hosted Runner Smoke Test Summary"
+          echo "======================================"
+          echo ""
+          echo "ALPHA Status: ${{ needs.diagnostics-alpha.result }}"
+          echo "BETA Status:  ${{ needs.diagnostics-beta.result }}"
+          echo ""
+          if [[ "${{ needs.diagnostics-alpha.result }}" == "success" ]] && [[ "${{ needs.diagnostics-beta.result }}" == "success" ]]; then
+            echo "✅ All runners operational"
+            exit 0
+          else
+            echo "❌ One or more runners failed"
+            exit 1
+          fi
+

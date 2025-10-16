@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  # Blue Team Combat Container (on ALPHA)
+  blue_combat:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.blue_team
+    container_name: blue_combat
+    hostname: blue-team
+    mem_limit: 200g
+    cpus: 12
+    volumes:
+      - ../datasets:/gladiator/datasets:ro
+      - blue_combat_data:/gladiator/data
+    networks:
+      - combat_network
+    restart: unless-stopped
+    
+  # Monitoring sidecar
+  monitoring:
+    image: python:3.11-slim
+    container_name: combat_monitor
+    mem_limit: 10g
+    cpus: 2
+    volumes:
+      - ../scripts:/scripts:ro
+    networks:
+      - combat_network
+    command: tail -f /dev/null
+
+volumes:
+  blue_combat_data:
+
+networks:
+  combat_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

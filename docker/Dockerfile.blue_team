@@ -1,0 +1,36 @@
+# GLADIATOR Blue Team Combat Container
+# Base: Python 3.11 with ML capabilities
+# Purpose: Defensive combat operations with behavioral detection
+
+FROM python:3.11-slim
+
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    curl \
+    wget \
+    git \
+    build-essential \
+    postgresql-client \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python packages for Blue Team
+RUN pip install --no-cache-dir \
+    requests \
+    psycopg2-binary \
+    numpy \
+    pandas \
+    scikit-learn
+
+# Create working directory
+WORKDIR /gladiator/blue_team
+
+# Copy training data (when ready)
+# COPY datasets/training_10m/ /gladiator/training_data/
+
+# Blue Team will use ALPHA's LM Studio via localhost
+# Models: Foundation-sec-8b (4-stage pipeline)
+# Access: http://host.docker.internal:1234 (ALPHA host LM Studio)
+
+# Default command: keep running for combat
+CMD ["tail", "-f", "/dev/null"]
+
