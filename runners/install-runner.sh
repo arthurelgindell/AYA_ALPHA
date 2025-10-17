@@ -24,7 +24,7 @@ set -euo pipefail
 # CONFIGURATION
 # ============================================================================
 
-RUNNER_VERSION="2.325.0"
+RUNNER_VERSION="2.329.0"
 RUNNER_USER="runner"
 RUNNER_HOME="/Users/${RUNNER_USER}"
 RUNNER_DIR="${RUNNER_HOME}/actions-runner"
