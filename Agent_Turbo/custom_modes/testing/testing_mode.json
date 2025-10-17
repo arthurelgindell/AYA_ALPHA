@@ -1,0 +1,80 @@
+{
+  "name": "Testing Mode",
+  "description": "Optimized for testing and validation",
+  "settings": {
+    "editor.fontSize": 13,
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "editor.wordWrap": "off",
+    "editor.minimap.enabled": false,
+    "editor.bracketPairColorization.enabled": true,
+    "editor.guides.bracketPairs": true,
+    "editor.suggest.showKeywords": true,
+    "editor.suggest.showSnippets": true,
+    "editor.quickSuggestions": {
+      "other": true,
+      "comments": true,
+      "strings": true
+    },
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 500,
+    "terminal.integrated.fontSize": 11,
+    "workbench.colorTheme": "Default Dark+",
+    "workbench.iconTheme": "vs-seti",
+    "testing.automaticallyOpenPeekView": "failureInVisibleDocument",
+    "testing.followRunningTest": true,
+    "testing.gutterEnabled": true
+  },
+  "extensions": [
+    "ms-python.python",
+    "ms-python.pytest",
+    "ms-python.unittest",
+    "eamodio.gitlens"
+  ],
+  "tasks": [
+    {
+      "label": "Run All Tests",
+      "type": "shell",
+      "command": "python3",
+      "args": [
+        "-m",
+        "pytest",
+        "/Volumes/DATA/Agent_Turbo/tests/"
+      ],
+      "group": "test"
+    },
+    {
+      "label": "Run Agent Turbo Integration Tests",
+      "type": "shell",
+      "command": "python3",
+      "args": [
+        "/Volumes/DATA/Agent_Turbo/scripts/verify_cursor_integration.py"
+      ],
+      "group": "test"
+    },
+    {
+      "label": "Run Prime Directives Tests",
+      "type": "shell",
+      "command": "python3",
+      "args": [
+        "/Volumes/DATA/Agent_Turbo/scripts/verify_prime_directives.py"
+      ],
+      "group": "test"
+    }
+  ],
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Debug Tests",
+        "type": "python",
+        "request": "launch",
+        "module": "pytest",
+        "args": [
+          "/Volumes/DATA/Agent_Turbo/tests/"
+        ],
+        "console": "integratedTerminal"
+      }
+    ]
+  }
+}

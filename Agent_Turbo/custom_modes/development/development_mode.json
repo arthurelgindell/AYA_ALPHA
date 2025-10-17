@@ -1,0 +1,68 @@
+{
+  "name": "Development Mode",
+  "description": "Optimized for active development and coding",
+  "settings": {
+    "editor.fontSize": 14,
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "editor.wordWrap": "on",
+    "editor.minimap.enabled": true,
+    "editor.bracketPairColorization.enabled": true,
+    "editor.guides.bracketPairs": true,
+    "editor.suggest.showKeywords": true,
+    "editor.suggest.showSnippets": true,
+    "editor.quickSuggestions": {
+      "other": true,
+      "comments": false,
+      "strings": true
+    },
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 1000,
+    "terminal.integrated.fontSize": 12,
+    "workbench.colorTheme": "Default Dark+",
+    "workbench.iconTheme": "vs-seti"
+  },
+  "extensions": [
+    "ms-python.python",
+    "ms-vscode.vscode-typescript-next",
+    "eamodio.gitlens",
+    "ms-vscode.vscode-json"
+  ],
+  "tasks": [
+    {
+      "label": "Run Agent Turbo Verification",
+      "type": "shell",
+      "command": "python3",
+      "args": [
+        "/Volumes/DATA/Agent_Turbo/core/agent_turbo.py",
+        "verify"
+      ],
+      "group": "build"
+    },
+    {
+      "label": "Run Agent Turbo Stats",
+      "type": "shell",
+      "command": "python3",
+      "args": [
+        "/Volumes/DATA/Agent_Turbo/core/agent_turbo.py",
+        "stats"
+      ],
+      "group": "build"
+    }
+  ],
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Debug Agent Turbo",
+        "type": "python",
+        "request": "launch",
+        "program": "/Volumes/DATA/Agent_Turbo/core/agent_turbo.py",
+        "args": [
+          "verify"
+        ],
+        "console": "integratedTerminal"
+      }
+    ]
+  }
+}

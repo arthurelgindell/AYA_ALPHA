@@ -1,0 +1,78 @@
+{
+  "name": "Performance Mode",
+  "description": "Optimized for performance monitoring and optimization",
+  "settings": {
+    "editor.fontSize": 12,
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "editor.wordWrap": "off",
+    "editor.minimap.enabled": false,
+    "editor.bracketPairColorization.enabled": false,
+    "editor.guides.bracketPairs": false,
+    "editor.suggest.showKeywords": false,
+    "editor.suggest.showSnippets": false,
+    "editor.quickSuggestions": {
+      "other": false,
+      "comments": false,
+      "strings": false
+    },
+    "files.autoSave": "off",
+    "terminal.integrated.fontSize": 10,
+    "workbench.colorTheme": "Default Dark+",
+    "workbench.iconTheme": "vs-seti",
+    "workbench.enableExperiments": false,
+    "workbench.settings.enableNaturalLanguageSearch": false
+  },
+  "extensions": [
+    "ms-python.python",
+    "ms-python.pylint",
+    "ms-python.flake8"
+  ],
+  "tasks": [
+    {
+      "label": "Run Performance Benchmark",
+      "type": "shell",
+      "command": "python3",
+      "args": [
+        "/Volumes/DATA/Agent_Turbo/scripts/performance_benchmark.py"
+      ],
+      "group": "build"
+    },
+    {
+      "label": "Monitor System Performance",
+      "type": "shell",
+      "command": "python3",
+      "args": [
+        "-c",
+        "import psutil; print(f'CPU: {psutil.cpu_percent()}%, Memory: {psutil.virtual_memory().percent}%')"
+      ],
+      "group": "build"
+    },
+    {
+      "label": "Check GPU Status",
+      "type": "shell",
+      "command": "python3",
+      "args": [
+        "-c",
+        "import mlx.core as mx; print(f'GPU Available: {mx.metal.is_available()}')"
+      ],
+      "group": "build"
+    }
+  ],
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Profile Agent Turbo",
+        "type": "python",
+        "request": "launch",
+        "program": "/Volumes/DATA/Agent_Turbo/core/agent_turbo.py",
+        "args": [
+          "stats"
+        ],
+        "console": "integratedTerminal",
+        "profile": true
+      }
+    ]
+  }
+}

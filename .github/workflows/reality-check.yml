@@ -1,0 +1,217 @@
+name: GLADIATOR Reality Check
+
+on:
+  workflow_dispatch:
+    inputs:
+      sample_size:
+        description: 'Number of patterns to sample'
+        required: true
+        default: '1000'
+        type: number
+  schedule:
+    # Run daily at 2 AM
+    - cron: '0 2 * * *'
+
+permissions:
+  contents: read
+
+env:
+  POSTGRES_HOST: localhost
+  POSTGRES_DB: aya_rag
+  POSTGRES_USER: arthur
+
+jobs:
+  # ============================================================================
+  # PLANNING PHASE
+  # ============================================================================
+  plan:
+    name: Planning Session (Claude Code)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      session_id: ${{ steps.init.outputs.session_id }}
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11  # v4.1.1
+      
+      - name: Initialize Agent Turbo Session
+        id: init
+        run: |
+          SESSION_ID="rc_$(date +%Y%m%d_%H%M%S)_${{ github.run_id }}"
+          echo "session_id=$SESSION_ID" >> $GITHUB_OUTPUT
+          echo "✅ Session initialized: $SESSION_ID"
+          echo "Sample size: ${{ inputs.sample_size || 1000 }}"
+
+  # ============================================================================
+  # EXECUTION PHASE - BETA (Red Team)
+  # ============================================================================
+  generate-dataset:
+    name: Generate Dataset (BETA)
+    runs-on: [self-hosted, macOS, arm64, beta, studio]
+    needs: plan
+    timeout-minutes: 180
+    outputs:
+      dataset_path: ${{ steps.generate.outputs.dataset_path }}
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+      
+      - name: Generate Reality Check Dataset
+        id: generate
+        run: |
+          echo "Generating ${{ inputs.sample_size || 1000 }} pattern dataset..."
+          
+          docker exec red_combat python3 << 'PYEOF'
+          import json
+          import random
+          from pathlib import Path
+          from collections import defaultdict
+          
+          ATTACK_DIR = Path("/gladiator/data/attack_patterns/iteration_001")
+          SAMPLE_SIZE = ${{ inputs.sample_size || 1000 }}
+          OUTPUT_FILE = Path(f"/gladiator/data/reality_check_{SAMPLE_SIZE}.json")
+          
+          # Load patterns
+          patterns = []
+          for f in sorted(ATTACK_DIR.glob("attack_*.json")):
+              try:
+                  patterns.append(json.load(open(f)))
+              except: pass
+          
+          # Stratified sampling
+          random.seed(42)
+          by_type = defaultdict(list)
+          for p in patterns:
+              key = str(p.get('type', p.get('template', 'unknown')))[:50]
+              by_type[key].append(p)
+          
+          sampled = []
+          for type_patterns in by_type.values():
+              n = max(1, int(SAMPLE_SIZE * len(type_patterns) / len(patterns)))
+              sampled.extend(random.sample(type_patterns, min(n, len(type_patterns))))
+          
+          if len(sampled) > SAMPLE_SIZE:
+              sampled = random.sample(sampled, SAMPLE_SIZE)
+          
+          # Save
+          output = {
+              "metadata": {"sample_size": len(sampled), "source": "iteration_001"},
+              "patterns": sampled
+          }
+          OUTPUT_FILE.write_text(json.dumps(output, indent=2))
+          print(f"✅ Generated {len(sampled)} patterns")
+          print(f"   File: {OUTPUT_FILE}")
+          print(f"   Size: {OUTPUT_FILE.stat().st_size / 1024 / 1024:.2f} MB")
+          PYEOF
+          
+          echo "dataset_path=/Volumes/DATA/GLADIATOR/reality_check_${{ inputs.sample_size || 1000 }}.json" >> $GITHUB_OUTPUT
+      
+      - name: Verify Dataset
+        run: |
+          FILE="${{ steps.generate.outputs.dataset_path }}"
+          if docker exec red_combat test -f "$FILE"; then
+            SIZE=$(docker exec red_combat stat -f%z "$FILE")
+            echo "✅ Dataset verified: $FILE ($SIZE bytes)"
+          else
+            echo "❌ Dataset not found!"
+            exit 1
+          fi
+
+  # ============================================================================
+  # TRANSFER - BETA → ALPHA
+  # ============================================================================
+  transfer-dataset:
+    name: Transfer to ALPHA
+    runs-on: [self-hosted, macOS, arm64, beta, studio]
+    needs: [plan, generate-dataset]
+    timeout-minutes: 30
+    
+    steps:
+      - name: Transfer via rsync
+        run: |
+          DATASET="${{ needs.generate-dataset.outputs.dataset_path }}"
+          TARGET="alpha.local:/Users/arthurdell/GLADIATOR/datasets/"
+          
+          rsync -avz --progress "$DATASET" "$TARGET"
+          
+          # Verify
+          ssh alpha.local "ls -lh /Users/arthurdell/GLADIATOR/datasets/reality_check_*.json"
+          echo "✅ Transfer complete"
+
+  # ============================================================================
+  # EXECUTION PHASE - ALPHA (Blue Team)
+  # ============================================================================
+  prepare-training:
+    name: Prepare Training Data (ALPHA)
+    runs-on: [self-hosted, macOS, arm64, alpha, studio]
+    needs: [plan, transfer-dataset]
+    timeout-minutes: 30
+    
+    steps:
+      - name: Split Dataset (900/100)
+        run: |
+          echo "Splitting dataset into train/validation..."
+          
+          docker exec blue_combat python3 << 'PYEOF'
+          import json
+          from pathlib import Path
+          
+          INPUT = Path("/gladiator/datasets/reality_check_${{ inputs.sample_size || 1000 }}.json")
+          data = json.loads(INPUT.read_text())
+          patterns = data["patterns"]
+          
+          # Split 90/10
+          split = int(len(patterns) * 0.9)
+          train = patterns[:split]
+          val = patterns[split:]
+          
+          # Save as JSONL
+          Path("/gladiator/datasets/reality_check_train.jsonl").write_text(
+              "\n".join(json.dumps(p) for p in train)
+          )
+          Path("/gladiator/datasets/reality_check_val.jsonl").write_text(
+              "\n".join(json.dumps(p) for p in val)
+          )
+          
+          print(f"✅ Train: {len(train)}, Val: {len(val)}")
+          PYEOF
+          
+          echo "✅ Dataset split complete"
+
+  # Note: Actual fine-tuning would be a separate, longer-running workflow
+  # This workflow validates the pipeline up to data preparation
+  
+  # ============================================================================
+  # SUMMARY
+  # ============================================================================
+  summary:
+    name: Reality Check Summary
+    runs-on: ubuntu-latest
+    needs: [plan, generate-dataset, transfer-dataset, prepare-training]
+    if: always()
+    
+    steps:
+      - name: Generate Summary
+        run: |
+          echo "======================================"
+          echo "GLADIATOR Reality Check Summary"
+          echo "======================================"
+          echo ""
+          echo "Session: ${{ needs.plan.outputs.session_id }}"
+          echo "Sample Size: ${{ inputs.sample_size || 1000 }}"
+          echo ""
+          echo "Tasks:"
+          echo "  - Generate Dataset: ${{ needs.generate-dataset.result }}"
+          echo "  - Transfer: ${{ needs.transfer-dataset.result }}"
+          echo "  - Prepare Training: ${{ needs.prepare-training.result }}"
+          echo ""
+          if [[ "${{ needs.prepare-training.result }}" == "success" ]]; then
+            echo "✅ Reality Check pipeline completed successfully"
+            echo "Next: Launch fine-tuning job (manual or separate workflow)"
+          else
+            echo "❌ Reality Check pipeline failed"
+            echo "Check logs for details"
+          fi
+

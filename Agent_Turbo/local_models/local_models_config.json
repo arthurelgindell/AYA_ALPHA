@@ -1,0 +1,27 @@
+{
+  "local_models": {
+    "qwen3_next_80b": {
+      "path": "/Volumes/DATA/Agent_Turbo/models/lmstudio-community/Qwen3-Next-80B-A3B-Instruct-MLX-4bit",
+      "type": "mlx",
+      "format": "4bit",
+      "status": "available"
+    },
+    "nomic_embed_text": {
+      "path": "text-embedding-nomic-embed-text-v1.5",
+      "type": "embedding",
+      "status": "active"
+    }
+  },
+  "experimentation": {
+    "auto_save": true,
+    "backup_models": true,
+    "performance_monitoring": true,
+    "gpu_acceleration": true
+  },
+  "optimization": {
+    "cache_models": true,
+    "preload_models": true,
+    "memory_optimization": true,
+    "batch_processing": true
+  }
+}

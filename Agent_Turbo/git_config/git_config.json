@@ -1,0 +1,39 @@
+{
+  "git": {
+    "user": {
+      "name": "Arthur Dell",
+      "email": "arthur.dell@protonmail.com"
+    },
+    "core": {
+      "editor": "cursor",
+      "autocrlf": "input",
+      "safecrlf": "warn"
+    },
+    "pull": {
+      "rebase": "false"
+    },
+    "push": {
+      "default": "simple"
+    },
+    "branch": {
+      "autosetupmerge": "true",
+      "autosetuprebase": "always"
+    }
+  },
+  "aliases": {
+    "st": "status",
+    "co": "checkout",
+    "br": "branch",
+    "ci": "commit",
+    "df": "diff",
+    "lg": "log --oneline --graph --decorate --all",
+    "unstage": "reset HEAD --",
+    "last": "log -1 HEAD",
+    "visual": "!cursor"
+  },
+  "hooks": {
+    "pre_commit": true,
+    "post_commit": true,
+    "pre_push": true
+  }
+}

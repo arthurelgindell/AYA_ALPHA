@@ -1,0 +1,85 @@
+{
+  "name": "Debugging Mode",
+  "description": "Optimized for debugging and troubleshooting",
+  "settings": {
+    "editor.fontSize": 15,
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "editor.wordWrap": "on",
+    "editor.minimap.enabled": true,
+    "editor.bracketPairColorization.enabled": true,
+    "editor.guides.bracketPairs": true,
+    "editor.suggest.showKeywords": true,
+    "editor.suggest.showSnippets": true,
+    "editor.quickSuggestions": {
+      "other": true,
+      "comments": true,
+      "strings": true
+    },
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 2000,
+    "terminal.integrated.fontSize": 13,
+    "workbench.colorTheme": "Default Dark+",
+    "workbench.iconTheme": "vs-seti",
+    "debug.console.fontSize": 13,
+    "debug.console.lineHeight": 1.2,
+    "debug.openDebug": "openOnDebugBreak",
+    "debug.showBreakpointsInOverviewRuler": true,
+    "debug.showInlineBreakpointCandidates": true
+  },
+  "extensions": [
+    "ms-python.python",
+    "ms-python.debugpy",
+    "eamodio.gitlens",
+    "ms-vscode.vscode-json"
+  ],
+  "tasks": [
+    {
+      "label": "Debug Agent Turbo",
+      "type": "shell",
+      "command": "python3",
+      "args": [
+        "-m",
+        "pdb",
+        "/Volumes/DATA/Agent_Turbo/core/agent_turbo.py"
+      ],
+      "group": "build"
+    },
+    {
+      "label": "Run with Debug Output",
+      "type": "shell",
+      "command": "python3",
+      "args": [
+        "-u",
+        "/Volumes/DATA/Agent_Turbo/core/agent_turbo.py",
+        "verify"
+      ],
+      "group": "build"
+    }
+  ],
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Debug Agent Turbo Core",
+        "type": "python",
+        "request": "launch",
+        "program": "/Volumes/DATA/Agent_Turbo/core/agent_turbo.py",
+        "args": [
+          "verify"
+        ],
+        "console": "integratedTerminal",
+        "justMyCode": false,
+        "stopOnEntry": false
+      },
+      {
+        "name": "Debug Agent Turbo GPU",
+        "type": "python",
+        "request": "launch",
+        "program": "/Volumes/DATA/Agent_Turbo/core/agent_turbo_gpu.py",
+        "console": "integratedTerminal",
+        "justMyCode": false
+      }
+    ]
+  }
+}

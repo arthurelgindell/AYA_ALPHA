@@ -1,0 +1,82 @@
+# Large Data Files (CRITICAL - Do not commit to GitHub)
+models/
+!models/.gitkeep
+*.pth
+*.safetensors
+*.gguf
+*.bin
+*.ckpt
+
+# Databases & Indexes
+*.db
+*.sqlite
+*.sqlite3
+indexes/
+retrieval_cache/
+
+# Large CSV/JSON data files
+Databases/*.csv
+Databases/*.json
+!Databases/*_urls.txt
+!Databases/*_import.sql
+!Databases/README.md
+
+# Project Data Directories
+projects/GLADIATOR/models/
+projects/GLADIATOR/datasets/
+projects/GLADIATOR/logs/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+venv/
+env/
+.venv/
+*.egg-info/
+
+# Logs
+*.log
+*.out
+*.err
+logs/
+
+# Secrets
+.env
+*.key
+*.pem
+credentials.json
+*_token.txt
+
+# macOS
+.DS_Store
+._*
+.AppleDouble
+.LSOverride
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary
+tmp/
+temp/
+*.tmp
+*.bak
+
+# Agent Turbo Runtime
+Agent_Turbo/data/
+Agent_Turbo/indexes/
+Agent_Turbo/retrieval_cache/
+
+# GitHub Actions
+_work/
+actions-runner/
+
+# PostgreSQL
+postgresql-*.plist

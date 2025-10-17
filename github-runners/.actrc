@@ -1,0 +1,23 @@
+# nektos/act configuration for local workflow testing
+# https://github.com/nektos/act
+
+# Use specific container image for macOS simulation (limited support)
+-P macos-latest=catthehacker/ubuntu:act-latest
+-P macos-13=catthehacker/ubuntu:act-latest
+-P macos-14=catthehacker/ubuntu:act-latest
+
+# Bind repository to /workspace
+--bind
+
+# Use local .secrets file for tokens
+--secret-file .secrets
+
+# Default platform
+-P ubuntu-latest=catthehacker/ubuntu:act-latest
+
+# Verbose output
+--verbose
+
+# Reuse containers
+--reuse
+
