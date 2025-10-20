@@ -1,0 +1,187 @@
+name: Test Runner Functionality
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test-alpha:
+    name: Test ALPHA Runner
+    runs-on: [self-hosted, macOS, arm64, alpha, studio]
+    timeout-minutes: 5
+    
+    steps:
+      - name: System Check
+        run: |
+          echo "====== ALPHA SYSTEM CHECK ======"
+          echo "Hostname: $(hostname)"
+          echo "Architecture: $(uname -m)"
+          echo "Runner: ${{ runner.name }}"
+          echo "OS: $(sw_vers -productName) $(sw_vers -productVersion)"
+          echo ""
+          echo "✅ ALPHA Runner is functional"
+      
+      - name: Docker Check
+        run: |
+          echo "====== DOCKER STATUS ======"
+          docker ps --format 'table {{.Names}}\t{{.Status}}\t{{.Image}}'
+          echo ""
+          if docker ps | grep -q blue_combat; then
+            echo "✅ blue_combat container running"
+          else
+            echo "❌ blue_combat container not running"
+            exit 1
+          fi
+      
+      - name: Python Test
+        run: |
+          echo "====== PYTHON TEST ======"
+          python3 --version
+          python3 -c "import platform; print(f'Architecture: {platform.machine()}')"
+          echo "✅ Python ARM64 working"
+      
+      - name: Database Test
+        run: |
+          echo "====== DATABASE TEST ======"
+          python3 << 'PYEOF'
+import sys
+sys.path.insert(0, '/Users/arthurdell/AYA/Agent_Turbo/core')
+try:
+    from postgres_connector import PostgreSQLConnector
+    db = PostgreSQLConnector()
+    result = db.execute_query("SELECT version()", fetch=True)
+    print(f"✅ Database connected: {result[0]['version'].split()[0:2]}")
+except Exception as e:
+    print(f"❌ Database connection failed: {e}")
+    exit(1)
+PYEOF
+
+  test-beta:
+    name: Test BETA Runner
+    runs-on: [self-hosted, macOS, arm64, beta, studio]
+    timeout-minutes: 5
+    
+    steps:
+      - name: System Check
+        run: |
+          echo "====== BETA SYSTEM CHECK ======"
+          echo "Hostname: $(hostname)"
+          echo "Architecture: $(uname -m)"
+          echo "Runner: ${{ runner.name }}"
+          echo "OS: $(sw_vers -productName) $(sw_vers -productVersion)"
+          echo ""
+          echo "✅ BETA Runner is functional"
+      
+      - name: Docker Check
+        run: |
+          echo "====== DOCKER STATUS ======"
+          docker ps --format 'table {{.Names}}\t{{.Status}}\t{{.Image}}'
+          echo ""
+          if docker ps | grep -q red_combat; then
+            echo "✅ red_combat container running"
+          else
+            echo "❌ red_combat container not running"
+            exit 1
+          fi
+      
+      - name: GLADIATOR Data Check
+        run: |
+          echo "====== GLADIATOR DATA ACCESS ======"
+          echo "Host path:"
+          ls -lh /Volumes/DATA/GLADIATOR/ | head -5
+          echo ""
+          echo "Docker container path:"
+          docker exec red_combat ls -lh /gladiator/data/ | head -5
+          echo ""
+          PATTERN_COUNT=$(docker exec red_combat find /gladiator/data/attack_patterns/iteration_001/ -name 'attack_*.json' 2>/dev/null | wc -l)
+          echo "Pattern files: $PATTERN_COUNT"
+          if [ "$PATTERN_COUNT" -gt 3000 ]; then
+            echo "✅ GLADIATOR data accessible ($PATTERN_COUNT files)"
+          else
+            echo "❌ GLADIATOR data insufficient ($PATTERN_COUNT files)"
+            exit 1
+          fi
+      
+      - name: Docker Python Test
+        run: |
+          echo "====== DOCKER PYTHON TEST ======"
+          docker exec red_combat python3 << 'PYEOF'
+from pathlib import Path
+pattern_dir = Path("/gladiator/data/attack_patterns/iteration_001")
+if pattern_dir.exists():
+    files = list(pattern_dir.glob("attack_*.json"))
+    print(f"✅ Docker Python can access GLADIATOR data: {len(files)} pattern files")
+else:
+    print("❌ Pattern directory not accessible")
+    exit(1)
+PYEOF
+  
+  test-network:
+    name: Test ALPHA ↔ BETA Network
+    runs-on: [self-hosted, macOS, arm64, beta, studio]
+    timeout-minutes: 5
+    needs: [test-alpha, test-beta]
+    
+    steps:
+      - name: Network Connectivity Test
+        run: |
+          echo "====== NETWORK TEST: BETA → ALPHA ======"
+          
+          # Test ping
+          if ping -c 2 -t 5 100.106.113.76 &>/dev/null; then
+            echo "✅ Ping to ALPHA successful"
+          else
+            echo "⚠️ Ping failed (may be disabled)"
+          fi
+          
+          # Test SSH
+          if ssh -o ConnectTimeout=5 -o BatchMode=yes alpha.local "echo '✅ SSH to ALPHA successful'" 2>/dev/null; then
+            echo "✅ SSH connectivity confirmed"
+          else
+            echo "❌ SSH to ALPHA failed"
+            exit 1
+          fi
+          
+          # Test file transfer capability
+          echo "test_from_beta_$(date +%s)" > /tmp/transfer_test.txt
+          if scp -o ConnectTimeout=5 /tmp/transfer_test.txt alpha.local:/tmp/; then
+            echo "✅ File transfer BETA → ALPHA successful"
+            ssh alpha.local "rm /tmp/transfer_test.txt"
+            rm /tmp/transfer_test.txt
+          else
+            echo "❌ File transfer failed"
+            exit 1
+          fi
+  
+  summary:
+    name: Functionality Summary
+    runs-on: ubuntu-latest
+    needs: [test-alpha, test-beta, test-network]
+    if: always()
+    
+    steps:
+      - name: Generate Summary
+        run: |
+          echo "========================================"
+          echo "GITHUB ACTIONS RUNNER FUNCTIONALITY TEST"
+          echo "========================================"
+          echo ""
+          echo "Test Results:"
+          echo "  ALPHA Runner:       ${{ needs.test-alpha.result }}"
+          echo "  BETA Runner:        ${{ needs.test-beta.result }}"
+          echo "  Network (BETA→ALPHA): ${{ needs.test-network.result }}"
+          echo ""
+          if [[ "${{ needs.test-alpha.result }}" == "success" ]] && \
+             [[ "${{ needs.test-beta.result }}" == "success" ]] && \
+             [[ "${{ needs.test-network.result }}" == "success" ]]; then
+            echo "✅ ALL SYSTEMS FUNCTIONAL"
+            echo "✅ Ready for GLADIATOR workflows"
+            exit 0
+          else
+            echo "❌ ONE OR MORE SYSTEMS FAILED"
+            echo "Review job logs for details"
+            exit 1
+          fi
+
