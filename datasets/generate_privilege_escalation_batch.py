@@ -100,11 +100,13 @@ SUBSTITUTIONS = {
 
 def generate_prompt(template, category):
     """Generate attack code using template"""
-    # Substitute variables in template
-    filled_template = template
+    # Substitute all variables in template at once
+    substitution_dict = {}
     for key, values in SUBSTITUTIONS.items():
-        if '{' + key + '}' in filled_template:
-            filled_template = filled_template.format(**{key: random.choice(values)})
+        if '{' + key + '}' in template:
+            substitution_dict[key] = random.choice(values)
+    
+    filled_template = template.format(**substitution_dict)
     
     return filled_template
 
