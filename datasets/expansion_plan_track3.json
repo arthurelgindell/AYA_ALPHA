@@ -1,0 +1,163 @@
+{
+  "plan_version": "2.0",
+  "created_at": "2025-10-22 20:25:54",
+  "target_total_samples": 11000,
+  "target_attack_samples": 5500,
+  "target_benign_samples": 5500,
+  "categories": {
+    "privilege_escalation": {
+      "current_accuracy": 62.5,
+      "current_samples": 8,
+      "target_samples": 800,
+      "priority": "CRITICAL",
+      "focus_areas": [
+        "SUID binary exploitation",
+        "Kernel privilege escalation",
+        "Container escape techniques",
+        "Windows UAC bypass",
+        "Linux capability abuse",
+        "Sudo misconfigurations",
+        "setuid vulnerabilities",
+        "Process injection for privilege gain"
+      ]
+    },
+    "buffer_overflow": {
+      "current_accuracy": 100.0,
+      "current_samples": 5,
+      "target_samples": 600,
+      "priority": "HIGH",
+      "focus_areas": [
+        "Stack-based buffer overflow",
+        "Heap-based buffer overflow",
+        "Integer overflow",
+        "Format string vulnerabilities",
+        "Return-oriented programming (ROP)",
+        "Use-after-free exploits"
+      ]
+    },
+    "path_traversal": {
+      "current_accuracy": 0.0,
+      "current_samples": 0,
+      "target_samples": 500,
+      "priority": "HIGH",
+      "focus_areas": [
+        "Directory traversal attacks",
+        "File inclusion (LFI/RFI)",
+        "Path normalization bypass",
+        "Null byte injection",
+        "ZIP file path traversal"
+      ]
+    },
+    "malware": {
+      "current_accuracy": 0.0,
+      "current_samples": 0,
+      "target_samples": 700,
+      "priority": "HIGH",
+      "focus_areas": [
+        "Ransomware patterns",
+        "Trojan implementations",
+        "Backdoor techniques",
+        "Rootkit methods",
+        "Worm propagation",
+        "Cryptominers",
+        "Fileless malware"
+      ]
+    },
+    "sql_injection": {
+      "current_accuracy": 100.0,
+      "current_samples": 16,
+      "target_samples": 600,
+      "priority": "MEDIUM",
+      "focus_areas": [
+        "Time-based blind SQLi",
+        "Boolean-based blind SQLi",
+        "Error-based SQLi",
+        "UNION-based SQLi",
+        "Stacked queries",
+        "Out-of-band SQLi",
+        "Second-order SQLi"
+      ]
+    },
+    "xss": {
+      "current_accuracy": 100.0,
+      "current_samples": 13,
+      "target_samples": 600,
+      "priority": "MEDIUM",
+      "focus_areas": [
+        "Stored XSS",
+        "Reflected XSS",
+        "DOM-based XSS",
+        "Mutation XSS (mXSS)",
+        "CSS injection",
+        "XSS via SVG",
+        "Template injection"
+      ]
+    },
+    "command_injection": {
+      "current_accuracy": 100.0,
+      "current_samples": 4,
+      "target_samples": 500,
+      "priority": "MEDIUM",
+      "focus_areas": [
+        "OS command injection",
+        "Shell metacharacter abuse",
+        "Command chaining",
+        "Argument injection",
+        "Environment variable injection"
+      ]
+    },
+    "phishing": {
+      "current_accuracy": 100.0,
+      "current_samples": 11,
+      "target_samples": 500,
+      "priority": "MEDIUM",
+      "focus_areas": [
+        "Spear phishing",
+        "Whaling attacks",
+        "Clone phishing",
+        "Voice phishing (vishing)",
+        "SMS phishing (smishing)",
+        "QR code phishing"
+      ]
+    },
+    "dos": {
+      "current_accuracy": 100.0,
+      "current_samples": 3,
+      "target_samples": 400,
+      "priority": "MEDIUM",
+      "focus_areas": [
+        "Application-layer DoS",
+        "DDoS amplification",
+        "Slowloris",
+        "HTTP flood",
+        "SYN flood",
+        "DNS amplification"
+      ]
+    },
+    "mitm": {
+      "current_accuracy": 100.0,
+      "current_samples": 3,
+      "target_samples": 300,
+      "priority": "LOW",
+      "focus_areas": [
+        "ARP spoofing",
+        "DNS spoofing",
+        "SSL stripping",
+        "Session hijacking",
+        "BGP hijacking"
+      ]
+    }
+  },
+  "execution": {
+    "system": "BETA",
+    "location": "/Volumes/DATA/GLADIATOR",
+    "container": "red_combat",
+    "tools": [
+      "LM Studio",
+      "CVE database",
+      "Manual generation"
+    ],
+    "timeline": "2-3 weeks",
+    "quality_gate": "Manual review + automated validation"
+  }
+}

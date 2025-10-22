@@ -1,0 +1,900 @@
+{"id": "benign_http_0097", "template": "Normal HTTP request", "attack_code": "GET /static/css/styles.css HTTP/1.1\nHost: www.example.com", "category": "http_request"}
+{"id": "benign_cmd_0123", "template": "System command", "attack_code": "netstat -tuln", "category": "system_command"}
+{"id": "benign_email_0110", "template": "Business email", "attack_code": "Subject: Invoice #63969\n\nDear Customer,\n\nYour invoice #63969 for $3305.51 is attached. Payment due by 2025-11-21.\n\nThank you,\nAccounting Team", "category": "email"}
+{"id": "benign_email_0036", "template": "Business email", "attack_code": "Subject: Welcome to the Team\n\nHello David,\n\nWelcome to Example Corp! We're excited to have you join us.\n\nBest regards,\nHR Team", "category": "email"}
+{"id": "benign_email_0089", "template": "Business email", "attack_code": "Subject: Welcome to the Team\n\nHello Mary,\n\nWelcome to Example Corp! We're excited to have you join us.\n\nBest regards,\nHR Team", "category": "email"}
+{"id": "benign_email_0087", "template": "Business email", "attack_code": "Subject: Project Update\n\nTeam,\n\nThe Alpha project is on track. Next milestone: 2025-11-16.\n\nRegards,\nSarah Davis", "category": "email"}
+{"id": "benign_email_0066", "template": "Business email", "attack_code": "Subject: Meeting Follow-up\n\nHi John,\n\nThank you for attending today's meeting. Here are the action items:\n1. Review the proposal\n2. Schedule follow-up\n\nBest,\nJohn Smith", "category": "email"}
+{"id": "benign_cmd_0198", "template": "System command", "attack_code": "uptime", "category": "system_command"}
+{"id": "benign_email_0102", "template": "Business email", "attack_code": "Subject: Team Meeting\n\nDear Team,\n\nPlease review the attached quarterly report. Best regards,\nDavid Brown", "category": "email"}
+{"id": "benign_http_0037", "template": "Normal HTTP request", "attack_code": "GET /static/css/styles.css HTTP/1.1\nHost: www.example.com", "category": "http_request"}
+{"id": "benign_code_0188", "template": "Standard code snippet", "attack_code": "import pandas as pd\ndf = pd.read_csv('data.csv')\nprint(df.head())", "category": "code_snippet"}
+{"id": "benign_cmd_0048", "template": "System command", "attack_code": "cat /etc/hostname", "category": "system_command"}
+{"id": "benign_code_0138", "template": "Standard code snippet", "attack_code": "for item in inventory:\n    if item['quantity'] < 10:\n        print(f'Low stock: {item[\"name\"]}')", "category": "code_snippet"}
+{"id": "benign_cmd_0072", "template": "System command", "attack_code": "uname -a", "category": "system_command"}
+{"id": "benign_code_0019", "template": "Standard code snippet", "attack_code": "SELECT name, email FROM users WHERE created_at > '2025-01-01'", "category": "code_snippet"}
+{"id": "benign_code_0113", "template": "Standard code snippet", "attack_code": "function validateEmail(email) {\n    return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);\n}", "category": "code_snippet"}
+{"id": "benign_http_0006", "template": "Normal HTTP request", "attack_code": "POST /api/v1/orders HTTP/1.1\nHost: api.example.com\nContent-Type: application/json", "category": "http_request"}
+{"id": "benign_email_0114", "template": "Business email", "attack_code": "Subject: Meeting Follow-up\n\nHi Team,\n\nThank you for attending today's meeting. Here are the action items:\n1. Review the proposal\n2. Schedule follow-up\n\nBest,\nDavid Brown", "category": "email"}
+{"id": "benign_sql_0135", "template": "Legitimate SQL query", "attack_code": "SELECT AVG(price) FROM products WHERE in_stock = true", "category": "sql_query"}
+{"id": "benign_http_0082", "template": "Normal HTTP request", "attack_code": "GET /static/css/styles.css HTTP/1.1\nHost: www.example.com", "category": "http_request"}
+{"id": "benign_email_0014", "template": "Business email", "attack_code": "Subject: Meeting Follow-up\n\nHi John,\n\nThank you for attending today's meeting. Here are the action items:\n1. Review the proposal\n2. Schedule follow-up\n\nBest,\nMary Johnson", "category": "email"}
+{"id": "benign_cmd_0103", "template": "System command", "attack_code": "tail -f /var/log/syslog", "category": "system_command"}
+{"id": "benign_cmd_0174", "template": "System command", "attack_code": "which python3", "category": "system_command"}
+{"id": "benign_http_0041", "template": "Normal HTTP request", "attack_code": "POST /api/v1/auth/login HTTP/1.1\nHost: auth.example.com", "category": "http_request"}
+{"id": "benign_http_0090", "template": "Normal HTTP request", "attack_code": "POST /api/v1/orders HTTP/1.1\nHost: api.example.com\nContent-Type: application/json", "category": "http_request"}
+{"id": "benign_http_0106", "template": "Normal HTTP request", "attack_code": "GET /api/v1/dashboard/stats HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_email_0073", "template": "Business email", "attack_code": "Subject: Welcome to the Team\n\nHello Sarah,\n\nWelcome to Example Corp! We're excited to have you join us.\n\nBest regards,\nHR Team", "category": "email"}
+{"id": "benign_http_0075", "template": "Normal HTTP request", "attack_code": "GET /api/v1/dashboard/stats HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_code_0053", "template": "Standard code snippet", "attack_code": "SELECT name, email FROM users WHERE created_at > '2025-01-01'", "category": "code_snippet"}
+{"id": "benign_cmd_0183", "template": "System command", "attack_code": "git status", "category": "system_command"}
+{"id": "benign_code_0164", "template": "Standard code snippet", "attack_code": "import matplotlib.pyplot as plt\nplt.plot(x_values, y_values)\nplt.show()", "category": "code_snippet"}
+{"id": "benign_sql_0188", "template": "Legitimate SQL query", "attack_code": "UPDATE inventory SET quantity = 255 WHERE product_id = 'PROD5170'", "category": "sql_query"}
+{"id": "benign_sql_0154", "template": "Legitimate SQL query", "attack_code": "SELECT AVG(price) FROM products WHERE in_stock = true", "category": "sql_query"}
+{"id": "benign_http_0069", "template": "Normal HTTP request", "attack_code": "GET /api/v1/dashboard/stats HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_cmd_0002", "template": "System command", "attack_code": "ps aux | grep python", "category": "system_command"}
+{"id": "benign_code_0006", "template": "Standard code snippet", "attack_code": "npm install express --save\nnpm start", "category": "code_snippet"}
+{"id": "benign_sql_0023", "template": "Legitimate SQL query", "attack_code": "UPDATE inventory SET quantity = 371 WHERE product_id = 'PROD4238'", "category": "sql_query"}
+{"id": "benign_http_0016", "template": "Normal HTTP request", "attack_code": "DELETE /api/v1/sessions/sess_9340 HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_sql_0170", "template": "Legitimate SQL query", "attack_code": "SELECT COUNT(*) FROM products WHERE category = 'food'", "category": "sql_query"}
+{"id": "benign_http_0093", "template": "Normal HTTP request", "attack_code": "DELETE /api/v1/sessions/sess_8743 HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_cmd_0021", "template": "System command", "attack_code": "free -m", "category": "system_command"}
+{"id": "benign_email_0171", "template": "Business email", "attack_code": "Subject: Meeting Follow-up\n\nHi John,\n\nThank you for attending today's meeting. Here are the action items:\n1. Review the proposal\n2. Schedule follow-up\n\nBest,\nSarah Davis", "category": "email"}
+{"id": "benign_http_0065", "template": "Normal HTTP request", "attack_code": "GET /static/css/styles.css HTTP/1.1\nHost: www.example.com", "category": "http_request"}
+{"id": "benign_email_0059", "template": "Business email", "attack_code": "Subject: Invoice #11720\n\nDear Customer,\n\nYour invoice #11720 for $4609.63 is attached. Payment due by 2025-10-30.\n\nThank you,\nAccounting Team", "category": "email"}
+{"id": "benign_email_0065", "template": "Business email", "attack_code": "Subject: Meeting Follow-up\n\nHi David,\n\nThank you for attending today's meeting. Here are the action items:\n1. Review the proposal\n2. Schedule follow-up\n\nBest,\nDavid Brown", "category": "email"}
+{"id": "benign_code_0110", "template": "Standard code snippet", "attack_code": "function validateEmail(email) {\n    return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);\n}", "category": "code_snippet"}
+{"id": "benign_code_0088", "template": "Standard code snippet", "attack_code": "git add .\ngit commit -m 'Update feature'\ngit push origin main", "category": "code_snippet"}
+{"id": "benign_email_0112", "template": "Business email", "attack_code": "Subject: Meeting Follow-up\n\nHi Mary,\n\nThank you for attending today's meeting. Here are the action items:\n1. Review the proposal\n2. Schedule follow-up\n\nBest,\nMary Johnson", "category": "email"}
+{"id": "benign_http_0007", "template": "Normal HTTP request", "attack_code": "DELETE /api/v1/sessions/sess_2213 HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_sql_0117", "template": "Legitimate SQL query", "attack_code": "SELECT name, email FROM customers WHERE status = 'active'", "category": "sql_query"}
+{"id": "benign_sql_0071", "template": "Legitimate SQL query", "attack_code": "SELECT name, email FROM customers WHERE status = 'active'", "category": "sql_query"}
+{"id": "benign_code_0024", "template": "Standard code snippet", "attack_code": "import matplotlib.pyplot as plt\nplt.plot(x_values, y_values)\nplt.show()", "category": "code_snippet"}
+{"id": "benign_cmd_0087", "template": "System command", "attack_code": "netstat -tuln", "category": "system_command"}
+{"id": "benign_cmd_0038", "template": "System command", "attack_code": "docker ps -a", "category": "system_command"}
+{"id": "benign_http_0198", "template": "Normal HTTP request", "attack_code": "GET /static/css/styles.css HTTP/1.1\nHost: www.example.com", "category": "http_request"}
+{"id": "benign_http_0083", "template": "Normal HTTP request", "attack_code": "POST /api/v1/orders HTTP/1.1\nHost: api.example.com\nContent-Type: application/json", "category": "http_request"}
+{"id": "benign_http_0022", "template": "Normal HTTP request", "attack_code": "POST /api/v1/auth/login HTTP/1.1\nHost: auth.example.com", "category": "http_request"}
+{"id": "benign_email_0144", "template": "Business email", "attack_code": "Subject: Meeting Follow-up\n\nHi Sarah,\n\nThank you for attending today's meeting. Here are the action items:\n1. Review the proposal\n2. Schedule follow-up\n\nBest,\nDavid Brown", "category": "email"}
+{"id": "benign_code_0049", "template": "Standard code snippet", "attack_code": "kubectl get pods -n production", "category": "code_snippet"}
+{"id": "benign_code_0194", "template": "Standard code snippet", "attack_code": "docker ps --filter 'status=running' --format '{{.Names}}'", "category": "code_snippet"}
+{"id": "benign_cmd_0150", "template": "System command", "attack_code": "uname -a", "category": "system_command"}
+{"id": "benign_cmd_0033", "template": "System command", "attack_code": "top -b -n 1", "category": "system_command"}
+{"id": "benign_code_0158", "template": "Standard code snippet", "attack_code": "import matplotlib.pyplot as plt\nplt.plot(x_values, y_values)\nplt.show()", "category": "code_snippet"}
+{"id": "benign_cmd_0175", "template": "System command", "attack_code": "git status", "category": "system_command"}
+{"id": "benign_http_0146", "template": "Normal HTTP request", "attack_code": "GET /api/v1/products?category=books&page=3 HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_sql_0141", "template": "Legitimate SQL query", "attack_code": "UPDATE users SET last_login = NOW() WHERE user_id = 262", "category": "sql_query"}
+{"id": "benign_sql_0052", "template": "Legitimate SQL query", "attack_code": "SELECT * FROM users WHERE user_id = 5265", "category": "sql_query"}
+{"id": "benign_code_0078", "template": "Standard code snippet", "attack_code": "kubectl get pods -n production", "category": "code_snippet"}
+{"id": "benign_cmd_0121", "template": "System command", "attack_code": "pip list", "category": "system_command"}
+{"id": "benign_cmd_0140", "template": "System command", "attack_code": "pip list", "category": "system_command"}
+{"id": "benign_cmd_0180", "template": "System command", "attack_code": "top -b -n 1", "category": "system_command"}
+{"id": "benign_code_0087", "template": "Standard code snippet", "attack_code": "terraform plan -out=tfplan", "category": "code_snippet"}
+{"id": "benign_code_0112", "template": "Standard code snippet", "attack_code": "terraform plan -out=tfplan", "category": "code_snippet"}
+{"id": "benign_email_0083", "template": "Business email", "attack_code": "Subject: Meeting Follow-up\n\nHi John,\n\nThank you for attending today's meeting. Here are the action items:\n1. Review the proposal\n2. Schedule follow-up\n\nBest,\nMary Johnson", "category": "email"}
+{"id": "benign_sql_0075", "template": "Legitimate SQL query", "attack_code": "INSERT INTO logs (level, message, timestamp) VALUES ('INFO', 'User logged in', NOW())", "category": "sql_query"}
+{"id": "benign_http_0136", "template": "Normal HTTP request", "attack_code": "DELETE /api/v1/sessions/sess_2886 HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_http_0039", "template": "Normal HTTP request", "attack_code": "GET /api/v1/products?category=electronics&page=19 HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_http_0109", "template": "Normal HTTP request", "attack_code": "GET /api/v1/dashboard/stats HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_cmd_0027", "template": "System command", "attack_code": "pwd", "category": "system_command"}
+{"id": "benign_http_0177", "template": "Normal HTTP request", "attack_code": "DELETE /api/v1/sessions/sess_7229 HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_email_0188", "template": "Business email", "attack_code": "Subject: Invoice #65495\n\nDear Customer,\n\nYour invoice #65495 for $3543.01 is attached. Payment due by 2025-11-05.\n\nThank you,\nAccounting Team", "category": "email"}
+{"id": "benign_cmd_0032", "template": "System command", "attack_code": "docker ps -a", "category": "system_command"}
+{"id": "benign_code_0134", "template": "Standard code snippet", "attack_code": "curl -X GET https://api.example.com/health -H 'Authorization: Bearer token'", "category": "code_snippet"}
+{"id": "benign_email_0085", "template": "Business email", "attack_code": "Subject: Team Meeting\n\nDear Team,\n\nPlease review the attached quarterly report. Best regards,\nSarah Davis", "category": "email"}
+{"id": "benign_sql_0017", "template": "Legitimate SQL query", "attack_code": "INSERT INTO logs (level, message, timestamp) VALUES ('INFO', 'Payment processed', NOW())", "category": "sql_query"}
+{"id": "benign_email_0074", "template": "Business email", "attack_code": "Subject: Status Update\n\nDear Sarah,\n\nPlease review the attached quarterly report. Best regards,\nJohn Smith", "category": "email"}
+{"id": "benign_sql_0093", "template": "Legitimate SQL query", "attack_code": "SELECT * FROM transactions WHERE date >= '2025-01-01' AND date <= '2025-12-31'", "category": "sql_query"}
+{"id": "benign_sql_0196", "template": "Legitimate SQL query", "attack_code": "UPDATE inventory SET quantity = 431 WHERE product_id = 'PROD9683'", "category": "sql_query"}
+{"id": "benign_cmd_0167", "template": "System command", "attack_code": "systemctl status nginx", "category": "system_command"}
+{"id": "benign_code_0061", "template": "Standard code snippet", "attack_code": "import pandas as pd\ndf = pd.read_csv('data.csv')\nprint(df.head())", "category": "code_snippet"}
+{"id": "benign_sql_0092", "template": "Legitimate SQL query", "attack_code": "SELECT AVG(price) FROM products WHERE in_stock = true", "category": "sql_query"}
+{"id": "benign_sql_0109", "template": "Legitimate SQL query", "attack_code": "INSERT INTO orders (customer_id, total, status) VALUES (3243, 824.05, 'pending')", "category": "sql_query"}
+{"id": "benign_cmd_0192", "template": "System command", "attack_code": "date", "category": "system_command"}
+{"id": "benign_sql_0151", "template": "Legitimate SQL query", "attack_code": "UPDATE users SET last_login = NOW() WHERE user_id = 5466", "category": "sql_query"}
+{"id": "benign_http_0132", "template": "Normal HTTP request", "attack_code": "PUT /api/v1/users/9565/profile HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_code_0039", "template": "Standard code snippet", "attack_code": "def calculate_total(items):\n    return sum(item['price'] for item in items)", "category": "code_snippet"}
+{"id": "benign_sql_0171", "template": "Legitimate SQL query", "attack_code": "DELETE FROM sessions WHERE expires_at < NOW()", "category": "sql_query"}
+{"id": "benign_cmd_0023", "template": "System command", "attack_code": "free -m", "category": "system_command"}
+{"id": "benign_email_0079", "template": "Business email", "attack_code": "Subject: Status Update\n\nDear Sarah,\n\nPlease review the attached quarterly report. Best regards,\nDavid Brown", "category": "email"}
+{"id": "benign_http_0197", "template": "Normal HTTP request", "attack_code": "DELETE /api/v1/sessions/sess_2067 HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_code_0067", "template": "Standard code snippet", "attack_code": "curl -X GET https://api.example.com/health -H 'Authorization: Bearer token'", "category": "code_snippet"}
+{"id": "benign_email_0123", "template": "Business email", "attack_code": "Subject: Invoice #27664\n\nDear Customer,\n\nYour invoice #27664 for $1038.36 is attached. Payment due by 2025-10-29.\n\nThank you,\nAccounting Team", "category": "email"}
+{"id": "benign_code_0095", "template": "Standard code snippet", "attack_code": "const fetchData = async () => {\n    const response = await fetch('/api/data');\n    return response.json();\n};", "category": "code_snippet"}
+{"id": "benign_http_0026", "template": "Normal HTTP request", "attack_code": "PATCH /api/v1/settings HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_code_0117", "template": "Standard code snippet", "attack_code": "pytest tests/ -v --cov=src", "category": "code_snippet"}
+{"id": "benign_sql_0045", "template": "Legitimate SQL query", "attack_code": "UPDATE inventory SET quantity = 116 WHERE product_id = 'PROD2417'", "category": "sql_query"}
+{"id": "benign_sql_0006", "template": "Legitimate SQL query", "attack_code": "INSERT INTO orders (customer_id, total, status) VALUES (1423, 769.66, 'pending')", "category": "sql_query"}
+{"id": "benign_http_0057", "template": "Normal HTTP request", "attack_code": "GET /api/v1/users/8427 HTTP/1.1\nHost: api.example.com\nAuthorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.example", "category": "http_request"}
+{"id": "benign_code_0163", "template": "Standard code snippet", "attack_code": "kubectl get pods -n production", "category": "code_snippet"}
+{"id": "benign_http_0021", "template": "Normal HTTP request", "attack_code": "POST /api/v1/orders HTTP/1.1\nHost: api.example.com\nContent-Type: application/json", "category": "http_request"}
+{"id": "benign_email_0081", "template": "Business email", "attack_code": "Subject: Welcome to the Team\n\nHello John,\n\nWelcome to Example Corp! We're excited to have you join us.\n\nBest regards,\nHR Team", "category": "email"}
+{"id": "benign_code_0043", "template": "Standard code snippet", "attack_code": "public class User {\n    private String name;\n    private String email;\n}", "category": "code_snippet"}
+{"id": "benign_cmd_0139", "template": "System command", "attack_code": "pip list", "category": "system_command"}
+{"id": "benign_code_0161", "template": "Standard code snippet", "attack_code": "git add .\ngit commit -m 'Update feature'\ngit push origin main", "category": "code_snippet"}
+{"id": "benign_cmd_0094", "template": "System command", "attack_code": "systemctl status nginx", "category": "system_command"}
+{"id": "benign_email_0052", "template": "Business email", "attack_code": "Subject: Project Update\n\nTeam,\n\nThe Gamma project is on track. Next milestone: 2025-11-14.\n\nRegards,\nDavid Brown", "category": "email"}
+{"id": "benign_email_0166", "template": "Business email", "attack_code": "Subject: Project Update\n\nTeam,\n\nThe Alpha project is on track. Next milestone: 2025-11-10.\n\nRegards,\nSarah Davis", "category": "email"}
+{"id": "benign_code_0111", "template": "Standard code snippet", "attack_code": "function validateEmail(email) {\n    return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);\n}", "category": "code_snippet"}
+{"id": "benign_email_0116", "template": "Business email", "attack_code": "Subject: Meeting Follow-up\n\nHi Team,\n\nThank you for attending today's meeting. Here are the action items:\n1. Review the proposal\n2. Schedule follow-up\n\nBest,\nJohn Smith", "category": "email"}
+{"id": "benign_code_0131", "template": "Standard code snippet", "attack_code": "function validateEmail(email) {\n    return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);\n}", "category": "code_snippet"}
+{"id": "benign_code_0037", "template": "Standard code snippet", "attack_code": "npm install express --save\nnpm start", "category": "code_snippet"}
+{"id": "benign_code_0191", "template": "Standard code snippet", "attack_code": "curl -X GET https://api.example.com/health -H 'Authorization: Bearer token'", "category": "code_snippet"}
+{"id": "benign_cmd_0141", "template": "System command", "attack_code": "date", "category": "system_command"}
+{"id": "benign_sql_0143", "template": "Legitimate SQL query", "attack_code": "INSERT INTO logs (level, message, timestamp) VALUES ('INFO', 'User logged in', NOW())", "category": "sql_query"}
+{"id": "benign_email_0179", "template": "Business email", "attack_code": "Subject: Project Update\n\nTeam,\n\nThe Beta project is on track. Next milestone: 2025-10-31.\n\nRegards,\nSarah Davis", "category": "email"}
+{"id": "benign_http_0056", "template": "Normal HTTP request", "attack_code": "PUT /api/v1/users/366/profile HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_code_0126", "template": "Standard code snippet", "attack_code": "pytest tests/ -v --cov=src", "category": "code_snippet"}
+{"id": "benign_sql_0091", "template": "Legitimate SQL query", "attack_code": "DELETE FROM sessions WHERE expires_at < NOW()", "category": "sql_query"}
+{"id": "benign_cmd_0053", "template": "System command", "attack_code": "ls -lah /var/log", "category": "system_command"}
+{"id": "benign_http_0086", "template": "Normal HTTP request", "attack_code": "POST /api/v1/orders HTTP/1.1\nHost: api.example.com\nContent-Type: application/json", "category": "http_request"}
+{"id": "benign_code_0066", "template": "Standard code snippet", "attack_code": "terraform plan -out=tfplan", "category": "code_snippet"}
+{"id": "benign_email_0097", "template": "Business email", "attack_code": "Subject: Meeting Follow-up\n\nHi David,\n\nThank you for attending today's meeting. Here are the action items:\n1. Review the proposal\n2. Schedule follow-up\n\nBest,\nDavid Brown", "category": "email"}
+{"id": "benign_email_0016", "template": "Business email", "attack_code": "Subject: Quarterly Report\n\nDear Mary,\n\nPlease review the attached quarterly report. Best regards,\nSarah Davis", "category": "email"}
+{"id": "benign_http_0171", "template": "Normal HTTP request", "attack_code": "POST /api/v1/auth/login HTTP/1.1\nHost: auth.example.com", "category": "http_request"}
+{"id": "benign_email_0002", "template": "Business email", "attack_code": "Subject: Team Meeting\n\nDear Mary,\n\nPlease review the attached quarterly report. Best regards,\nDavid Brown", "category": "email"}
+{"id": "benign_cmd_0045", "template": "System command", "attack_code": "docker ps -a", "category": "system_command"}
+{"id": "benign_code_0023", "template": "Standard code snippet", "attack_code": "function validateEmail(email) {\n    return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);\n}", "category": "code_snippet"}
+{"id": "benign_cmd_0126", "template": "System command", "attack_code": "top -b -n 1", "category": "system_command"}
+{"id": "benign_code_0076", "template": "Standard code snippet", "attack_code": "terraform plan -out=tfplan", "category": "code_snippet"}
+{"id": "benign_cmd_0191", "template": "System command", "attack_code": "netstat -tuln", "category": "system_command"}
+{"id": "benign_sql_0005", "template": "Legitimate SQL query", "attack_code": "SELECT COUNT(*) FROM products WHERE category = 'electronics'", "category": "sql_query"}
+{"id": "benign_email_0051", "template": "Business email", "attack_code": "Subject: Welcome to the Team\n\nHello John,\n\nWelcome to Example Corp! We're excited to have you join us.\n\nBest regards,\nHR Team", "category": "email"}
+{"id": "benign_code_0051", "template": "Standard code snippet", "attack_code": "git add .\ngit commit -m 'Update feature'\ngit push origin main", "category": "code_snippet"}
+{"id": "benign_email_0168", "template": "Business email", "attack_code": "Subject: Meeting Follow-up\n\nHi John,\n\nThank you for attending today's meeting. Here are the action items:\n1. Review the proposal\n2. Schedule follow-up\n\nBest,\nMary Johnson", "category": "email"}
+{"id": "benign_cmd_0102", "template": "System command", "attack_code": "cat /etc/hostname", "category": "system_command"}
+{"id": "benign_code_0084", "template": "Standard code snippet", "attack_code": "curl -X GET https://api.example.com/health -H 'Authorization: Bearer token'", "category": "code_snippet"}
+{"id": "benign_sql_0067", "template": "Legitimate SQL query", "attack_code": "UPDATE inventory SET quantity = 101 WHERE product_id = 'PROD4209'", "category": "sql_query"}
+{"id": "benign_email_0005", "template": "Business email", "attack_code": "Subject: Quarterly Report\n\nDear Mary,\n\nPlease review the attached quarterly report. Best regards,\nSarah Davis", "category": "email"}
+{"id": "benign_sql_0163", "template": "Legitimate SQL query", "attack_code": "DELETE FROM sessions WHERE expires_at < NOW()", "category": "sql_query"}
+{"id": "benign_http_0156", "template": "Normal HTTP request", "attack_code": "GET /api/v1/users/6142 HTTP/1.1\nHost: api.example.com\nAuthorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.example", "category": "http_request"}
+{"id": "benign_sql_0064", "template": "Legitimate SQL query", "attack_code": "UPDATE users SET last_login = NOW() WHERE user_id = 7776", "category": "sql_query"}
+{"id": "benign_http_0158", "template": "Normal HTTP request", "attack_code": "GET /health-check HTTP/1.1\nHost: localhost:8080", "category": "http_request"}
+{"id": "benign_code_0069", "template": "Standard code snippet", "attack_code": "SELECT name, email FROM users WHERE created_at > '2025-01-01'", "category": "code_snippet"}
+{"id": "benign_code_0052", "template": "Standard code snippet", "attack_code": "function validateEmail(email) {\n    return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);\n}", "category": "code_snippet"}
+{"id": "benign_cmd_0064", "template": "System command", "attack_code": "df -h", "category": "system_command"}
+{"id": "benign_email_0159", "template": "Business email", "attack_code": "Subject: Welcome to the Team\n\nHello Mary,\n\nWelcome to Example Corp! We're excited to have you join us.\n\nBest regards,\nHR Team", "category": "email"}
+{"id": "benign_sql_0162", "template": "Legitimate SQL query", "attack_code": "SELECT * FROM transactions WHERE date >= '2025-01-01' AND date <= '2025-12-31'", "category": "sql_query"}
+{"id": "benign_code_0151", "template": "Standard code snippet", "attack_code": "terraform plan -out=tfplan", "category": "code_snippet"}
+{"id": "benign_sql_0001", "template": "Legitimate SQL query", "attack_code": "SELECT AVG(price) FROM products WHERE in_stock = true", "category": "sql_query"}
+{"id": "benign_email_0176", "template": "Business email", "attack_code": "Subject: Status Update\n\nDear Mary,\n\nPlease review the attached quarterly report. Best regards,\nMary Johnson", "category": "email"}
+{"id": "benign_email_0021", "template": "Business email", "attack_code": "Subject: Invoice #30852\n\nDear Customer,\n\nYour invoice #30852 for $1772.35 is attached. Payment due by 2025-11-02.\n\nThank you,\nAccounting Team", "category": "email"}
+{"id": "benign_sql_0014", "template": "Legitimate SQL query", "attack_code": "INSERT INTO orders (customer_id, total, status) VALUES (2597, 66.42, 'pending')", "category": "sql_query"}
+{"id": "benign_email_0129", "template": "Business email", "attack_code": "Subject: Project Update\n\nDear Team,\n\nPlease review the attached quarterly report. Best regards,\nMary Johnson", "category": "email"}
+{"id": "benign_email_0080", "template": "Business email", "attack_code": "Subject: Meeting Follow-up\n\nHi Sarah,\n\nThank you for attending today's meeting. Here are the action items:\n1. Review the proposal\n2. Schedule follow-up\n\nBest,\nDavid Brown", "category": "email"}
+{"id": "benign_http_0166", "template": "Normal HTTP request", "attack_code": "POST /api/v1/auth/login HTTP/1.1\nHost: auth.example.com", "category": "http_request"}
+{"id": "benign_sql_0129", "template": "Legitimate SQL query", "attack_code": "INSERT INTO logs (level, message, timestamp) VALUES ('INFO', 'Order placed', NOW())", "category": "sql_query"}
+{"id": "benign_email_0077", "template": "Business email", "attack_code": "Subject: Welcome to the Team\n\nHello Team,\n\nWelcome to Example Corp! We're excited to have you join us.\n\nBest regards,\nHR Team", "category": "email"}
+{"id": "benign_sql_0024", "template": "Legitimate SQL query", "attack_code": "UPDATE users SET last_login = NOW() WHERE user_id = 4202", "category": "sql_query"}
+{"id": "benign_http_0036", "template": "Normal HTTP request", "attack_code": "PATCH /api/v1/settings HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_sql_0127", "template": "Legitimate SQL query", "attack_code": "INSERT INTO logs (level, message, timestamp) VALUES ('INFO', 'User logged in', NOW())", "category": "sql_query"}
+{"id": "benign_sql_0112", "template": "Legitimate SQL query", "attack_code": "UPDATE inventory SET quantity = 360 WHERE product_id = 'PROD3139'", "category": "sql_query"}
+{"id": "benign_http_0045", "template": "Normal HTTP request", "attack_code": "GET /static/css/styles.css HTTP/1.1\nHost: www.example.com", "category": "http_request"}
+{"id": "benign_http_0119", "template": "Normal HTTP request", "attack_code": "PUT /api/v1/users/2160/profile HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_email_0093", "template": "Business email", "attack_code": "Subject: Project Update\n\nTeam,\n\nThe Gamma project is on track. Next milestone: 2025-11-04.\n\nRegards,\nJohn Smith", "category": "email"}
+{"id": "benign_email_0057", "template": "Business email", "attack_code": "Subject: Status Update\n\nDear John,\n\nPlease review the attached quarterly report. Best regards,\nSarah Davis", "category": "email"}
+{"id": "benign_http_0034", "template": "Normal HTTP request", "attack_code": "GET /health-check HTTP/1.1\nHost: localhost:8080", "category": "http_request"}
+{"id": "benign_email_0136", "template": "Business email", "attack_code": "Subject: Project Update\n\nTeam,\n\nThe Delta project is on track. Next milestone: 2025-10-29.\n\nRegards,\nJohn Smith", "category": "email"}
+{"id": "benign_email_0086", "template": "Business email", "attack_code": "Subject: Welcome to the Team\n\nHello Team,\n\nWelcome to Example Corp! We're excited to have you join us.\n\nBest regards,\nHR Team", "category": "email"}
+{"id": "benign_http_0055", "template": "Normal HTTP request", "attack_code": "GET /static/css/styles.css HTTP/1.1\nHost: www.example.com", "category": "http_request"}
+{"id": "benign_cmd_0184", "template": "System command", "attack_code": "pip list", "category": "system_command"}
+{"id": "benign_code_0014", "template": "Standard code snippet", "attack_code": "pytest tests/ -v --cov=src", "category": "code_snippet"}
+{"id": "benign_sql_0110", "template": "Legitimate SQL query", "attack_code": "SELECT * FROM transactions WHERE date >= '2025-01-01' AND date <= '2025-12-31'", "category": "sql_query"}
+{"id": "benign_cmd_0088", "template": "System command", "attack_code": "cat /etc/hostname", "category": "system_command"}
+{"id": "benign_email_0105", "template": "Business email", "attack_code": "Subject: Project Update\n\nTeam,\n\nThe Gamma project is on track. Next milestone: 2025-10-31.\n\nRegards,\nMary Johnson", "category": "email"}
+{"id": "benign_email_0084", "template": "Business email", "attack_code": "Subject: Project Update\n\nDear David,\n\nPlease review the attached quarterly report. Best regards,\nSarah Davis", "category": "email"}
+{"id": "benign_http_0051", "template": "Normal HTTP request", "attack_code": "PUT /api/v1/users/1200/profile HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_sql_0054", "template": "Legitimate SQL query", "attack_code": "UPDATE users SET last_login = NOW() WHERE user_id = 5002", "category": "sql_query"}
+{"id": "benign_code_0182", "template": "Standard code snippet", "attack_code": "git add .\ngit commit -m 'Update feature'\ngit push origin main", "category": "code_snippet"}
+{"id": "benign_cmd_0086", "template": "System command", "attack_code": "ps aux | grep python", "category": "system_command"}
+{"id": "benign_sql_0068", "template": "Legitimate SQL query", "attack_code": "INSERT INTO orders (customer_id, total, status) VALUES (3556, 88.19, 'pending')", "category": "sql_query"}
+{"id": "benign_cmd_0076", "template": "System command", "attack_code": "kubectl get nodes", "category": "system_command"}
+{"id": "benign_http_0042", "template": "Normal HTTP request", "attack_code": "GET /api/v1/users/9835 HTTP/1.1\nHost: api.example.com\nAuthorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.example", "category": "http_request"}
+{"id": "benign_cmd_0136", "template": "System command", "attack_code": "pwd", "category": "system_command"}
+{"id": "benign_cmd_0022", "template": "System command", "attack_code": "ls -lah /var/log", "category": "system_command"}
+{"id": "benign_email_0149", "template": "Business email", "attack_code": "Subject: Meeting Follow-up\n\nHi Sarah,\n\nThank you for attending today's meeting. Here are the action items:\n1. Review the proposal\n2. Schedule follow-up\n\nBest,\nMary Johnson", "category": "email"}
+{"id": "benign_cmd_0128", "template": "System command", "attack_code": "which python3", "category": "system_command"}
+{"id": "benign_http_0162", "template": "Normal HTTP request", "attack_code": "GET /api/v1/users/7831 HTTP/1.1\nHost: api.example.com\nAuthorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.example", "category": "http_request"}
+{"id": "benign_sql_0157", "template": "Legitimate SQL query", "attack_code": "INSERT INTO orders (customer_id, total, status) VALUES (3901, 772.22, 'pending')", "category": "sql_query"}
+{"id": "benign_http_0080", "template": "Normal HTTP request", "attack_code": "GET /health-check HTTP/1.1\nHost: localhost:8080", "category": "http_request"}
+{"id": "benign_sql_0090", "template": "Legitimate SQL query", "attack_code": "SELECT AVG(price) FROM products WHERE in_stock = true", "category": "sql_query"}
+{"id": "benign_code_0139", "template": "Standard code snippet", "attack_code": "git add .\ngit commit -m 'Update feature'\ngit push origin main", "category": "code_snippet"}
+{"id": "benign_email_0191", "template": "Business email", "attack_code": "Subject: Invoice #24964\n\nDear Customer,\n\nYour invoice #24964 for $2044.81 is attached. Payment due by 2025-11-14.\n\nThank you,\nAccounting Team", "category": "email"}
+{"id": "benign_cmd_0161", "template": "System command", "attack_code": "uptime", "category": "system_command"}
+{"id": "benign_cmd_0063", "template": "System command", "attack_code": "git status", "category": "system_command"}
+{"id": "benign_sql_0016", "template": "Legitimate SQL query", "attack_code": "INSERT INTO logs (level, message, timestamp) VALUES ('INFO', 'Order placed', NOW())", "category": "sql_query"}
+{"id": "benign_http_0143", "template": "Normal HTTP request", "attack_code": "PATCH /api/v1/settings HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_code_0146", "template": "Standard code snippet", "attack_code": "terraform plan -out=tfplan", "category": "code_snippet"}
+{"id": "benign_sql_0055", "template": "Legitimate SQL query", "attack_code": "SELECT AVG(price) FROM products WHERE in_stock = true", "category": "sql_query"}
+{"id": "benign_cmd_0176", "template": "System command", "attack_code": "systemctl status nginx", "category": "system_command"}
+{"id": "benign_code_0082", "template": "Standard code snippet", "attack_code": "import pandas as pd\ndf = pd.read_csv('data.csv')\nprint(df.head())", "category": "code_snippet"}
+{"id": "benign_email_0045", "template": "Business email", "attack_code": "Subject: Project Update\n\nTeam,\n\nThe Delta project is on track. Next milestone: 2025-11-01.\n\nRegards,\nJohn Smith", "category": "email"}
+{"id": "benign_code_0122", "template": "Standard code snippet", "attack_code": "SELECT name, email FROM users WHERE created_at > '2025-01-01'", "category": "code_snippet"}
+{"id": "benign_sql_0124", "template": "Legitimate SQL query", "attack_code": "SELECT * FROM transactions WHERE date >= '2025-01-01' AND date <= '2025-12-31'", "category": "sql_query"}
+{"id": "benign_http_0113", "template": "Normal HTTP request", "attack_code": "GET /health-check HTTP/1.1\nHost: localhost:8080", "category": "http_request"}
+{"id": "benign_sql_0111", "template": "Legitimate SQL query", "attack_code": "UPDATE users SET last_login = NOW() WHERE user_id = 7829", "category": "sql_query"}
+{"id": "benign_cmd_0057", "template": "System command", "attack_code": "tail -f /var/log/syslog", "category": "system_command"}
+{"id": "benign_cmd_0162", "template": "System command", "attack_code": "uptime", "category": "system_command"}
+{"id": "benign_code_0165", "template": "Standard code snippet", "attack_code": "def calculate_total(items):\n    return sum(item['price'] for item in items)", "category": "code_snippet"}
+{"id": "benign_email_0126", "template": "Business email", "attack_code": "Subject: Project Update\n\nTeam,\n\nThe Delta project is on track. Next milestone: 2025-11-03.\n\nRegards,\nMary Johnson", "category": "email"}
+{"id": "benign_cmd_0079", "template": "System command", "attack_code": "pwd", "category": "system_command"}
+{"id": "benign_sql_0072", "template": "Legitimate SQL query", "attack_code": "INSERT INTO logs (level, message, timestamp) VALUES ('INFO', 'Order placed', NOW())", "category": "sql_query"}
+{"id": "benign_sql_0036", "template": "Legitimate SQL query", "attack_code": "SELECT COUNT(*) FROM products WHERE category = 'electronics'", "category": "sql_query"}
+{"id": "benign_sql_0051", "template": "Legitimate SQL query", "attack_code": "SELECT name, email FROM customers WHERE status = 'active'", "category": "sql_query"}
+{"id": "benign_code_0160", "template": "Standard code snippet", "attack_code": "SELECT name, email FROM users WHERE created_at > '2025-01-01'", "category": "code_snippet"}
+{"id": "benign_code_0192", "template": "Standard code snippet", "attack_code": "def calculate_total(items):\n    return sum(item['price'] for item in items)", "category": "code_snippet"}
+{"id": "benign_cmd_0168", "template": "System command", "attack_code": "whoami", "category": "system_command"}
+{"id": "benign_http_0064", "template": "Normal HTTP request", "attack_code": "DELETE /api/v1/sessions/sess_7522 HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_http_0116", "template": "Normal HTTP request", "attack_code": "GET /api/v1/products?category=clothing&page=7 HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_cmd_0065", "template": "System command", "attack_code": "which python3", "category": "system_command"}
+{"id": "benign_sql_0046", "template": "Legitimate SQL query", "attack_code": "INSERT INTO orders (customer_id, total, status) VALUES (941, 565.43, 'pending')", "category": "sql_query"}
+{"id": "benign_cmd_0142", "template": "System command", "attack_code": "git status", "category": "system_command"}
+{"id": "benign_cmd_0149", "template": "System command", "attack_code": "which python3", "category": "system_command"}
+{"id": "benign_code_0047", "template": "Standard code snippet", "attack_code": "def calculate_total(items):\n    return sum(item['price'] for item in items)", "category": "code_snippet"}
+{"id": "benign_email_0172", "template": "Business email", "attack_code": "Subject: Status Update\n\nDear Team,\n\nPlease review the attached quarterly report. Best regards,\nDavid Brown", "category": "email"}
+{"id": "benign_email_0154", "template": "Business email", "attack_code": "Subject: Welcome to the Team\n\nHello Mary,\n\nWelcome to Example Corp! We're excited to have you join us.\n\nBest regards,\nHR Team", "category": "email"}
+{"id": "benign_email_0147", "template": "Business email", "attack_code": "Subject: Invoice #85114\n\nDear Customer,\n\nYour invoice #85114 for $1904.2 is attached. Payment due by 2025-11-20.\n\nThank you,\nAccounting Team", "category": "email"}
+{"id": "benign_email_0090", "template": "Business email", "attack_code": "Subject: Invoice #65533\n\nDear Customer,\n\nYour invoice #65533 for $4034.67 is attached. Payment due by 2025-10-31.\n\nThank you,\nAccounting Team", "category": "email"}
+{"id": "benign_http_0179", "template": "Normal HTTP request", "attack_code": "POST /api/v1/orders HTTP/1.1\nHost: api.example.com\nContent-Type: application/json", "category": "http_request"}
+{"id": "benign_sql_0019", "template": "Legitimate SQL query", "attack_code": "SELECT * FROM transactions WHERE date >= '2025-01-01' AND date <= '2025-12-31'", "category": "sql_query"}
+{"id": "benign_cmd_0018", "template": "System command", "attack_code": "free -m", "category": "system_command"}
+{"id": "benign_email_0039", "template": "Business email", "attack_code": "Subject: Welcome to the Team\n\nHello Mary,\n\nWelcome to Example Corp! We're excited to have you join us.\n\nBest regards,\nHR Team", "category": "email"}
+{"id": "benign_email_0040", "template": "Business email", "attack_code": "Subject: Project Update\n\nTeam,\n\nThe Delta project is on track. Next milestone: 2025-11-18.\n\nRegards,\nMary Johnson", "category": "email"}
+{"id": "benign_http_0153", "template": "Normal HTTP request", "attack_code": "GET /api/v1/users/8605 HTTP/1.1\nHost: api.example.com\nAuthorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.example", "category": "http_request"}
+{"id": "benign_sql_0190", "template": "Legitimate SQL query", "attack_code": "INSERT INTO logs (level, message, timestamp) VALUES ('INFO', 'Payment processed', NOW())", "category": "sql_query"}
+{"id": "benign_cmd_0137", "template": "System command", "attack_code": "date", "category": "system_command"}
+{"id": "benign_sql_0105", "template": "Legitimate SQL query", "attack_code": "DELETE FROM sessions WHERE expires_at < NOW()", "category": "sql_query"}
+{"id": "benign_http_0135", "template": "Normal HTTP request", "attack_code": "GET /api/v1/dashboard/stats HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_email_0018", "template": "Business email", "attack_code": "Subject: Quarterly Report\n\nDear David,\n\nPlease review the attached quarterly report. Best regards,\nDavid Brown", "category": "email"}
+{"id": "benign_cmd_0114", "template": "System command", "attack_code": "whoami", "category": "system_command"}
+{"id": "benign_http_0078", "template": "Normal HTTP request", "attack_code": "GET /api/v1/dashboard/stats HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_http_0004", "template": "Normal HTTP request", "attack_code": "GET /api/v1/users/6516 HTTP/1.1\nHost: api.example.com\nAuthorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.example", "category": "http_request"}
+{"id": "benign_sql_0177", "template": "Legitimate SQL query", "attack_code": "INSERT INTO orders (customer_id, total, status) VALUES (4348, 287.2, 'pending')", "category": "sql_query"}
+{"id": "benign_code_0079", "template": "Standard code snippet", "attack_code": "public class User {\n    private String name;\n    private String email;\n}", "category": "code_snippet"}
+{"id": "benign_code_0017", "template": "Standard code snippet", "attack_code": "import matplotlib.pyplot as plt\nplt.plot(x_values, y_values)\nplt.show()", "category": "code_snippet"}
+{"id": "benign_code_0149", "template": "Standard code snippet", "attack_code": "SELECT name, email FROM users WHERE created_at > '2025-01-01'", "category": "code_snippet"}
+{"id": "benign_sql_0189", "template": "Legitimate SQL query", "attack_code": "DELETE FROM sessions WHERE expires_at < NOW()", "category": "sql_query"}
+{"id": "benign_email_0104", "template": "Business email", "attack_code": "Subject: Invoice #28245\n\nDear Customer,\n\nYour invoice #28245 for $3942.25 is attached. Payment due by 2025-11-06.\n\nThank you,\nAccounting Team", "category": "email"}
+{"id": "benign_http_0174", "template": "Normal HTTP request", "attack_code": "PUT /api/v1/users/6334/profile HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_email_0198", "template": "Business email", "attack_code": "Subject: Welcome to the Team\n\nHello Sarah,\n\nWelcome to Example Corp! We're excited to have you join us.\n\nBest regards,\nHR Team", "category": "email"}
+{"id": "benign_code_0154", "template": "Standard code snippet", "attack_code": "def calculate_total(items):\n    return sum(item['price'] for item in items)", "category": "code_snippet"}
+{"id": "benign_sql_0164", "template": "Legitimate SQL query", "attack_code": "INSERT INTO orders (customer_id, total, status) VALUES (3139, 624.48, 'pending')", "category": "sql_query"}
+{"id": "benign_email_0004", "template": "Business email", "attack_code": "Subject: Status Update\n\nDear John,\n\nPlease review the attached quarterly report. Best regards,\nMary Johnson", "category": "email"}
+{"id": "benign_code_0034", "template": "Standard code snippet", "attack_code": "npm install express --save\nnpm start", "category": "code_snippet"}
+{"id": "benign_cmd_0144", "template": "System command", "attack_code": "cat /etc/hostname", "category": "system_command"}
+{"id": "benign_email_0007", "template": "Business email", "attack_code": "Subject: Meeting Follow-up\n\nHi Team,\n\nThank you for attending today's meeting. Here are the action items:\n1. Review the proposal\n2. Schedule follow-up\n\nBest,\nSarah Davis", "category": "email"}
+{"id": "benign_email_0042", "template": "Business email", "attack_code": "Subject: Invoice #76801\n\nDear Customer,\n\nYour invoice #76801 for $4803.14 is attached. Payment due by 2025-11-03.\n\nThank you,\nAccounting Team", "category": "email"}
+{"id": "benign_sql_0078", "template": "Legitimate SQL query", "attack_code": "UPDATE inventory SET quantity = 170 WHERE product_id = 'PROD4820'", "category": "sql_query"}
+{"id": "benign_code_0028", "template": "Standard code snippet", "attack_code": "import matplotlib.pyplot as plt\nplt.plot(x_values, y_values)\nplt.show()", "category": "code_snippet"}
+{"id": "benign_http_0011", "template": "Normal HTTP request", "attack_code": "GET /health-check HTTP/1.1\nHost: localhost:8080", "category": "http_request"}
+{"id": "benign_code_0185", "template": "Standard code snippet", "attack_code": "curl -X GET https://api.example.com/health -H 'Authorization: Bearer token'", "category": "code_snippet"}
+{"id": "benign_code_0101", "template": "Standard code snippet", "attack_code": "function validateEmail(email) {\n    return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);\n}", "category": "code_snippet"}
+{"id": "benign_cmd_0125", "template": "System command", "attack_code": "netstat -tuln", "category": "system_command"}
+{"id": "benign_http_0060", "template": "Normal HTTP request", "attack_code": "POST /api/v1/auth/login HTTP/1.1\nHost: auth.example.com", "category": "http_request"}
+{"id": "benign_sql_0007", "template": "Legitimate SQL query", "attack_code": "UPDATE inventory SET quantity = 432 WHERE product_id = 'PROD3176'", "category": "sql_query"}
+{"id": "benign_email_0113", "template": "Business email", "attack_code": "Subject: Project Update\n\nDear Mary,\n\nPlease review the attached quarterly report. Best regards,\nDavid Brown", "category": "email"}
+{"id": "benign_email_0145", "template": "Business email", "attack_code": "Subject: Project Update\n\nTeam,\n\nThe Beta project is on track. Next milestone: 2025-11-19.\n\nRegards,\nDavid Brown", "category": "email"}
+{"id": "benign_email_0125", "template": "Business email", "attack_code": "Subject: Welcome to the Team\n\nHello David,\n\nWelcome to Example Corp! We're excited to have you join us.\n\nBest regards,\nHR Team", "category": "email"}
+{"id": "benign_email_0184", "template": "Business email", "attack_code": "Subject: Welcome to the Team\n\nHello John,\n\nWelcome to Example Corp! We're excited to have you join us.\n\nBest regards,\nHR Team", "category": "email"}
+{"id": "benign_cmd_0015", "template": "System command", "attack_code": "cat /etc/hostname", "category": "system_command"}
+{"id": "benign_http_0151", "template": "Normal HTTP request", "attack_code": "GET /health-check HTTP/1.1\nHost: localhost:8080", "category": "http_request"}
+{"id": "benign_email_0068", "template": "Business email", "attack_code": "Subject: Meeting Follow-up\n\nHi David,\n\nThank you for attending today's meeting. Here are the action items:\n1. Review the proposal\n2. Schedule follow-up\n\nBest,\nJohn Smith", "category": "email"}
+{"id": "benign_sql_0173", "template": "Legitimate SQL query", "attack_code": "INSERT INTO logs (level, message, timestamp) VALUES ('INFO', 'User logged in', NOW())", "category": "sql_query"}
+{"id": "benign_email_0049", "template": "Business email", "attack_code": "Subject: Meeting Follow-up\n\nHi Mary,\n\nThank you for attending today's meeting. Here are the action items:\n1. Review the proposal\n2. Schedule follow-up\n\nBest,\nSarah Davis", "category": "email"}
+{"id": "benign_sql_0168", "template": "Legitimate SQL query", "attack_code": "SELECT AVG(price) FROM products WHERE in_stock = true", "category": "sql_query"}
+{"id": "benign_http_0139", "template": "Normal HTTP request", "attack_code": "GET /api/v1/dashboard/stats HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_email_0044", "template": "Business email", "attack_code": "Subject: Meeting Follow-up\n\nHi David,\n\nThank you for attending today's meeting. Here are the action items:\n1. Review the proposal\n2. Schedule follow-up\n\nBest,\nJohn Smith", "category": "email"}
+{"id": "benign_email_0108", "template": "Business email", "attack_code": "Subject: Project Update\n\nDear Team,\n\nPlease review the attached quarterly report. Best regards,\nMary Johnson", "category": "email"}
+{"id": "benign_cmd_0163", "template": "System command", "attack_code": "date", "category": "system_command"}
+{"id": "benign_http_0095", "template": "Normal HTTP request", "attack_code": "DELETE /api/v1/sessions/sess_9770 HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_code_0120", "template": "Standard code snippet", "attack_code": "const fetchData = async () => {\n    const response = await fetch('/api/data');\n    return response.json();\n};", "category": "code_snippet"}
+{"id": "benign_cmd_0170", "template": "System command", "attack_code": "uname -a", "category": "system_command"}
+{"id": "benign_http_0154", "template": "Normal HTTP request", "attack_code": "GET /api/v1/products?category=books&page=19 HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_http_0110", "template": "Normal HTTP request", "attack_code": "DELETE /api/v1/sessions/sess_8276 HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_email_0035", "template": "Business email", "attack_code": "Subject: Meeting Follow-up\n\nHi Team,\n\nThank you for attending today's meeting. Here are the action items:\n1. Review the proposal\n2. Schedule follow-up\n\nBest,\nSarah Davis", "category": "email"}
+{"id": "benign_code_0015", "template": "Standard code snippet", "attack_code": "curl -X GET https://api.example.com/health -H 'Authorization: Bearer token'", "category": "code_snippet"}
+{"id": "benign_http_0101", "template": "Normal HTTP request", "attack_code": "POST /api/v1/auth/login HTTP/1.1\nHost: auth.example.com", "category": "http_request"}
+{"id": "benign_http_0165", "template": "Normal HTTP request", "attack_code": "GET /health-check HTTP/1.1\nHost: localhost:8080", "category": "http_request"}
+{"id": "benign_cmd_0112", "template": "System command", "attack_code": "top -b -n 1", "category": "system_command"}
+{"id": "benign_http_0032", "template": "Normal HTTP request", "attack_code": "POST /api/v1/auth/login HTTP/1.1\nHost: auth.example.com", "category": "http_request"}
+{"id": "benign_sql_0180", "template": "Legitimate SQL query", "attack_code": "SELECT * FROM users WHERE user_id = 6697", "category": "sql_query"}
+{"id": "benign_email_0029", "template": "Business email", "attack_code": "Subject: Invoice #61913\n\nDear Customer,\n\nYour invoice #61913 for $2777.24 is attached. Payment due by 2025-11-20.\n\nThank you,\nAccounting Team", "category": "email"}
+{"id": "benign_http_0092", "template": "Normal HTTP request", "attack_code": "PATCH /api/v1/settings HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_email_0139", "template": "Business email", "attack_code": "Subject: Welcome to the Team\n\nHello Sarah,\n\nWelcome to Example Corp! We're excited to have you join us.\n\nBest regards,\nHR Team", "category": "email"}
+{"id": "benign_http_0181", "template": "Normal HTTP request", "attack_code": "POST /api/v1/orders HTTP/1.1\nHost: api.example.com\nContent-Type: application/json", "category": "http_request"}
+{"id": "benign_email_0092", "template": "Business email", "attack_code": "Subject: Welcome to the Team\n\nHello David,\n\nWelcome to Example Corp! We're excited to have you join us.\n\nBest regards,\nHR Team", "category": "email"}
+{"id": "benign_http_0168", "template": "Normal HTTP request", "attack_code": "PATCH /api/v1/settings HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_code_0003", "template": "Standard code snippet", "attack_code": "def calculate_total(items):\n    return sum(item['price'] for item in items)", "category": "code_snippet"}
+{"id": "benign_http_0152", "template": "Normal HTTP request", "attack_code": "GET /api/v1/products?category=books&page=11 HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_cmd_0054", "template": "System command", "attack_code": "git status", "category": "system_command"}
+{"id": "benign_code_0177", "template": "Standard code snippet", "attack_code": "def calculate_total(items):\n    return sum(item['price'] for item in items)", "category": "code_snippet"}
+{"id": "benign_email_0183", "template": "Business email", "attack_code": "Subject: Welcome to the Team\n\nHello Team,\n\nWelcome to Example Corp! We're excited to have you join us.\n\nBest regards,\nHR Team", "category": "email"}
+{"id": "benign_sql_0089", "template": "Legitimate SQL query", "attack_code": "SELECT * FROM transactions WHERE date >= '2025-01-01' AND date <= '2025-12-31'", "category": "sql_query"}
+{"id": "benign_sql_0134", "template": "Legitimate SQL query", "attack_code": "UPDATE users SET last_login = NOW() WHERE user_id = 8435", "category": "sql_query"}
+{"id": "benign_email_0193", "template": "Business email", "attack_code": "Subject: Team Meeting\n\nDear David,\n\nPlease review the attached quarterly report. Best regards,\nSarah Davis", "category": "email"}
+{"id": "benign_code_0080", "template": "Standard code snippet", "attack_code": "pytest tests/ -v --cov=src", "category": "code_snippet"}
+{"id": "benign_cmd_0132", "template": "System command", "attack_code": "tail -f /var/log/syslog", "category": "system_command"}
+{"id": "benign_http_0040", "template": "Normal HTTP request", "attack_code": "GET /api/v1/users/288 HTTP/1.1\nHost: api.example.com\nAuthorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.example", "category": "http_request"}
+{"id": "benign_code_0077", "template": "Standard code snippet", "attack_code": "pytest tests/ -v --cov=src", "category": "code_snippet"}
+{"id": "benign_code_0056", "template": "Standard code snippet", "attack_code": "import matplotlib.pyplot as plt\nplt.plot(x_values, y_values)\nplt.show()", "category": "code_snippet"}
+{"id": "benign_http_0073", "template": "Normal HTTP request", "attack_code": "DELETE /api/v1/sessions/sess_9650 HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_email_0199", "template": "Business email", "attack_code": "Subject: Team Meeting\n\nDear John,\n\nPlease review the attached quarterly report. Best regards,\nMary Johnson", "category": "email"}
+{"id": "benign_http_0185", "template": "Normal HTTP request", "attack_code": "PATCH /api/v1/settings HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_email_0013", "template": "Business email", "attack_code": "Subject: Welcome to the Team\n\nHello Mary,\n\nWelcome to Example Corp! We're excited to have you join us.\n\nBest regards,\nHR Team", "category": "email"}
+{"id": "benign_cmd_0081", "template": "System command", "attack_code": "uptime", "category": "system_command"}
+{"id": "benign_email_0120", "template": "Business email", "attack_code": "Subject: Quarterly Report\n\nDear John,\n\nPlease review the attached quarterly report. Best regards,\nDavid Brown", "category": "email"}
+{"id": "benign_http_0002", "template": "Normal HTTP request", "attack_code": "GET /health-check HTTP/1.1\nHost: localhost:8080", "category": "http_request"}
+{"id": "benign_sql_0175", "template": "Legitimate SQL query", "attack_code": "SELECT * FROM users WHERE user_id = 3598", "category": "sql_query"}
+{"id": "benign_email_0142", "template": "Business email", "attack_code": "Subject: Invoice #23757\n\nDear Customer,\n\nYour invoice #23757 for $2702.04 is attached. Payment due by 2025-11-10.\n\nThank you,\nAccounting Team", "category": "email"}
+{"id": "benign_code_0162", "template": "Standard code snippet", "attack_code": "public class User {\n    private String name;\n    private String email;\n}", "category": "code_snippet"}
+{"id": "benign_cmd_0105", "template": "System command", "attack_code": "pwd", "category": "system_command"}
+{"id": "benign_cmd_0003", "template": "System command", "attack_code": "ls -lah /var/log", "category": "system_command"}
+{"id": "benign_sql_0172", "template": "Legitimate SQL query", "attack_code": "UPDATE inventory SET quantity = 258 WHERE product_id = 'PROD4716'", "category": "sql_query"}
+{"id": "benign_sql_0121", "template": "Legitimate SQL query", "attack_code": "INSERT INTO orders (customer_id, total, status) VALUES (2577, 517.29, 'pending')", "category": "sql_query"}
+{"id": "benign_http_0195", "template": "Normal HTTP request", "attack_code": "PUT /api/v1/users/2473/profile HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_sql_0146", "template": "Legitimate SQL query", "attack_code": "SELECT * FROM users WHERE user_id = 3664", "category": "sql_query"}
+{"id": "benign_http_0063", "template": "Normal HTTP request", "attack_code": "GET /static/css/styles.css HTTP/1.1\nHost: www.example.com", "category": "http_request"}
+{"id": "benign_email_0160", "template": "Business email", "attack_code": "Subject: Meeting Follow-up\n\nHi Mary,\n\nThank you for attending today's meeting. Here are the action items:\n1. Review the proposal\n2. Schedule follow-up\n\nBest,\nSarah Davis", "category": "email"}
+{"id": "benign_cmd_0041", "template": "System command", "attack_code": "git status", "category": "system_command"}
+{"id": "benign_code_0104", "template": "Standard code snippet", "attack_code": "public class User {\n    private String name;\n    private String email;\n}", "category": "code_snippet"}
+{"id": "benign_code_0001", "template": "Standard code snippet", "attack_code": "SELECT name, email FROM users WHERE created_at > '2025-01-01'", "category": "code_snippet"}
+{"id": "benign_http_0150", "template": "Normal HTTP request", "attack_code": "PATCH /api/v1/settings HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_cmd_0101", "template": "System command", "attack_code": "uname -a", "category": "system_command"}
+{"id": "benign_cmd_0160", "template": "System command", "attack_code": "uptime", "category": "system_command"}
+{"id": "benign_code_0170", "template": "Standard code snippet", "attack_code": "terraform plan -out=tfplan", "category": "code_snippet"}
+{"id": "benign_email_0048", "template": "Business email", "attack_code": "Subject: Welcome to the Team\n\nHello Sarah,\n\nWelcome to Example Corp! We're excited to have you join us.\n\nBest regards,\nHR Team", "category": "email"}
+{"id": "benign_sql_0197", "template": "Legitimate SQL query", "attack_code": "SELECT name, email FROM customers WHERE status = 'active'", "category": "sql_query"}
+{"id": "benign_http_0182", "template": "Normal HTTP request", "attack_code": "GET /api/v1/users/4801 HTTP/1.1\nHost: api.example.com\nAuthorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.example", "category": "http_request"}
+{"id": "benign_http_0044", "template": "Normal HTTP request", "attack_code": "GET /api/v1/users/4625 HTTP/1.1\nHost: api.example.com\nAuthorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.example", "category": "http_request"}
+{"id": "benign_sql_0079", "template": "Legitimate SQL query", "attack_code": "SELECT name, email FROM customers WHERE status = 'active'", "category": "sql_query"}
+{"id": "benign_email_0050", "template": "Business email", "attack_code": "Subject: Meeting Follow-up\n\nHi David,\n\nThank you for attending today's meeting. Here are the action items:\n1. Review the proposal\n2. Schedule follow-up\n\nBest,\nSarah Davis", "category": "email"}
+{"id": "benign_code_0181", "template": "Standard code snippet", "attack_code": "curl -X GET https://api.example.com/health -H 'Authorization: Bearer token'", "category": "code_snippet"}
+{"id": "benign_cmd_0078", "template": "System command", "attack_code": "ps aux | grep python", "category": "system_command"}
+{"id": "benign_sql_0037", "template": "Legitimate SQL query", "attack_code": "SELECT AVG(price) FROM products WHERE in_stock = true", "category": "sql_query"}
+{"id": "benign_sql_0065", "template": "Legitimate SQL query", "attack_code": "UPDATE users SET last_login = NOW() WHERE user_id = 2872", "category": "sql_query"}
+{"id": "benign_sql_0040", "template": "Legitimate SQL query", "attack_code": "SELECT name, email FROM customers WHERE status = 'active'", "category": "sql_query"}
+{"id": "benign_code_0130", "template": "Standard code snippet", "attack_code": "docker ps --filter 'status=running' --format '{{.Names}}'", "category": "code_snippet"}
+{"id": "benign_cmd_0138", "template": "System command", "attack_code": "git status", "category": "system_command"}
+{"id": "benign_http_0019", "template": "Normal HTTP request", "attack_code": "PATCH /api/v1/settings HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_http_0085", "template": "Normal HTTP request", "attack_code": "PUT /api/v1/users/849/profile HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_sql_0080", "template": "Legitimate SQL query", "attack_code": "SELECT * FROM users WHERE user_id = 7648", "category": "sql_query"}
+{"id": "benign_cmd_0093", "template": "System command", "attack_code": "pwd", "category": "system_command"}
+{"id": "benign_code_0081", "template": "Standard code snippet", "attack_code": "docker ps --filter 'status=running' --format '{{.Names}}'", "category": "code_snippet"}
+{"id": "benign_http_0120", "template": "Normal HTTP request", "attack_code": "PUT /api/v1/users/9102/profile HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_cmd_0067", "template": "System command", "attack_code": "tail -f /var/log/syslog", "category": "system_command"}
+{"id": "benign_http_0049", "template": "Normal HTTP request", "attack_code": "PUT /api/v1/users/87/profile HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_code_0197", "template": "Standard code snippet", "attack_code": "kubectl get pods -n production", "category": "code_snippet"}
+{"id": "benign_cmd_0071", "template": "System command", "attack_code": "kubectl get nodes", "category": "system_command"}
+{"id": "benign_http_0062", "template": "Normal HTTP request", "attack_code": "PUT /api/v1/users/8545/profile HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_http_0128", "template": "Normal HTTP request", "attack_code": "GET /static/css/styles.css HTTP/1.1\nHost: www.example.com", "category": "http_request"}
+{"id": "benign_email_0100", "template": "Business email", "attack_code": "Subject: Welcome to the Team\n\nHello Team,\n\nWelcome to Example Corp! We're excited to have you join us.\n\nBest regards,\nHR Team", "category": "email"}
+{"id": "benign_cmd_0047", "template": "System command", "attack_code": "uname -a", "category": "system_command"}
+{"id": "benign_sql_0032", "template": "Legitimate SQL query", "attack_code": "UPDATE inventory SET quantity = 46 WHERE product_id = 'PROD3909'", "category": "sql_query"}
+{"id": "benign_email_0060", "template": "Business email", "attack_code": "Subject: Welcome to the Team\n\nHello David,\n\nWelcome to Example Corp! We're excited to have you join us.\n\nBest regards,\nHR Team", "category": "email"}
+{"id": "benign_cmd_0146", "template": "System command", "attack_code": "free -m", "category": "system_command"}
+{"id": "benign_cmd_0006", "template": "System command", "attack_code": "ls -lah /var/log", "category": "system_command"}
+{"id": "benign_code_0098", "template": "Standard code snippet", "attack_code": "SELECT name, email FROM users WHERE created_at > '2025-01-01'", "category": "code_snippet"}
+{"id": "benign_cmd_0024", "template": "System command", "attack_code": "git status", "category": "system_command"}
+{"id": "benign_sql_0166", "template": "Legitimate SQL query", "attack_code": "SELECT COUNT(*) FROM products WHERE category = 'clothing'", "category": "sql_query"}
+{"id": "benign_sql_0000", "template": "Legitimate SQL query", "attack_code": "SELECT * FROM transactions WHERE date >= '2025-01-01' AND date <= '2025-12-31'", "category": "sql_query"}
+{"id": "benign_email_0101", "template": "Business email", "attack_code": "Subject: Invoice #41194\n\nDear Customer,\n\nYour invoice #41194 for $1561.11 is attached. Payment due by 2025-11-21.\n\nThank you,\nAccounting Team", "category": "email"}
+{"id": "benign_email_0173", "template": "Business email", "attack_code": "Subject: Meeting Follow-up\n\nHi Mary,\n\nThank you for attending today's meeting. Here are the action items:\n1. Review the proposal\n2. Schedule follow-up\n\nBest,\nSarah Davis", "category": "email"}
+{"id": "benign_email_0170", "template": "Business email", "attack_code": "Subject: Invoice #37316\n\nDear Customer,\n\nYour invoice #37316 for $3876.68 is attached. Payment due by 2025-11-08.\n\nThank you,\nAccounting Team", "category": "email"}
+{"id": "benign_sql_0008", "template": "Legitimate SQL query", "attack_code": "UPDATE users SET last_login = NOW() WHERE user_id = 1917", "category": "sql_query"}
+{"id": "benign_code_0171", "template": "Standard code snippet", "attack_code": "SELECT name, email FROM users WHERE created_at > '2025-01-01'", "category": "code_snippet"}
+{"id": "benign_http_0098", "template": "Normal HTTP request", "attack_code": "GET /api/v1/users/1719 HTTP/1.1\nHost: api.example.com\nAuthorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.example", "category": "http_request"}
+{"id": "benign_http_0115", "template": "Normal HTTP request", "attack_code": "GET /api/v1/users/5783 HTTP/1.1\nHost: api.example.com\nAuthorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.example", "category": "http_request"}
+{"id": "benign_sql_0103", "template": "Legitimate SQL query", "attack_code": "SELECT COUNT(*) FROM products WHERE category = 'electronics'", "category": "sql_query"}
+{"id": "benign_cmd_0165", "template": "System command", "attack_code": "uname -a", "category": "system_command"}
+{"id": "benign_cmd_0148", "template": "System command", "attack_code": "netstat -tuln", "category": "system_command"}
+{"id": "benign_code_0064", "template": "Standard code snippet", "attack_code": "def calculate_total(items):\n    return sum(item['price'] for item in items)", "category": "code_snippet"}
+{"id": "benign_sql_0034", "template": "Legitimate SQL query", "attack_code": "SELECT COUNT(*) FROM products WHERE category = 'electronics'", "category": "sql_query"}
+{"id": "benign_cmd_0029", "template": "System command", "attack_code": "date", "category": "system_command"}
+{"id": "benign_code_0035", "template": "Standard code snippet", "attack_code": "const fetchData = async () => {\n    const response = await fetch('/api/data');\n    return response.json();\n};", "category": "code_snippet"}
+{"id": "benign_sql_0026", "template": "Legitimate SQL query", "attack_code": "SELECT COUNT(*) FROM products WHERE category = 'books'", "category": "sql_query"}
+{"id": "benign_http_0033", "template": "Normal HTTP request", "attack_code": "PUT /api/v1/users/4021/profile HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_http_0104", "template": "Normal HTTP request", "attack_code": "GET /api/v1/dashboard/stats HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_cmd_0060", "template": "System command", "attack_code": "pip list", "category": "system_command"}
+{"id": "benign_http_0102", "template": "Normal HTTP request", "attack_code": "GET /static/css/styles.css HTTP/1.1\nHost: www.example.com", "category": "http_request"}
+{"id": "benign_code_0141", "template": "Standard code snippet", "attack_code": "def calculate_total(items):\n    return sum(item['price'] for item in items)", "category": "code_snippet"}
+{"id": "benign_email_0026", "template": "Business email", "attack_code": "Subject: Invoice #62164\n\nDear Customer,\n\nYour invoice #62164 for $2122.34 is attached. Payment due by 2025-11-10.\n\nThank you,\nAccounting Team", "category": "email"}
+{"id": "benign_email_0030", "template": "Business email", "attack_code": "Subject: Project Update\n\nTeam,\n\nThe Delta project is on track. Next milestone: 2025-11-15.\n\nRegards,\nJohn Smith", "category": "email"}
+{"id": "benign_sql_0012", "template": "Legitimate SQL query", "attack_code": "SELECT COUNT(*) FROM products WHERE category = 'food'", "category": "sql_query"}
+{"id": "benign_http_0028", "template": "Normal HTTP request", "attack_code": "GET /api/v1/products?category=clothing&page=15 HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_code_0187", "template": "Standard code snippet", "attack_code": "const fetchData = async () => {\n    const response = await fetch('/api/data');\n    return response.json();\n};", "category": "code_snippet"}
+{"id": "benign_sql_0050", "template": "Legitimate SQL query", "attack_code": "SELECT COUNT(*) FROM products WHERE category = 'electronics'", "category": "sql_query"}
+{"id": "benign_sql_0100", "template": "Legitimate SQL query", "attack_code": "INSERT INTO logs (level, message, timestamp) VALUES ('INFO', 'User logged in', NOW())", "category": "sql_query"}
+{"id": "benign_email_0098", "template": "Business email", "attack_code": "Subject: Invoice #33614\n\nDear Customer,\n\nYour invoice #33614 for $3778.36 is attached. Payment due by 2025-11-02.\n\nThank you,\nAccounting Team", "category": "email"}
+{"id": "benign_sql_0098", "template": "Legitimate SQL query", "attack_code": "UPDATE inventory SET quantity = 265 WHERE product_id = 'PROD2553'", "category": "sql_query"}
+{"id": "benign_http_0141", "template": "Normal HTTP request", "attack_code": "POST /api/v1/orders HTTP/1.1\nHost: api.example.com\nContent-Type: application/json", "category": "http_request"}
+{"id": "benign_cmd_0169", "template": "System command", "attack_code": "npm list -g --depth=0", "category": "system_command"}
+{"id": "benign_cmd_0182", "template": "System command", "attack_code": "top -b -n 1", "category": "system_command"}
+{"id": "benign_cmd_0158", "template": "System command", "attack_code": "uname -a", "category": "system_command"}
+{"id": "benign_sql_0183", "template": "Legitimate SQL query", "attack_code": "SELECT COUNT(*) FROM products WHERE category = 'clothing'", "category": "sql_query"}
+{"id": "benign_sql_0003", "template": "Legitimate SQL query", "attack_code": "UPDATE users SET last_login = NOW() WHERE user_id = 1023", "category": "sql_query"}
+{"id": "benign_cmd_0083", "template": "System command", "attack_code": "uname -a", "category": "system_command"}
+{"id": "benign_code_0173", "template": "Standard code snippet", "attack_code": "docker ps --filter 'status=running' --format '{{.Names}}'", "category": "code_snippet"}
+{"id": "benign_sql_0057", "template": "Legitimate SQL query", "attack_code": "INSERT INTO orders (customer_id, total, status) VALUES (1997, 720.83, 'pending')", "category": "sql_query"}
+{"id": "benign_email_0028", "template": "Business email", "attack_code": "Subject: Project Update\n\nDear Team,\n\nPlease review the attached quarterly report. Best regards,\nMary Johnson", "category": "email"}
+{"id": "benign_http_0072", "template": "Normal HTTP request", "attack_code": "POST /api/v1/orders HTTP/1.1\nHost: api.example.com\nContent-Type: application/json", "category": "http_request"}
+{"id": "benign_cmd_0056", "template": "System command", "attack_code": "cat /etc/hostname", "category": "system_command"}
+{"id": "benign_http_0067", "template": "Normal HTTP request", "attack_code": "GET /static/css/styles.css HTTP/1.1\nHost: www.example.com", "category": "http_request"}
+{"id": "benign_code_0148", "template": "Standard code snippet", "attack_code": "const fetchData = async () => {\n    const response = await fetch('/api/data');\n    return response.json();\n};", "category": "code_snippet"}
+{"id": "benign_code_0106", "template": "Standard code snippet", "attack_code": "function validateEmail(email) {\n    return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);\n}", "category": "code_snippet"}
+{"id": "benign_email_0187", "template": "Business email", "attack_code": "Subject: Welcome to the Team\n\nHello David,\n\nWelcome to Example Corp! We're excited to have you join us.\n\nBest regards,\nHR Team", "category": "email"}
+{"id": "benign_email_0011", "template": "Business email", "attack_code": "Subject: Meeting Follow-up\n\nHi John,\n\nThank you for attending today's meeting. Here are the action items:\n1. Review the proposal\n2. Schedule follow-up\n\nBest,\nMary Johnson", "category": "email"}
+{"id": "benign_email_0075", "template": "Business email", "attack_code": "Subject: Project Update\n\nTeam,\n\nThe Gamma project is on track. Next milestone: 2025-11-19.\n\nRegards,\nSarah Davis", "category": "email"}
+{"id": "benign_sql_0159", "template": "Legitimate SQL query", "attack_code": "SELECT name, email FROM customers WHERE status = 'active'", "category": "sql_query"}
+{"id": "benign_cmd_0008", "template": "System command", "attack_code": "systemctl status nginx", "category": "system_command"}
+{"id": "benign_cmd_0099", "template": "System command", "attack_code": "tail -f /var/log/syslog", "category": "system_command"}
+{"id": "benign_cmd_0151", "template": "System command", "attack_code": "npm list -g --depth=0", "category": "system_command"}
+{"id": "benign_code_0029", "template": "Standard code snippet", "attack_code": "for item in inventory:\n    if item['quantity'] < 10:\n        print(f'Low stock: {item[\"name\"]}')", "category": "code_snippet"}
+{"id": "benign_code_0010", "template": "Standard code snippet", "attack_code": "import matplotlib.pyplot as plt\nplt.plot(x_values, y_values)\nplt.show()", "category": "code_snippet"}
+{"id": "benign_code_0166", "template": "Standard code snippet", "attack_code": "def calculate_total(items):\n    return sum(item['price'] for item in items)", "category": "code_snippet"}
+{"id": "benign_code_0179", "template": "Standard code snippet", "attack_code": "kubectl get pods -n production", "category": "code_snippet"}
+{"id": "benign_sql_0025", "template": "Legitimate SQL query", "attack_code": "SELECT * FROM users WHERE user_id = 2924", "category": "sql_query"}
+{"id": "benign_cmd_0172", "template": "System command", "attack_code": "df -h", "category": "system_command"}
+{"id": "benign_code_0150", "template": "Standard code snippet", "attack_code": "const fetchData = async () => {\n    const response = await fetch('/api/data');\n    return response.json();\n};", "category": "code_snippet"}
+{"id": "benign_cmd_0097", "template": "System command", "attack_code": "uptime", "category": "system_command"}
+{"id": "benign_sql_0028", "template": "Legitimate SQL query", "attack_code": "SELECT AVG(price) FROM products WHERE in_stock = true", "category": "sql_query"}
+{"id": "benign_sql_0186", "template": "Legitimate SQL query", "attack_code": "SELECT * FROM transactions WHERE date >= '2025-01-01' AND date <= '2025-12-31'", "category": "sql_query"}
+{"id": "benign_cmd_0052", "template": "System command", "attack_code": "pip list", "category": "system_command"}
+{"id": "benign_cmd_0069", "template": "System command", "attack_code": "top -b -n 1", "category": "system_command"}
+{"id": "benign_cmd_0001", "template": "System command", "attack_code": "which python3", "category": "system_command"}
+{"id": "benign_cmd_0050", "template": "System command", "attack_code": "uname -a", "category": "system_command"}
+{"id": "benign_cmd_0070", "template": "System command", "attack_code": "tail -f /var/log/syslog", "category": "system_command"}
+{"id": "benign_email_0164", "template": "Business email", "attack_code": "Subject: Project Update\n\nTeam,\n\nThe Delta project is on track. Next milestone: 2025-11-01.\n\nRegards,\nJohn Smith", "category": "email"}
+{"id": "benign_email_0015", "template": "Business email", "attack_code": "Subject: Project Update\n\nTeam,\n\nThe Beta project is on track. Next milestone: 2025-11-11.\n\nRegards,\nDavid Brown", "category": "email"}
+{"id": "benign_code_0103", "template": "Standard code snippet", "attack_code": "kubectl get pods -n production", "category": "code_snippet"}
+{"id": "benign_http_0105", "template": "Normal HTTP request", "attack_code": "POST /api/v1/auth/login HTTP/1.1\nHost: auth.example.com", "category": "http_request"}
+{"id": "benign_code_0140", "template": "Standard code snippet", "attack_code": "const fetchData = async () => {\n    const response = await fetch('/api/data');\n    return response.json();\n};", "category": "code_snippet"}
+{"id": "benign_code_0075", "template": "Standard code snippet", "attack_code": "for item in inventory:\n    if item['quantity'] < 10:\n        print(f'Low stock: {item[\"name\"]}')", "category": "code_snippet"}
+{"id": "benign_sql_0096", "template": "Legitimate SQL query", "attack_code": "DELETE FROM sessions WHERE expires_at < NOW()", "category": "sql_query"}
+{"id": "benign_code_0099", "template": "Standard code snippet", "attack_code": "npm install express --save\nnpm start", "category": "code_snippet"}
+{"id": "benign_http_0023", "template": "Normal HTTP request", "attack_code": "POST /api/v1/orders HTTP/1.1\nHost: api.example.com\nContent-Type: application/json", "category": "http_request"}
+{"id": "benign_cmd_0181", "template": "System command", "attack_code": "which python3", "category": "system_command"}
+{"id": "benign_cmd_0108", "template": "System command", "attack_code": "free -m", "category": "system_command"}
+{"id": "benign_http_0122", "template": "Normal HTTP request", "attack_code": "PATCH /api/v1/settings HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_email_0118", "template": "Business email", "attack_code": "Subject: Project Update\n\nTeam,\n\nThe Delta project is on track. Next milestone: 2025-11-08.\n\nRegards,\nDavid Brown", "category": "email"}
+{"id": "benign_code_0198", "template": "Standard code snippet", "attack_code": "const fetchData = async () => {\n    const response = await fetch('/api/data');\n    return response.json();\n};", "category": "code_snippet"}
+{"id": "benign_code_0016", "template": "Standard code snippet", "attack_code": "function validateEmail(email) {\n    return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);\n}", "category": "code_snippet"}
+{"id": "benign_sql_0030", "template": "Legitimate SQL query", "attack_code": "SELECT * FROM transactions WHERE date >= '2025-01-01' AND date <= '2025-12-31'", "category": "sql_query"}
+{"id": "benign_http_0017", "template": "Normal HTTP request", "attack_code": "GET /api/v1/products?category=electronics&page=10 HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_http_0009", "template": "Normal HTTP request", "attack_code": "POST /api/v1/orders HTTP/1.1\nHost: api.example.com\nContent-Type: application/json", "category": "http_request"}
+{"id": "benign_cmd_0043", "template": "System command", "attack_code": "kubectl get nodes", "category": "system_command"}
+{"id": "benign_code_0012", "template": "Standard code snippet", "attack_code": "import matplotlib.pyplot as plt\nplt.plot(x_values, y_values)\nplt.show()", "category": "code_snippet"}
+{"id": "benign_cmd_0077", "template": "System command", "attack_code": "pwd", "category": "system_command"}
+{"id": "benign_cmd_0019", "template": "System command", "attack_code": "uname -a", "category": "system_command"}
+{"id": "benign_email_0177", "template": "Business email", "attack_code": "Subject: Team Meeting\n\nDear Mary,\n\nPlease review the attached quarterly report. Best regards,\nMary Johnson", "category": "email"}
+{"id": "benign_http_0005", "template": "Normal HTTP request", "attack_code": "GET /api/v1/products?category=clothing&page=15 HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_email_0094", "template": "Business email", "attack_code": "Subject: Project Update\n\nTeam,\n\nThe Beta project is on track. Next milestone: 2025-10-31.\n\nRegards,\nJohn Smith", "category": "email"}
+{"id": "benign_email_0196", "template": "Business email", "attack_code": "Subject: Meeting Follow-up\n\nHi Team,\n\nThank you for attending today's meeting. Here are the action items:\n1. Review the proposal\n2. Schedule follow-up\n\nBest,\nJohn Smith", "category": "email"}
+{"id": "benign_email_0155", "template": "Business email", "attack_code": "Subject: Welcome to the Team\n\nHello Mary,\n\nWelcome to Example Corp! We're excited to have you join us.\n\nBest regards,\nHR Team", "category": "email"}
+{"id": "benign_code_0057", "template": "Standard code snippet", "attack_code": "kubectl get pods -n production", "category": "code_snippet"}
+{"id": "benign_sql_0137", "template": "Legitimate SQL query", "attack_code": "SELECT * FROM transactions WHERE date >= '2025-01-01' AND date <= '2025-12-31'", "category": "sql_query"}
+{"id": "benign_code_0055", "template": "Standard code snippet", "attack_code": "curl -X GET https://api.example.com/health -H 'Authorization: Bearer token'", "category": "code_snippet"}
+{"id": "benign_sql_0015", "template": "Legitimate SQL query", "attack_code": "SELECT AVG(price) FROM products WHERE in_stock = true", "category": "sql_query"}
+{"id": "benign_code_0022", "template": "Standard code snippet", "attack_code": "import matplotlib.pyplot as plt\nplt.plot(x_values, y_values)\nplt.show()", "category": "code_snippet"}
+{"id": "benign_http_0008", "template": "Normal HTTP request", "attack_code": "PATCH /api/v1/settings HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_http_0144", "template": "Normal HTTP request", "attack_code": "DELETE /api/v1/sessions/sess_9235 HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_http_0087", "template": "Normal HTTP request", "attack_code": "DELETE /api/v1/sessions/sess_9524 HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_code_0091", "template": "Standard code snippet", "attack_code": "function validateEmail(email) {\n    return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);\n}", "category": "code_snippet"}
+{"id": "benign_email_0181", "template": "Business email", "attack_code": "Subject: Project Update\n\nTeam,\n\nThe Alpha project is on track. Next milestone: 2025-11-09.\n\nRegards,\nMary Johnson", "category": "email"}
+{"id": "benign_sql_0077", "template": "Legitimate SQL query", "attack_code": "SELECT * FROM transactions WHERE date >= '2025-01-01' AND date <= '2025-12-31'", "category": "sql_query"}
+{"id": "benign_cmd_0058", "template": "System command", "attack_code": "free -m", "category": "system_command"}
+{"id": "benign_code_0048", "template": "Standard code snippet", "attack_code": "const fetchData = async () => {\n    const response = await fetch('/api/data');\n    return response.json();\n};", "category": "code_snippet"}
+{"id": "benign_http_0188", "template": "Normal HTTP request", "attack_code": "GET /static/css/styles.css HTTP/1.1\nHost: www.example.com", "category": "http_request"}
+{"id": "benign_sql_0187", "template": "Legitimate SQL query", "attack_code": "UPDATE inventory SET quantity = 407 WHERE product_id = 'PROD5852'", "category": "sql_query"}
+{"id": "benign_http_0148", "template": "Normal HTTP request", "attack_code": "POST /api/v1/auth/login HTTP/1.1\nHost: auth.example.com", "category": "http_request"}
+{"id": "benign_email_0121", "template": "Business email", "attack_code": "Subject: Status Update\n\nDear Sarah,\n\nPlease review the attached quarterly report. Best regards,\nDavid Brown", "category": "email"}
+{"id": "benign_code_0156", "template": "Standard code snippet", "attack_code": "function validateEmail(email) {\n    return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);\n}", "category": "code_snippet"}
+{"id": "benign_cmd_0035", "template": "System command", "attack_code": "cat /etc/hostname", "category": "system_command"}
+{"id": "benign_code_0169", "template": "Standard code snippet", "attack_code": "import matplotlib.pyplot as plt\nplt.plot(x_values, y_values)\nplt.show()", "category": "code_snippet"}
+{"id": "benign_code_0180", "template": "Standard code snippet", "attack_code": "const fetchData = async () => {\n    const response = await fetch('/api/data');\n    return response.json();\n};", "category": "code_snippet"}
+{"id": "benign_email_0130", "template": "Business email", "attack_code": "Subject: Project Update\n\nTeam,\n\nThe Alpha project is on track. Next milestone: 2025-10-31.\n\nRegards,\nMary Johnson", "category": "email"}
+{"id": "benign_cmd_0039", "template": "System command", "attack_code": "netstat -tuln", "category": "system_command"}
+{"id": "benign_http_0010", "template": "Normal HTTP request", "attack_code": "POST /api/v1/auth/login HTTP/1.1\nHost: auth.example.com", "category": "http_request"}
+{"id": "benign_http_0180", "template": "Normal HTTP request", "attack_code": "GET /health-check HTTP/1.1\nHost: localhost:8080", "category": "http_request"}
+{"id": "benign_sql_0009", "template": "Legitimate SQL query", "attack_code": "SELECT * FROM transactions WHERE date >= '2025-01-01' AND date <= '2025-12-31'", "category": "sql_query"}
+{"id": "benign_code_0145", "template": "Standard code snippet", "attack_code": "kubectl get pods -n production", "category": "code_snippet"}
+{"id": "benign_code_0042", "template": "Standard code snippet", "attack_code": "const fetchData = async () => {\n    const response = await fetch('/api/data');\n    return response.json();\n};", "category": "code_snippet"}
+{"id": "benign_http_0054", "template": "Normal HTTP request", "attack_code": "GET /health-check HTTP/1.1\nHost: localhost:8080", "category": "http_request"}
+{"id": "benign_sql_0125", "template": "Legitimate SQL query", "attack_code": "SELECT * FROM users WHERE user_id = 4514", "category": "sql_query"}
+{"id": "benign_email_0138", "template": "Business email", "attack_code": "Subject: Invoice #66645\n\nDear Customer,\n\nYour invoice #66645 for $265.28 is attached. Payment due by 2025-11-08.\n\nThank you,\nAccounting Team", "category": "email"}
+{"id": "benign_code_0184", "template": "Standard code snippet", "attack_code": "public class User {\n    private String name;\n    private String email;\n}", "category": "code_snippet"}
+{"id": "benign_http_0190", "template": "Normal HTTP request", "attack_code": "PATCH /api/v1/settings HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_code_0186", "template": "Standard code snippet", "attack_code": "const fetchData = async () => {\n    const response = await fetch('/api/data');\n    return response.json();\n};", "category": "code_snippet"}
+{"id": "benign_http_0003", "template": "Normal HTTP request", "attack_code": "GET /static/css/styles.css HTTP/1.1\nHost: www.example.com", "category": "http_request"}
+{"id": "benign_email_0157", "template": "Business email", "attack_code": "Subject: Project Update\n\nTeam,\n\nThe Delta project is on track. Next milestone: 2025-10-30.\n\nRegards,\nMary Johnson", "category": "email"}
+{"id": "benign_code_0090", "template": "Standard code snippet", "attack_code": "import matplotlib.pyplot as plt\nplt.plot(x_values, y_values)\nplt.show()", "category": "code_snippet"}
+{"id": "benign_cmd_0040", "template": "System command", "attack_code": "free -m", "category": "system_command"}
+{"id": "benign_email_0134", "template": "Business email", "attack_code": "Subject: Status Update\n\nDear David,\n\nPlease review the attached quarterly report. Best regards,\nJohn Smith", "category": "email"}
+{"id": "benign_code_0128", "template": "Standard code snippet", "attack_code": "npm install express --save\nnpm start", "category": "code_snippet"}
+{"id": "benign_email_0195", "template": "Business email", "attack_code": "Subject: Invoice #84963\n\nDear Customer,\n\nYour invoice #84963 for $1093.64 is attached. Payment due by 2025-11-18.\n\nThank you,\nAccounting Team", "category": "email"}
+{"id": "benign_email_0078", "template": "Business email", "attack_code": "Subject: Project Update\n\nDear Mary,\n\nPlease review the attached quarterly report. Best regards,\nDavid Brown", "category": "email"}
+{"id": "benign_email_0095", "template": "Business email", "attack_code": "Subject: Meeting Follow-up\n\nHi Sarah,\n\nThank you for attending today's meeting. Here are the action items:\n1. Review the proposal\n2. Schedule follow-up\n\nBest,\nSarah Davis", "category": "email"}
+{"id": "benign_cmd_0173", "template": "System command", "attack_code": "free -m", "category": "system_command"}
+{"id": "benign_sql_0156", "template": "Legitimate SQL query", "attack_code": "INSERT INTO orders (customer_id, total, status) VALUES (240, 947.27, 'pending')", "category": "sql_query"}
+{"id": "benign_cmd_0085", "template": "System command", "attack_code": "pip list", "category": "system_command"}
+{"id": "benign_code_0175", "template": "Standard code snippet", "attack_code": "function validateEmail(email) {\n    return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);\n}", "category": "code_snippet"}
+{"id": "benign_http_0199", "template": "Normal HTTP request", "attack_code": "GET /api/v1/dashboard/stats HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_email_0156", "template": "Business email", "attack_code": "Subject: Team Meeting\n\nDear Mary,\n\nPlease review the attached quarterly report. Best regards,\nMary Johnson", "category": "email"}
+{"id": "benign_cmd_0178", "template": "System command", "attack_code": "tail -f /var/log/syslog", "category": "system_command"}
+{"id": "benign_code_0073", "template": "Standard code snippet", "attack_code": "for item in inventory:\n    if item['quantity'] < 10:\n        print(f'Low stock: {item[\"name\"]}')", "category": "code_snippet"}
+{"id": "benign_http_0074", "template": "Normal HTTP request", "attack_code": "GET /static/css/styles.css HTTP/1.1\nHost: www.example.com", "category": "http_request"}
+{"id": "benign_code_0199", "template": "Standard code snippet", "attack_code": "curl -X GET https://api.example.com/health -H 'Authorization: Bearer token'", "category": "code_snippet"}
+{"id": "benign_http_0081", "template": "Normal HTTP request", "attack_code": "GET /static/css/styles.css HTTP/1.1\nHost: www.example.com", "category": "http_request"}
+{"id": "benign_code_0074", "template": "Standard code snippet", "attack_code": "for item in inventory:\n    if item['quantity'] < 10:\n        print(f'Low stock: {item[\"name\"]}')", "category": "code_snippet"}
+{"id": "benign_email_0148", "template": "Business email", "attack_code": "Subject: Invoice #18700\n\nDear Customer,\n\nYour invoice #18700 for $4440.0 is attached. Payment due by 2025-11-21.\n\nThank you,\nAccounting Team", "category": "email"}
+{"id": "benign_http_0155", "template": "Normal HTTP request", "attack_code": "PUT /api/v1/users/7072/profile HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_code_0142", "template": "Standard code snippet", "attack_code": "const fetchData = async () => {\n    const response = await fetch('/api/data');\n    return response.json();\n};", "category": "code_snippet"}
+{"id": "benign_email_0022", "template": "Business email", "attack_code": "Subject: Project Update\n\nTeam,\n\nThe Delta project is on track. Next milestone: 2025-11-14.\n\nRegards,\nSarah Davis", "category": "email"}
+{"id": "benign_cmd_0104", "template": "System command", "attack_code": "git status", "category": "system_command"}
+{"id": "benign_email_0017", "template": "Business email", "attack_code": "Subject: Welcome to the Team\n\nHello Sarah,\n\nWelcome to Example Corp! We're excited to have you join us.\n\nBest regards,\nHR Team", "category": "email"}
+{"id": "benign_cmd_0016", "template": "System command", "attack_code": "git status", "category": "system_command"}
+{"id": "benign_sql_0199", "template": "Legitimate SQL query", "attack_code": "SELECT name, email FROM customers WHERE status = 'active'", "category": "sql_query"}
+{"id": "benign_cmd_0111", "template": "System command", "attack_code": "netstat -tuln", "category": "system_command"}
+{"id": "benign_email_0153", "template": "Business email", "attack_code": "Subject: Status Update\n\nDear David,\n\nPlease review the attached quarterly report. Best regards,\nMary Johnson", "category": "email"}
+{"id": "benign_http_0015", "template": "Normal HTTP request", "attack_code": "POST /api/v1/orders HTTP/1.1\nHost: api.example.com\nContent-Type: application/json", "category": "http_request"}
+{"id": "benign_sql_0142", "template": "Legitimate SQL query", "attack_code": "INSERT INTO logs (level, message, timestamp) VALUES ('INFO', 'Payment processed', NOW())", "category": "sql_query"}
+{"id": "benign_cmd_0049", "template": "System command", "attack_code": "df -h", "category": "system_command"}
+{"id": "benign_cmd_0166", "template": "System command", "attack_code": "ps aux | grep python", "category": "system_command"}
+{"id": "benign_email_0115", "template": "Business email", "attack_code": "Subject: Invoice #96555\n\nDear Customer,\n\nYour invoice #96555 for $2102.84 is attached. Payment due by 2025-11-13.\n\nThank you,\nAccounting Team", "category": "email"}
+{"id": "benign_http_0111", "template": "Normal HTTP request", "attack_code": "GET /api/v1/dashboard/stats HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_http_0149", "template": "Normal HTTP request", "attack_code": "PUT /api/v1/users/3009/profile HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_code_0094", "template": "Standard code snippet", "attack_code": "public class User {\n    private String name;\n    private String email;\n}", "category": "code_snippet"}
+{"id": "benign_email_0197", "template": "Business email", "attack_code": "Subject: Meeting Follow-up\n\nHi David,\n\nThank you for attending today's meeting. Here are the action items:\n1. Review the proposal\n2. Schedule follow-up\n\nBest,\nDavid Brown", "category": "email"}
+{"id": "benign_sql_0108", "template": "Legitimate SQL query", "attack_code": "SELECT COUNT(*) FROM products WHERE category = 'electronics'", "category": "sql_query"}
+{"id": "benign_http_0137", "template": "Normal HTTP request", "attack_code": "GET /api/v1/users/8160 HTTP/1.1\nHost: api.example.com\nAuthorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.example", "category": "http_request"}
+{"id": "benign_email_0054", "template": "Business email", "attack_code": "Subject: Project Update\n\nTeam,\n\nThe Delta project is on track. Next milestone: 2025-11-18.\n\nRegards,\nSarah Davis", "category": "email"}
+{"id": "benign_cmd_0127", "template": "System command", "attack_code": "which python3", "category": "system_command"}
+{"id": "benign_sql_0058", "template": "Legitimate SQL query", "attack_code": "SELECT name, email FROM customers WHERE status = 'active'", "category": "sql_query"}
+{"id": "benign_cmd_0197", "template": "System command", "attack_code": "ls -lah /var/log", "category": "system_command"}
+{"id": "benign_email_0158", "template": "Business email", "attack_code": "Subject: Project Update\n\nDear John,\n\nPlease review the attached quarterly report. Best regards,\nDavid Brown", "category": "email"}
+{"id": "benign_sql_0118", "template": "Legitimate SQL query", "attack_code": "SELECT COUNT(*) FROM products WHERE category = 'books'", "category": "sql_query"}
+{"id": "benign_sql_0021", "template": "Legitimate SQL query", "attack_code": "SELECT AVG(price) FROM products WHERE in_stock = true", "category": "sql_query"}
+{"id": "benign_email_0055", "template": "Business email", "attack_code": "Subject: Meeting Follow-up\n\nHi David,\n\nThank you for attending today's meeting. Here are the action items:\n1. Review the proposal\n2. Schedule follow-up\n\nBest,\nMary Johnson", "category": "email"}
+{"id": "benign_code_0114", "template": "Standard code snippet", "attack_code": "kubectl get pods -n production", "category": "code_snippet"}
+{"id": "benign_code_0190", "template": "Standard code snippet", "attack_code": "SELECT name, email FROM users WHERE created_at > '2025-01-01'", "category": "code_snippet"}
+{"id": "benign_sql_0049", "template": "Legitimate SQL query", "attack_code": "SELECT name, email FROM customers WHERE status = 'active'", "category": "sql_query"}
+{"id": "benign_code_0189", "template": "Standard code snippet", "attack_code": "import matplotlib.pyplot as plt\nplt.plot(x_values, y_values)\nplt.show()", "category": "code_snippet"}
+{"id": "benign_email_0163", "template": "Business email", "attack_code": "Subject: Meeting Follow-up\n\nHi Mary,\n\nThank you for attending today's meeting. Here are the action items:\n1. Review the proposal\n2. Schedule follow-up\n\nBest,\nSarah Davis", "category": "email"}
+{"id": "benign_code_0144", "template": "Standard code snippet", "attack_code": "const fetchData = async () => {\n    const response = await fetch('/api/data');\n    return response.json();\n};", "category": "code_snippet"}
+{"id": "benign_cmd_0095", "template": "System command", "attack_code": "uname -a", "category": "system_command"}
+{"id": "benign_sql_0033", "template": "Legitimate SQL query", "attack_code": "SELECT AVG(price) FROM products WHERE in_stock = true", "category": "sql_query"}
+{"id": "benign_http_0142", "template": "Normal HTTP request", "attack_code": "GET /health-check HTTP/1.1\nHost: localhost:8080", "category": "http_request"}
+{"id": "benign_code_0085", "template": "Standard code snippet", "attack_code": "pytest tests/ -v --cov=src", "category": "code_snippet"}
+{"id": "benign_http_0193", "template": "Normal HTTP request", "attack_code": "PATCH /api/v1/settings HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_http_0103", "template": "Normal HTTP request", "attack_code": "PUT /api/v1/users/2469/profile HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_code_0123", "template": "Standard code snippet", "attack_code": "function validateEmail(email) {\n    return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);\n}", "category": "code_snippet"}
+{"id": "benign_email_0185", "template": "Business email", "attack_code": "Subject: Project Update\n\nTeam,\n\nThe Beta project is on track. Next milestone: 2025-10-30.\n\nRegards,\nJohn Smith", "category": "email"}
+{"id": "benign_cmd_0074", "template": "System command", "attack_code": "pwd", "category": "system_command"}
+{"id": "benign_http_0035", "template": "Normal HTTP request", "attack_code": "GET /api/v1/dashboard/stats HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_cmd_0113", "template": "System command", "attack_code": "df -h", "category": "system_command"}
+{"id": "benign_http_0123", "template": "Normal HTTP request", "attack_code": "GET /api/v1/products?category=clothing&page=15 HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_code_0195", "template": "Standard code snippet", "attack_code": "curl -X GET https://api.example.com/health -H 'Authorization: Bearer token'", "category": "code_snippet"}
+{"id": "benign_cmd_0106", "template": "System command", "attack_code": "pip list", "category": "system_command"}
+{"id": "benign_sql_0076", "template": "Legitimate SQL query", "attack_code": "SELECT AVG(price) FROM products WHERE in_stock = true", "category": "sql_query"}
+{"id": "benign_email_0119", "template": "Business email", "attack_code": "Subject: Meeting Follow-up\n\nHi Mary,\n\nThank you for attending today's meeting. Here are the action items:\n1. Review the proposal\n2. Schedule follow-up\n\nBest,\nSarah Davis", "category": "email"}
+{"id": "benign_http_0129", "template": "Normal HTTP request", "attack_code": "GET /api/v1/users/9536 HTTP/1.1\nHost: api.example.com\nAuthorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.example", "category": "http_request"}
+{"id": "benign_code_0025", "template": "Standard code snippet", "attack_code": "curl -X GET https://api.example.com/health -H 'Authorization: Bearer token'", "category": "code_snippet"}
+{"id": "benign_http_0189", "template": "Normal HTTP request", "attack_code": "PUT /api/v1/users/9486/profile HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_http_0194", "template": "Normal HTTP request", "attack_code": "POST /api/v1/auth/login HTTP/1.1\nHost: auth.example.com", "category": "http_request"}
+{"id": "benign_email_0103", "template": "Business email", "attack_code": "Subject: Quarterly Report\n\nDear David,\n\nPlease review the attached quarterly report. Best regards,\nJohn Smith", "category": "email"}
+{"id": "benign_sql_0106", "template": "Legitimate SQL query", "attack_code": "INSERT INTO logs (level, message, timestamp) VALUES ('INFO', 'Order placed', NOW())", "category": "sql_query"}
+{"id": "benign_http_0070", "template": "Normal HTTP request", "attack_code": "GET /api/v1/products?category=books&page=4 HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_http_0178", "template": "Normal HTTP request", "attack_code": "PATCH /api/v1/settings HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_cmd_0073", "template": "System command", "attack_code": "uname -a", "category": "system_command"}
+{"id": "benign_code_0041", "template": "Standard code snippet", "attack_code": "function validateEmail(email) {\n    return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);\n}", "category": "code_snippet"}
+{"id": "benign_sql_0004", "template": "Legitimate SQL query", "attack_code": "UPDATE inventory SET quantity = 144 WHERE product_id = 'PROD6465'", "category": "sql_query"}
+{"id": "benign_http_0053", "template": "Normal HTTP request", "attack_code": "GET /api/v1/users/9107 HTTP/1.1\nHost: api.example.com\nAuthorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.example", "category": "http_request"}
+{"id": "benign_code_0143", "template": "Standard code snippet", "attack_code": "const fetchData = async () => {\n    const response = await fetch('/api/data');\n    return response.json();\n};", "category": "code_snippet"}
+{"id": "benign_cmd_0189", "template": "System command", "attack_code": "kubectl get nodes", "category": "system_command"}
+{"id": "benign_http_0013", "template": "Normal HTTP request", "attack_code": "PUT /api/v1/users/6995/profile HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_http_0025", "template": "Normal HTTP request", "attack_code": "GET /health-check HTTP/1.1\nHost: localhost:8080", "category": "http_request"}
+{"id": "benign_email_0069", "template": "Business email", "attack_code": "Subject: Quarterly Report\n\nDear Mary,\n\nPlease review the attached quarterly report. Best regards,\nSarah Davis", "category": "email"}
+{"id": "benign_sql_0038", "template": "Legitimate SQL query", "attack_code": "UPDATE users SET last_login = NOW() WHERE user_id = 2214", "category": "sql_query"}
+{"id": "benign_code_0030", "template": "Standard code snippet", "attack_code": "git add .\ngit commit -m 'Update feature'\ngit push origin main", "category": "code_snippet"}
+{"id": "benign_sql_0181", "template": "Legitimate SQL query", "attack_code": "SELECT * FROM users WHERE user_id = 9915", "category": "sql_query"}
+{"id": "benign_http_0052", "template": "Normal HTTP request", "attack_code": "GET /health-check HTTP/1.1\nHost: localhost:8080", "category": "http_request"}
+{"id": "benign_cmd_0164", "template": "System command", "attack_code": "free -m", "category": "system_command"}
+{"id": "benign_cmd_0109", "template": "System command", "attack_code": "uptime", "category": "system_command"}
+{"id": "benign_cmd_0116", "template": "System command", "attack_code": "pwd", "category": "system_command"}
+{"id": "benign_http_0167", "template": "Normal HTTP request", "attack_code": "POST /api/v1/auth/login HTTP/1.1\nHost: auth.example.com", "category": "http_request"}
+{"id": "benign_sql_0150", "template": "Legitimate SQL query", "attack_code": "UPDATE users SET last_login = NOW() WHERE user_id = 9236", "category": "sql_query"}
+{"id": "benign_code_0152", "template": "Standard code snippet", "attack_code": "function validateEmail(email) {\n    return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);\n}", "category": "code_snippet"}
+{"id": "benign_cmd_0147", "template": "System command", "attack_code": "kubectl get nodes", "category": "system_command"}
+{"id": "benign_cmd_0000", "template": "System command", "attack_code": "df -h", "category": "system_command"}
+{"id": "benign_code_0071", "template": "Standard code snippet", "attack_code": "import pandas as pd\ndf = pd.read_csv('data.csv')\nprint(df.head())", "category": "code_snippet"}
+{"id": "benign_sql_0165", "template": "Legitimate SQL query", "attack_code": "SELECT * FROM transactions WHERE date >= '2025-01-01' AND date <= '2025-12-31'", "category": "sql_query"}
+{"id": "benign_cmd_0012", "template": "System command", "attack_code": "pip list", "category": "system_command"}
+{"id": "benign_code_0045", "template": "Standard code snippet", "attack_code": "curl -X GET https://api.example.com/health -H 'Authorization: Bearer token'", "category": "code_snippet"}
+{"id": "benign_cmd_0034", "template": "System command", "attack_code": "which python3", "category": "system_command"}
+{"id": "benign_http_0169", "template": "Normal HTTP request", "attack_code": "PUT /api/v1/users/3074/profile HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_code_0096", "template": "Standard code snippet", "attack_code": "function validateEmail(email) {\n    return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);\n}", "category": "code_snippet"}
+{"id": "benign_email_0034", "template": "Business email", "attack_code": "Subject: Project Update\n\nDear Sarah,\n\nPlease review the attached quarterly report. Best regards,\nDavid Brown", "category": "email"}
+{"id": "benign_cmd_0007", "template": "System command", "attack_code": "ps aux | grep python", "category": "system_command"}
+{"id": "benign_cmd_0145", "template": "System command", "attack_code": "df -h", "category": "system_command"}
+{"id": "benign_cmd_0004", "template": "System command", "attack_code": "git status", "category": "system_command"}
+{"id": "benign_sql_0194", "template": "Legitimate SQL query", "attack_code": "SELECT name, email FROM customers WHERE status = 'active'", "category": "sql_query"}
+{"id": "benign_sql_0198", "template": "Legitimate SQL query", "attack_code": "DELETE FROM sessions WHERE expires_at < NOW()", "category": "sql_query"}
+{"id": "benign_sql_0101", "template": "Legitimate SQL query", "attack_code": "UPDATE users SET last_login = NOW() WHERE user_id = 6189", "category": "sql_query"}
+{"id": "benign_email_0047", "template": "Business email", "attack_code": "Subject: Invoice #32182\n\nDear Customer,\n\nYour invoice #32182 for $2420.14 is attached. Payment due by 2025-11-03.\n\nThank you,\nAccounting Team", "category": "email"}
+{"id": "benign_http_0030", "template": "Normal HTTP request", "attack_code": "GET /api/v1/products?category=books&page=2 HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_cmd_0098", "template": "System command", "attack_code": "pwd", "category": "system_command"}
+{"id": "benign_http_0027", "template": "Normal HTTP request", "attack_code": "GET /health-check HTTP/1.1\nHost: localhost:8080", "category": "http_request"}
+{"id": "benign_cmd_0059", "template": "System command", "attack_code": "uname -a", "category": "system_command"}
+{"id": "benign_http_0160", "template": "Normal HTTP request", "attack_code": "GET /health-check HTTP/1.1\nHost: localhost:8080", "category": "http_request"}
+{"id": "benign_cmd_0135", "template": "System command", "attack_code": "tail -f /var/log/syslog", "category": "system_command"}
+{"id": "benign_email_0008", "template": "Business email", "attack_code": "Subject: Project Update\n\nDear John,\n\nPlease review the attached quarterly report. Best regards,\nDavid Brown", "category": "email"}
+{"id": "benign_sql_0144", "template": "Legitimate SQL query", "attack_code": "SELECT COUNT(*) FROM products WHERE category = 'clothing'", "category": "sql_query"}
+{"id": "benign_http_0071", "template": "Normal HTTP request", "attack_code": "GET /api/v1/dashboard/stats HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_cmd_0014", "template": "System command", "attack_code": "docker ps -a", "category": "system_command"}
+{"id": "benign_cmd_0118", "template": "System command", "attack_code": "whoami", "category": "system_command"}
+{"id": "benign_sql_0086", "template": "Legitimate SQL query", "attack_code": "SELECT * FROM transactions WHERE date >= '2025-01-01' AND date <= '2025-12-31'", "category": "sql_query"}
+{"id": "benign_sql_0063", "template": "Legitimate SQL query", "attack_code": "INSERT INTO orders (customer_id, total, status) VALUES (2607, 258.47, 'pending')", "category": "sql_query"}
+{"id": "benign_code_0036", "template": "Standard code snippet", "attack_code": "curl -X GET https://api.example.com/health -H 'Authorization: Bearer token'", "category": "code_snippet"}
+{"id": "benign_cmd_0020", "template": "System command", "attack_code": "whoami", "category": "system_command"}
+{"id": "benign_email_0151", "template": "Business email", "attack_code": "Subject: Invoice #89394\n\nDear Customer,\n\nYour invoice #89394 for $342.47 is attached. Payment due by 2025-11-01.\n\nThank you,\nAccounting Team", "category": "email"}
+{"id": "benign_sql_0043", "template": "Legitimate SQL query", "attack_code": "SELECT AVG(price) FROM products WHERE in_stock = true", "category": "sql_query"}
+{"id": "benign_http_0046", "template": "Normal HTTP request", "attack_code": "POST /api/v1/auth/login HTTP/1.1\nHost: auth.example.com", "category": "http_request"}
+{"id": "benign_email_0107", "template": "Business email", "attack_code": "Subject: Status Update\n\nDear John,\n\nPlease review the attached quarterly report. Best regards,\nSarah Davis", "category": "email"}
+{"id": "benign_http_0183", "template": "Normal HTTP request", "attack_code": "DELETE /api/v1/sessions/sess_3219 HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_email_0186", "template": "Business email", "attack_code": "Subject: Meeting Follow-up\n\nHi Sarah,\n\nThank you for attending today's meeting. Here are the action items:\n1. Review the proposal\n2. Schedule follow-up\n\nBest,\nSarah Davis", "category": "email"}
+{"id": "benign_email_0025", "template": "Business email", "attack_code": "Subject: Invoice #18544\n\nDear Customer,\n\nYour invoice #18544 for $1426.61 is attached. Payment due by 2025-11-17.\n\nThank you,\nAccounting Team", "category": "email"}
+{"id": "benign_sql_0002", "template": "Legitimate SQL query", "attack_code": "UPDATE inventory SET quantity = 278 WHERE product_id = 'PROD3585'", "category": "sql_query"}
+{"id": "benign_http_0159", "template": "Normal HTTP request", "attack_code": "POST /api/v1/orders HTTP/1.1\nHost: api.example.com\nContent-Type: application/json", "category": "http_request"}
+{"id": "benign_email_0062", "template": "Business email", "attack_code": "Subject: Project Update\n\nTeam,\n\nThe Beta project is on track. Next milestone: 2025-10-30.\n\nRegards,\nSarah Davis", "category": "email"}
+{"id": "benign_sql_0027", "template": "Legitimate SQL query", "attack_code": "SELECT * FROM users WHERE user_id = 1564", "category": "sql_query"}
+{"id": "benign_cmd_0066", "template": "System command", "attack_code": "uptime", "category": "system_command"}
+{"id": "benign_sql_0048", "template": "Legitimate SQL query", "attack_code": "UPDATE inventory SET quantity = 191 WHERE product_id = 'PROD4355'", "category": "sql_query"}
+{"id": "benign_sql_0035", "template": "Legitimate SQL query", "attack_code": "SELECT COUNT(*) FROM products WHERE category = 'food'", "category": "sql_query"}
+{"id": "benign_code_0127", "template": "Standard code snippet", "attack_code": "for item in inventory:\n    if item['quantity'] < 10:\n        print(f'Low stock: {item[\"name\"]}')", "category": "code_snippet"}
+{"id": "benign_sql_0155", "template": "Legitimate SQL query", "attack_code": "INSERT INTO orders (customer_id, total, status) VALUES (3110, 278.02, 'pending')", "category": "sql_query"}
+{"id": "benign_cmd_0037", "template": "System command", "attack_code": "ls -lah /var/log", "category": "system_command"}
+{"id": "benign_code_0050", "template": "Standard code snippet", "attack_code": "import matplotlib.pyplot as plt\nplt.plot(x_values, y_values)\nplt.show()", "category": "code_snippet"}
+{"id": "benign_cmd_0195", "template": "System command", "attack_code": "whoami", "category": "system_command"}
+{"id": "benign_email_0161", "template": "Business email", "attack_code": "Subject: Meeting Follow-up\n\nHi Mary,\n\nThank you for attending today's meeting. Here are the action items:\n1. Review the proposal\n2. Schedule follow-up\n\nBest,\nJohn Smith", "category": "email"}
+{"id": "benign_cmd_0157", "template": "System command", "attack_code": "free -m", "category": "system_command"}
+{"id": "benign_http_0001", "template": "Normal HTTP request", "attack_code": "GET /static/css/styles.css HTTP/1.1\nHost: www.example.com", "category": "http_request"}
+{"id": "benign_email_0024", "template": "Business email", "attack_code": "Subject: Meeting Follow-up\n\nHi Mary,\n\nThank you for attending today's meeting. Here are the action items:\n1. Review the proposal\n2. Schedule follow-up\n\nBest,\nMary Johnson", "category": "email"}
+{"id": "benign_code_0086", "template": "Standard code snippet", "attack_code": "pytest tests/ -v --cov=src", "category": "code_snippet"}
+{"id": "benign_sql_0123", "template": "Legitimate SQL query", "attack_code": "INSERT INTO orders (customer_id, total, status) VALUES (3117, 15.77, 'pending')", "category": "sql_query"}
+{"id": "benign_http_0031", "template": "Normal HTTP request", "attack_code": "PATCH /api/v1/settings HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_http_0050", "template": "Normal HTTP request", "attack_code": "PUT /api/v1/users/5289/profile HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_cmd_0159", "template": "System command", "attack_code": "systemctl status nginx", "category": "system_command"}
+{"id": "benign_code_0059", "template": "Standard code snippet", "attack_code": "public class User {\n    private String name;\n    private String email;\n}", "category": "code_snippet"}
+{"id": "benign_cmd_0061", "template": "System command", "attack_code": "top -b -n 1", "category": "system_command"}
+{"id": "benign_code_0033", "template": "Standard code snippet", "attack_code": "pytest tests/ -v --cov=src", "category": "code_snippet"}
+{"id": "benign_http_0145", "template": "Normal HTTP request", "attack_code": "GET /api/v1/products?category=clothing&page=6 HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_sql_0169", "template": "Legitimate SQL query", "attack_code": "UPDATE inventory SET quantity = 303 WHERE product_id = 'PROD7154'", "category": "sql_query"}
+{"id": "benign_code_0008", "template": "Standard code snippet", "attack_code": "npm install express --save\nnpm start", "category": "code_snippet"}
+{"id": "benign_http_0012", "template": "Normal HTTP request", "attack_code": "GET /api/v1/dashboard/stats HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_http_0091", "template": "Normal HTTP request", "attack_code": "GET /api/v1/users/1932 HTTP/1.1\nHost: api.example.com\nAuthorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.example", "category": "http_request"}
+{"id": "benign_code_0167", "template": "Standard code snippet", "attack_code": "git add .\ngit commit -m 'Update feature'\ngit push origin main", "category": "code_snippet"}
+{"id": "benign_cmd_0096", "template": "System command", "attack_code": "df -h", "category": "system_command"}
+{"id": "benign_cmd_0153", "template": "System command", "attack_code": "pip list", "category": "system_command"}
+{"id": "benign_email_0020", "template": "Business email", "attack_code": "Subject: Status Update\n\nDear Team,\n\nPlease review the attached quarterly report. Best regards,\nSarah Davis", "category": "email"}
+{"id": "benign_sql_0094", "template": "Legitimate SQL query", "attack_code": "SELECT * FROM transactions WHERE date >= '2025-01-01' AND date <= '2025-12-31'", "category": "sql_query"}
+{"id": "benign_email_0152", "template": "Business email", "attack_code": "Subject: Invoice #64333\n\nDear Customer,\n\nYour invoice #64333 for $3456.99 is attached. Payment due by 2025-11-13.\n\nThank you,\nAccounting Team", "category": "email"}
+{"id": "benign_email_0082", "template": "Business email", "attack_code": "Subject: Meeting Follow-up\n\nHi John,\n\nThank you for attending today's meeting. Here are the action items:\n1. Review the proposal\n2. Schedule follow-up\n\nBest,\nDavid Brown", "category": "email"}
+{"id": "benign_email_0064", "template": "Business email", "attack_code": "Subject: Invoice #24290\n\nDear Customer,\n\nYour invoice #24290 for $4260.18 is attached. Payment due by 2025-10-31.\n\nThank you,\nAccounting Team", "category": "email"}
+{"id": "benign_code_0135", "template": "Standard code snippet", "attack_code": "for item in inventory:\n    if item['quantity'] < 10:\n        print(f'Low stock: {item[\"name\"]}')", "category": "code_snippet"}
+{"id": "benign_http_0118", "template": "Normal HTTP request", "attack_code": "GET /health-check HTTP/1.1\nHost: localhost:8080", "category": "http_request"}
+{"id": "benign_code_0097", "template": "Standard code snippet", "attack_code": "npm install express --save\nnpm start", "category": "code_snippet"}
+{"id": "benign_cmd_0115", "template": "System command", "attack_code": "git status", "category": "system_command"}
+{"id": "benign_cmd_0017", "template": "System command", "attack_code": "date", "category": "system_command"}
+{"id": "benign_cmd_0154", "template": "System command", "attack_code": "ps aux | grep python", "category": "system_command"}
+{"id": "benign_sql_0031", "template": "Legitimate SQL query", "attack_code": "SELECT COUNT(*) FROM products WHERE category = 'food'", "category": "sql_query"}
+{"id": "benign_http_0131", "template": "Normal HTTP request", "attack_code": "GET /api/v1/dashboard/stats HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_code_0038", "template": "Standard code snippet", "attack_code": "pytest tests/ -v --cov=src", "category": "code_snippet"}
+{"id": "benign_email_0037", "template": "Business email", "attack_code": "Subject: Welcome to the Team\n\nHello John,\n\nWelcome to Example Corp! We're excited to have you join us.\n\nBest regards,\nHR Team", "category": "email"}
+{"id": "benign_http_0126", "template": "Normal HTTP request", "attack_code": "GET /api/v1/products?category=electronics&page=18 HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_code_0168", "template": "Standard code snippet", "attack_code": "terraform plan -out=tfplan", "category": "code_snippet"}
+{"id": "benign_http_0163", "template": "Normal HTTP request", "attack_code": "GET /api/v1/products?category=books&page=17 HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_sql_0053", "template": "Legitimate SQL query", "attack_code": "INSERT INTO orders (customer_id, total, status) VALUES (44, 497.6, 'pending')", "category": "sql_query"}
+{"id": "benign_code_0133", "template": "Standard code snippet", "attack_code": "git add .\ngit commit -m 'Update feature'\ngit push origin main", "category": "code_snippet"}
+{"id": "benign_cmd_0044", "template": "System command", "attack_code": "docker ps -a", "category": "system_command"}
+{"id": "benign_cmd_0026", "template": "System command", "attack_code": "top -b -n 1", "category": "system_command"}
+{"id": "benign_sql_0022", "template": "Legitimate SQL query", "attack_code": "INSERT INTO logs (level, message, timestamp) VALUES ('INFO', 'Order placed', NOW())", "category": "sql_query"}
+{"id": "benign_http_0133", "template": "Normal HTTP request", "attack_code": "GET /health-check HTTP/1.1\nHost: localhost:8080", "category": "http_request"}
+{"id": "benign_http_0187", "template": "Normal HTTP request", "attack_code": "POST /api/v1/orders HTTP/1.1\nHost: api.example.com\nContent-Type: application/json", "category": "http_request"}
+{"id": "benign_sql_0149", "template": "Legitimate SQL query", "attack_code": "INSERT INTO logs (level, message, timestamp) VALUES ('INFO', 'Order placed', NOW())", "category": "sql_query"}
+{"id": "benign_sql_0088", "template": "Legitimate SQL query", "attack_code": "SELECT AVG(price) FROM products WHERE in_stock = true", "category": "sql_query"}
+{"id": "benign_email_0146", "template": "Business email", "attack_code": "Subject: Invoice #34697\n\nDear Customer,\n\nYour invoice #34697 for $4327.84 is attached. Payment due by 2025-11-20.\n\nThank you,\nAccounting Team", "category": "email"}
+{"id": "benign_sql_0147", "template": "Legitimate SQL query", "attack_code": "INSERT INTO orders (customer_id, total, status) VALUES (3579, 665.03, 'pending')", "category": "sql_query"}
+{"id": "benign_sql_0193", "template": "Legitimate SQL query", "attack_code": "DELETE FROM sessions WHERE expires_at < NOW()", "category": "sql_query"}
+{"id": "benign_sql_0081", "template": "Legitimate SQL query", "attack_code": "UPDATE inventory SET quantity = 232 WHERE product_id = 'PROD3934'", "category": "sql_query"}
+{"id": "benign_sql_0138", "template": "Legitimate SQL query", "attack_code": "SELECT * FROM transactions WHERE date >= '2025-01-01' AND date <= '2025-12-31'", "category": "sql_query"}
+{"id": "benign_http_0184", "template": "Normal HTTP request", "attack_code": "DELETE /api/v1/sessions/sess_8045 HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_http_0107", "template": "Normal HTTP request", "attack_code": "GET /static/css/styles.css HTTP/1.1\nHost: www.example.com", "category": "http_request"}
+{"id": "benign_cmd_0091", "template": "System command", "attack_code": "git status", "category": "system_command"}
+{"id": "benign_code_0018", "template": "Standard code snippet", "attack_code": "function validateEmail(email) {\n    return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);\n}", "category": "code_snippet"}
+{"id": "benign_sql_0044", "template": "Legitimate SQL query", "attack_code": "SELECT * FROM transactions WHERE date >= '2025-01-01' AND date <= '2025-12-31'", "category": "sql_query"}
+{"id": "benign_code_0100", "template": "Standard code snippet", "attack_code": "function validateEmail(email) {\n    return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);\n}", "category": "code_snippet"}
+{"id": "benign_sql_0148", "template": "Legitimate SQL query", "attack_code": "SELECT name, email FROM customers WHERE status = 'active'", "category": "sql_query"}
+{"id": "benign_sql_0176", "template": "Legitimate SQL query", "attack_code": "SELECT COUNT(*) FROM products WHERE category = 'food'", "category": "sql_query"}
+{"id": "benign_sql_0116", "template": "Legitimate SQL query", "attack_code": "INSERT INTO logs (level, message, timestamp) VALUES ('INFO', 'Payment processed', NOW())", "category": "sql_query"}
+{"id": "benign_code_0011", "template": "Standard code snippet", "attack_code": "kubectl get pods -n production", "category": "code_snippet"}
+{"id": "benign_sql_0131", "template": "Legitimate SQL query", "attack_code": "INSERT INTO logs (level, message, timestamp) VALUES ('INFO', 'User logged in', NOW())", "category": "sql_query"}
+{"id": "benign_http_0000", "template": "Normal HTTP request", "attack_code": "DELETE /api/v1/sessions/sess_3859 HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_sql_0099", "template": "Legitimate SQL query", "attack_code": "UPDATE users SET last_login = NOW() WHERE user_id = 7944", "category": "sql_query"}
+{"id": "benign_code_0178", "template": "Standard code snippet", "attack_code": "npm install express --save\nnpm start", "category": "code_snippet"}
+{"id": "benign_code_0118", "template": "Standard code snippet", "attack_code": "public class User {\n    private String name;\n    private String email;\n}", "category": "code_snippet"}
+{"id": "benign_sql_0161", "template": "Legitimate SQL query", "attack_code": "SELECT AVG(price) FROM products WHERE in_stock = true", "category": "sql_query"}
+{"id": "benign_sql_0192", "template": "Legitimate SQL query", "attack_code": "INSERT INTO logs (level, message, timestamp) VALUES ('INFO', 'Order placed', NOW())", "category": "sql_query"}
+{"id": "benign_http_0048", "template": "Normal HTTP request", "attack_code": "GET /api/v1/products?category=electronics&page=6 HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_email_0180", "template": "Business email", "attack_code": "Subject: Welcome to the Team\n\nHello David,\n\nWelcome to Example Corp! We're excited to have you join us.\n\nBest regards,\nHR Team", "category": "email"}
+{"id": "benign_http_0068", "template": "Normal HTTP request", "attack_code": "GET /api/v1/products?category=clothing&page=4 HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_email_0140", "template": "Business email", "attack_code": "Subject: Project Update\n\nTeam,\n\nThe Delta project is on track. Next milestone: 2025-11-02.\n\nRegards,\nJohn Smith", "category": "email"}
+{"id": "benign_sql_0191", "template": "Legitimate SQL query", "attack_code": "SELECT AVG(price) FROM products WHERE in_stock = true", "category": "sql_query"}
+{"id": "benign_sql_0042", "template": "Legitimate SQL query", "attack_code": "DELETE FROM sessions WHERE expires_at < NOW()", "category": "sql_query"}
+{"id": "benign_code_0065", "template": "Standard code snippet", "attack_code": "curl -X GET https://api.example.com/health -H 'Authorization: Bearer token'", "category": "code_snippet"}
+{"id": "benign_sql_0179", "template": "Legitimate SQL query", "attack_code": "UPDATE users SET last_login = NOW() WHERE user_id = 475", "category": "sql_query"}
+{"id": "benign_http_0140", "template": "Normal HTTP request", "attack_code": "GET /api/v1/dashboard/stats HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_sql_0102", "template": "Legitimate SQL query", "attack_code": "SELECT AVG(price) FROM products WHERE in_stock = true", "category": "sql_query"}
+{"id": "benign_code_0136", "template": "Standard code snippet", "attack_code": "git add .\ngit commit -m 'Update feature'\ngit push origin main", "category": "code_snippet"}
+{"id": "benign_code_0062", "template": "Standard code snippet", "attack_code": "kubectl get pods -n production", "category": "code_snippet"}
+{"id": "benign_sql_0070", "template": "Legitimate SQL query", "attack_code": "INSERT INTO orders (customer_id, total, status) VALUES (1828, 417.8, 'pending')", "category": "sql_query"}
+{"id": "benign_email_0000", "template": "Business email", "attack_code": "Subject: Status Update\n\nDear Team,\n\nPlease review the attached quarterly report. Best regards,\nMary Johnson", "category": "email"}
+{"id": "benign_http_0066", "template": "Normal HTTP request", "attack_code": "GET /api/v1/users/2971 HTTP/1.1\nHost: api.example.com\nAuthorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.example", "category": "http_request"}
+{"id": "benign_code_0159", "template": "Standard code snippet", "attack_code": "function validateEmail(email) {\n    return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);\n}", "category": "code_snippet"}
+{"id": "benign_sql_0095", "template": "Legitimate SQL query", "attack_code": "SELECT COUNT(*) FROM products WHERE category = 'clothing'", "category": "sql_query"}
+{"id": "benign_code_0002", "template": "Standard code snippet", "attack_code": "pytest tests/ -v --cov=src", "category": "code_snippet"}
+{"id": "benign_sql_0060", "template": "Legitimate SQL query", "attack_code": "SELECT COUNT(*) FROM products WHERE category = 'electronics'", "category": "sql_query"}
+{"id": "benign_cmd_0194", "template": "System command", "attack_code": "which python3", "category": "system_command"}
+{"id": "benign_sql_0020", "template": "Legitimate SQL query", "attack_code": "SELECT * FROM users WHERE user_id = 1377", "category": "sql_query"}
+{"id": "benign_email_0141", "template": "Business email", "attack_code": "Subject: Invoice #16559\n\nDear Customer,\n\nYour invoice #16559 for $4727.1 is attached. Payment due by 2025-11-16.\n\nThank you,\nAccounting Team", "category": "email"}
+{"id": "benign_code_0153", "template": "Standard code snippet", "attack_code": "public class User {\n    private String name;\n    private String email;\n}", "category": "code_snippet"}
+{"id": "benign_code_0107", "template": "Standard code snippet", "attack_code": "public class User {\n    private String name;\n    private String email;\n}", "category": "code_snippet"}
+{"id": "benign_cmd_0025", "template": "System command", "attack_code": "pip list", "category": "system_command"}
+{"id": "benign_http_0084", "template": "Normal HTTP request", "attack_code": "DELETE /api/v1/sessions/sess_3478 HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_email_0067", "template": "Business email", "attack_code": "Subject: Welcome to the Team\n\nHello Mary,\n\nWelcome to Example Corp! We're excited to have you join us.\n\nBest regards,\nHR Team", "category": "email"}
+{"id": "benign_email_0019", "template": "Business email", "attack_code": "Subject: Team Meeting\n\nDear Team,\n\nPlease review the attached quarterly report. Best regards,\nDavid Brown", "category": "email"}
+{"id": "benign_email_0106", "template": "Business email", "attack_code": "Subject: Invoice #47605\n\nDear Customer,\n\nYour invoice #47605 for $3181.68 is attached. Payment due by 2025-11-12.\n\nThank you,\nAccounting Team", "category": "email"}
+{"id": "benign_http_0125", "template": "Normal HTTP request", "attack_code": "GET /api/v1/products?category=clothing&page=17 HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_sql_0084", "template": "Legitimate SQL query", "attack_code": "SELECT * FROM users WHERE user_id = 632", "category": "sql_query"}
+{"id": "benign_http_0020", "template": "Normal HTTP request", "attack_code": "PUT /api/v1/users/47/profile HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_sql_0132", "template": "Legitimate SQL query", "attack_code": "INSERT INTO logs (level, message, timestamp) VALUES ('INFO', 'User logged in', NOW())", "category": "sql_query"}
+{"id": "benign_email_0070", "template": "Business email", "attack_code": "Subject: Meeting Follow-up\n\nHi Team,\n\nThank you for attending today's meeting. Here are the action items:\n1. Review the proposal\n2. Schedule follow-up\n\nBest,\nSarah Davis", "category": "email"}
+{"id": "benign_email_0131", "template": "Business email", "attack_code": "Subject: Welcome to the Team\n\nHello David,\n\nWelcome to Example Corp! We're excited to have you join us.\n\nBest regards,\nHR Team", "category": "email"}
+{"id": "benign_email_0192", "template": "Business email", "attack_code": "Subject: Project Update\n\nTeam,\n\nThe Beta project is on track. Next milestone: 2025-11-05.\n\nRegards,\nSarah Davis", "category": "email"}
+{"id": "benign_sql_0113", "template": "Legitimate SQL query", "attack_code": "SELECT * FROM transactions WHERE date >= '2025-01-01' AND date <= '2025-12-31'", "category": "sql_query"}
+{"id": "benign_http_0018", "template": "Normal HTTP request", "attack_code": "GET /health-check HTTP/1.1\nHost: localhost:8080", "category": "http_request"}
+{"id": "benign_email_0058", "template": "Business email", "attack_code": "Subject: Project Update\n\nTeam,\n\nThe Gamma project is on track. Next milestone: 2025-11-12.\n\nRegards,\nDavid Brown", "category": "email"}
+{"id": "benign_sql_0122", "template": "Legitimate SQL query", "attack_code": "INSERT INTO orders (customer_id, total, status) VALUES (3562, 836.99, 'pending')", "category": "sql_query"}
+{"id": "benign_cmd_0062", "template": "System command", "attack_code": "npm list -g --depth=0", "category": "system_command"}
+{"id": "benign_email_0088", "template": "Business email", "attack_code": "Subject: Meeting Follow-up\n\nHi David,\n\nThank you for attending today's meeting. Here are the action items:\n1. Review the proposal\n2. Schedule follow-up\n\nBest,\nDavid Brown", "category": "email"}
+{"id": "benign_code_0004", "template": "Standard code snippet", "attack_code": "function validateEmail(email) {\n    return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);\n}", "category": "code_snippet"}
+{"id": "benign_code_0009", "template": "Standard code snippet", "attack_code": "kubectl get pods -n production", "category": "code_snippet"}
+{"id": "benign_email_0096", "template": "Business email", "attack_code": "Subject: Invoice #80555\n\nDear Customer,\n\nYour invoice #80555 for $4503.85 is attached. Payment due by 2025-11-17.\n\nThank you,\nAccounting Team", "category": "email"}
+{"id": "benign_email_0135", "template": "Business email", "attack_code": "Subject: Meeting Follow-up\n\nHi Mary,\n\nThank you for attending today's meeting. Here are the action items:\n1. Review the proposal\n2. Schedule follow-up\n\nBest,\nDavid Brown", "category": "email"}
+{"id": "benign_email_0124", "template": "Business email", "attack_code": "Subject: Welcome to the Team\n\nHello Team,\n\nWelcome to Example Corp! We're excited to have you join us.\n\nBest regards,\nHR Team", "category": "email"}
+{"id": "benign_sql_0130", "template": "Legitimate SQL query", "attack_code": "SELECT AVG(price) FROM products WHERE in_stock = true", "category": "sql_query"}
+{"id": "benign_email_0006", "template": "Business email", "attack_code": "Subject: Invoice #84599\n\nDear Customer,\n\nYour invoice #84599 for $2724.79 is attached. Payment due by 2025-10-30.\n\nThank you,\nAccounting Team", "category": "email"}
+{"id": "benign_email_0137", "template": "Business email", "attack_code": "Subject: Invoice #29023\n\nDear Customer,\n\nYour invoice #29023 for $483.2 is attached. Payment due by 2025-11-08.\n\nThank you,\nAccounting Team", "category": "email"}
+{"id": "benign_code_0093", "template": "Standard code snippet", "attack_code": "function validateEmail(email) {\n    return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);\n}", "category": "code_snippet"}
+{"id": "benign_cmd_0107", "template": "System command", "attack_code": "pip list", "category": "system_command"}
+{"id": "benign_code_0196", "template": "Standard code snippet", "attack_code": "npm install express --save\nnpm start", "category": "code_snippet"}
+{"id": "benign_sql_0185", "template": "Legitimate SQL query", "attack_code": "INSERT INTO orders (customer_id, total, status) VALUES (1580, 266.42, 'pending')", "category": "sql_query"}
+{"id": "benign_sql_0139", "template": "Legitimate SQL query", "attack_code": "DELETE FROM sessions WHERE expires_at < NOW()", "category": "sql_query"}
+{"id": "benign_email_0023", "template": "Business email", "attack_code": "Subject: Invoice #73010\n\nDear Customer,\n\nYour invoice #73010 for $1832.56 is attached. Payment due by 2025-10-30.\n\nThank you,\nAccounting Team", "category": "email"}
+{"id": "benign_email_0174", "template": "Business email", "attack_code": "Subject: Welcome to the Team\n\nHello John,\n\nWelcome to Example Corp! We're excited to have you join us.\n\nBest regards,\nHR Team", "category": "email"}
+{"id": "benign_http_0108", "template": "Normal HTTP request", "attack_code": "GET /api/v1/products?category=books&page=10 HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_code_0063", "template": "Standard code snippet", "attack_code": "pytest tests/ -v --cov=src", "category": "code_snippet"}
+{"id": "benign_code_0031", "template": "Standard code snippet", "attack_code": "const fetchData = async () => {\n    const response = await fetch('/api/data');\n    return response.json();\n};", "category": "code_snippet"}
+{"id": "benign_cmd_0009", "template": "System command", "attack_code": "uname -a", "category": "system_command"}
+{"id": "benign_sql_0010", "template": "Legitimate SQL query", "attack_code": "INSERT INTO logs (level, message, timestamp) VALUES ('INFO', 'Order placed', NOW())", "category": "sql_query"}
+{"id": "benign_http_0076", "template": "Normal HTTP request", "attack_code": "PUT /api/v1/users/6264/profile HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_http_0192", "template": "Normal HTTP request", "attack_code": "GET /api/v1/products?category=clothing&page=17 HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_cmd_0090", "template": "System command", "attack_code": "netstat -tuln", "category": "system_command"}
+{"id": "benign_email_0194", "template": "Business email", "attack_code": "Subject: Status Update\n\nDear Sarah,\n\nPlease review the attached quarterly report. Best regards,\nDavid Brown", "category": "email"}
+{"id": "benign_cmd_0171", "template": "System command", "attack_code": "docker ps -a", "category": "system_command"}
+{"id": "benign_sql_0128", "template": "Legitimate SQL query", "attack_code": "INSERT INTO logs (level, message, timestamp) VALUES ('INFO', 'Payment processed', NOW())", "category": "sql_query"}
+{"id": "benign_sql_0097", "template": "Legitimate SQL query", "attack_code": "INSERT INTO logs (level, message, timestamp) VALUES ('INFO', 'Payment processed', NOW())", "category": "sql_query"}
+{"id": "benign_sql_0120", "template": "Legitimate SQL query", "attack_code": "SELECT COUNT(*) FROM products WHERE category = 'books'", "category": "sql_query"}
+{"id": "benign_http_0077", "template": "Normal HTTP request", "attack_code": "PATCH /api/v1/settings HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_http_0047", "template": "Normal HTTP request", "attack_code": "POST /api/v1/orders HTTP/1.1\nHost: api.example.com\nContent-Type: application/json", "category": "http_request"}
+{"id": "benign_cmd_0124", "template": "System command", "attack_code": "tail -f /var/log/syslog", "category": "system_command"}
+{"id": "benign_email_0128", "template": "Business email", "attack_code": "Subject: Quarterly Report\n\nDear David,\n\nPlease review the attached quarterly report. Best regards,\nMary Johnson", "category": "email"}
+{"id": "benign_cmd_0143", "template": "System command", "attack_code": "free -m", "category": "system_command"}
+{"id": "benign_http_0130", "template": "Normal HTTP request", "attack_code": "GET /health-check HTTP/1.1\nHost: localhost:8080", "category": "http_request"}
+{"id": "benign_email_0033", "template": "Business email", "attack_code": "Subject: Meeting Follow-up\n\nHi Mary,\n\nThank you for attending today's meeting. Here are the action items:\n1. Review the proposal\n2. Schedule follow-up\n\nBest,\nDavid Brown", "category": "email"}
+{"id": "benign_email_0076", "template": "Business email", "attack_code": "Subject: Project Update\n\nTeam,\n\nThe Beta project is on track. Next milestone: 2025-11-05.\n\nRegards,\nDavid Brown", "category": "email"}
+{"id": "benign_code_0155", "template": "Standard code snippet", "attack_code": "function validateEmail(email) {\n    return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);\n}", "category": "code_snippet"}
+{"id": "benign_cmd_0185", "template": "System command", "attack_code": "docker ps -a", "category": "system_command"}
+{"id": "benign_code_0058", "template": "Standard code snippet", "attack_code": "for item in inventory:\n    if item['quantity'] < 10:\n        print(f'Low stock: {item[\"name\"]}')", "category": "code_snippet"}
+{"id": "benign_email_0032", "template": "Business email", "attack_code": "Subject: Welcome to the Team\n\nHello David,\n\nWelcome to Example Corp! We're excited to have you join us.\n\nBest regards,\nHR Team", "category": "email"}
+{"id": "benign_code_0020", "template": "Standard code snippet", "attack_code": "git add .\ngit commit -m 'Update feature'\ngit push origin main", "category": "code_snippet"}
+{"id": "benign_cmd_0122", "template": "System command", "attack_code": "systemctl status nginx", "category": "system_command"}
+{"id": "benign_cmd_0190", "template": "System command", "attack_code": "npm list -g --depth=0", "category": "system_command"}
+{"id": "benign_email_0072", "template": "Business email", "attack_code": "Subject: Project Update\n\nTeam,\n\nThe Delta project is on track. Next milestone: 2025-11-01.\n\nRegards,\nJohn Smith", "category": "email"}
+{"id": "benign_cmd_0010", "template": "System command", "attack_code": "kubectl get nodes", "category": "system_command"}
+{"id": "benign_code_0137", "template": "Standard code snippet", "attack_code": "function validateEmail(email) {\n    return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);\n}", "category": "code_snippet"}
+{"id": "benign_sql_0115", "template": "Legitimate SQL query", "attack_code": "SELECT * FROM users WHERE user_id = 7864", "category": "sql_query"}
+{"id": "benign_cmd_0055", "template": "System command", "attack_code": "free -m", "category": "system_command"}
+{"id": "benign_email_0003", "template": "Business email", "attack_code": "Subject: Welcome to the Team\n\nHello Mary,\n\nWelcome to Example Corp! We're excited to have you join us.\n\nBest regards,\nHR Team", "category": "email"}
+{"id": "benign_http_0114", "template": "Normal HTTP request", "attack_code": "GET /api/v1/users/8390 HTTP/1.1\nHost: api.example.com\nAuthorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.example", "category": "http_request"}
+{"id": "benign_http_0099", "template": "Normal HTTP request", "attack_code": "DELETE /api/v1/sessions/sess_6034 HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_code_0109", "template": "Standard code snippet", "attack_code": "const fetchData = async () => {\n    const response = await fetch('/api/data');\n    return response.json();\n};", "category": "code_snippet"}
+{"id": "benign_email_0178", "template": "Business email", "attack_code": "Subject: Invoice #16463\n\nDear Customer,\n\nYour invoice #16463 for $402.53 is attached. Payment due by 2025-10-30.\n\nThank you,\nAccounting Team", "category": "email"}
+{"id": "benign_email_0061", "template": "Business email", "attack_code": "Subject: Project Update\n\nTeam,\n\nThe Gamma project is on track. Next milestone: 2025-11-15.\n\nRegards,\nJohn Smith", "category": "email"}
+{"id": "benign_email_0099", "template": "Business email", "attack_code": "Subject: Quarterly Report\n\nDear Sarah,\n\nPlease review the attached quarterly report. Best regards,\nDavid Brown", "category": "email"}
+{"id": "benign_code_0072", "template": "Standard code snippet", "attack_code": "function validateEmail(email) {\n    return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);\n}", "category": "code_snippet"}
+{"id": "benign_email_0117", "template": "Business email", "attack_code": "Subject: Status Update\n\nDear Sarah,\n\nPlease review the attached quarterly report. Best regards,\nSarah Davis", "category": "email"}
+{"id": "benign_code_0147", "template": "Standard code snippet", "attack_code": "import pandas as pd\ndf = pd.read_csv('data.csv')\nprint(df.head())", "category": "code_snippet"}
+{"id": "benign_sql_0082", "template": "Legitimate SQL query", "attack_code": "UPDATE inventory SET quantity = 6 WHERE product_id = 'PROD9337'", "category": "sql_query"}
+{"id": "benign_sql_0083", "template": "Legitimate SQL query", "attack_code": "INSERT INTO logs (level, message, timestamp) VALUES ('INFO', 'Payment processed', NOW())", "category": "sql_query"}
+{"id": "benign_code_0115", "template": "Standard code snippet", "attack_code": "kubectl get pods -n production", "category": "code_snippet"}
+{"id": "benign_sql_0126", "template": "Legitimate SQL query", "attack_code": "SELECT COUNT(*) FROM products WHERE category = 'electronics'", "category": "sql_query"}
+{"id": "benign_sql_0039", "template": "Legitimate SQL query", "attack_code": "SELECT name, email FROM customers WHERE status = 'active'", "category": "sql_query"}
+{"id": "benign_email_0150", "template": "Business email", "attack_code": "Subject: Team Meeting\n\nDear David,\n\nPlease review the attached quarterly report. Best regards,\nDavid Brown", "category": "email"}
+{"id": "benign_sql_0160", "template": "Legitimate SQL query", "attack_code": "DELETE FROM sessions WHERE expires_at < NOW()", "category": "sql_query"}
+{"id": "benign_http_0058", "template": "Normal HTTP request", "attack_code": "GET /static/css/styles.css HTTP/1.1\nHost: www.example.com", "category": "http_request"}
+{"id": "benign_cmd_0179", "template": "System command", "attack_code": "whoami", "category": "system_command"}
+{"id": "benign_cmd_0031", "template": "System command", "attack_code": "which python3", "category": "system_command"}
+{"id": "benign_http_0029", "template": "Normal HTTP request", "attack_code": "PUT /api/v1/users/5236/profile HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_cmd_0068", "template": "System command", "attack_code": "npm list -g --depth=0", "category": "system_command"}
+{"id": "benign_code_0108", "template": "Standard code snippet", "attack_code": "import matplotlib.pyplot as plt\nplt.plot(x_values, y_values)\nplt.show()", "category": "code_snippet"}
+{"id": "benign_sql_0178", "template": "Legitimate SQL query", "attack_code": "INSERT INTO orders (customer_id, total, status) VALUES (2296, 263.0, 'pending')", "category": "sql_query"}
+{"id": "benign_http_0172", "template": "Normal HTTP request", "attack_code": "GET /api/v1/products?category=books&page=12 HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_http_0014", "template": "Normal HTTP request", "attack_code": "GET /api/v1/users/623 HTTP/1.1\nHost: api.example.com\nAuthorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.example", "category": "http_request"}
+{"id": "benign_email_0001", "template": "Business email", "attack_code": "Subject: Invoice #95067\n\nDear Customer,\n\nYour invoice #95067 for $957.27 is attached. Payment due by 2025-11-01.\n\nThank you,\nAccounting Team", "category": "email"}
+{"id": "benign_http_0161", "template": "Normal HTTP request", "attack_code": "POST /api/v1/auth/login HTTP/1.1\nHost: auth.example.com", "category": "http_request"}
+{"id": "benign_sql_0011", "template": "Legitimate SQL query", "attack_code": "SELECT * FROM users WHERE user_id = 9578", "category": "sql_query"}
+{"id": "benign_code_0040", "template": "Standard code snippet", "attack_code": "curl -X GET https://api.example.com/health -H 'Authorization: Bearer token'", "category": "code_snippet"}
+{"id": "benign_sql_0114", "template": "Legitimate SQL query", "attack_code": "SELECT AVG(price) FROM products WHERE in_stock = true", "category": "sql_query"}
+{"id": "benign_code_0007", "template": "Standard code snippet", "attack_code": "SELECT name, email FROM users WHERE created_at > '2025-01-01'", "category": "code_snippet"}
+{"id": "benign_sql_0119", "template": "Legitimate SQL query", "attack_code": "UPDATE inventory SET quantity = 289 WHERE product_id = 'PROD3712'", "category": "sql_query"}
+{"id": "benign_http_0038", "template": "Normal HTTP request", "attack_code": "PATCH /api/v1/settings HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_cmd_0130", "template": "System command", "attack_code": "ls -lah /var/log", "category": "system_command"}
+{"id": "benign_code_0176", "template": "Standard code snippet", "attack_code": "pytest tests/ -v --cov=src", "category": "code_snippet"}
+{"id": "benign_code_0068", "template": "Standard code snippet", "attack_code": "SELECT name, email FROM users WHERE created_at > '2025-01-01'", "category": "code_snippet"}
+{"id": "benign_http_0186", "template": "Normal HTTP request", "attack_code": "GET /api/v1/products?category=electronics&page=4 HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_sql_0136", "template": "Legitimate SQL query", "attack_code": "SELECT AVG(price) FROM products WHERE in_stock = true", "category": "sql_query"}
+{"id": "benign_email_0133", "template": "Business email", "attack_code": "Subject: Invoice #58096\n\nDear Customer,\n\nYour invoice #58096 for $2760.95 is attached. Payment due by 2025-11-04.\n\nThank you,\nAccounting Team", "category": "email"}
+{"id": "benign_cmd_0005", "template": "System command", "attack_code": "which python3", "category": "system_command"}
+{"id": "benign_sql_0061", "template": "Legitimate SQL query", "attack_code": "SELECT name, email FROM customers WHERE status = 'active'", "category": "sql_query"}
+{"id": "benign_sql_0018", "template": "Legitimate SQL query", "attack_code": "SELECT name, email FROM customers WHERE status = 'active'", "category": "sql_query"}
+{"id": "benign_http_0164", "template": "Normal HTTP request", "attack_code": "GET /static/css/styles.css HTTP/1.1\nHost: www.example.com", "category": "http_request"}
+{"id": "benign_cmd_0030", "template": "System command", "attack_code": "ps aux | grep python", "category": "system_command"}
+{"id": "benign_email_0041", "template": "Business email", "attack_code": "Subject: Status Update\n\nDear David,\n\nPlease review the attached quarterly report. Best regards,\nJohn Smith", "category": "email"}
+{"id": "benign_cmd_0084", "template": "System command", "attack_code": "kubectl get nodes", "category": "system_command"}
+{"id": "benign_code_0005", "template": "Standard code snippet", "attack_code": "docker ps --filter 'status=running' --format '{{.Names}}'", "category": "code_snippet"}
+{"id": "benign_email_0109", "template": "Business email", "attack_code": "Subject: Team Meeting\n\nDear John,\n\nPlease review the attached quarterly report. Best regards,\nMary Johnson", "category": "email"}
+{"id": "benign_sql_0073", "template": "Legitimate SQL query", "attack_code": "SELECT COUNT(*) FROM products WHERE category = 'electronics'", "category": "sql_query"}
+{"id": "benign_cmd_0046", "template": "System command", "attack_code": "npm list -g --depth=0", "category": "system_command"}
+{"id": "benign_http_0170", "template": "Normal HTTP request", "attack_code": "GET /api/v1/products?category=electronics&page=13 HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_cmd_0082", "template": "System command", "attack_code": "pwd", "category": "system_command"}
+{"id": "benign_email_0143", "template": "Business email", "attack_code": "Subject: Welcome to the Team\n\nHello Team,\n\nWelcome to Example Corp! We're excited to have you join us.\n\nBest regards,\nHR Team", "category": "email"}
+{"id": "benign_sql_0145", "template": "Legitimate SQL query", "attack_code": "SELECT COUNT(*) FROM products WHERE category = 'clothing'", "category": "sql_query"}
+{"id": "benign_http_0024", "template": "Normal HTTP request", "attack_code": "PATCH /api/v1/settings HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_cmd_0100", "template": "System command", "attack_code": "systemctl status nginx", "category": "system_command"}
+{"id": "benign_sql_0133", "template": "Legitimate SQL query", "attack_code": "SELECT AVG(price) FROM products WHERE in_stock = true", "category": "sql_query"}
+{"id": "benign_code_0092", "template": "Standard code snippet", "attack_code": "import matplotlib.pyplot as plt\nplt.plot(x_values, y_values)\nplt.show()", "category": "code_snippet"}
+{"id": "benign_email_0071", "template": "Business email", "attack_code": "Subject: Invoice #90414\n\nDear Customer,\n\nYour invoice #90414 for $1331.38 is attached. Payment due by 2025-10-30.\n\nThank you,\nAccounting Team", "category": "email"}
+{"id": "benign_email_0127", "template": "Business email", "attack_code": "Subject: Welcome to the Team\n\nHello Mary,\n\nWelcome to Example Corp! We're excited to have you join us.\n\nBest regards,\nHR Team", "category": "email"}
+{"id": "benign_http_0059", "template": "Normal HTTP request", "attack_code": "GET /api/v1/users/1416 HTTP/1.1\nHost: api.example.com\nAuthorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.example", "category": "http_request"}
+{"id": "benign_email_0010", "template": "Business email", "attack_code": "Subject: Meeting Follow-up\n\nHi Sarah,\n\nThank you for attending today's meeting. Here are the action items:\n1. Review the proposal\n2. Schedule follow-up\n\nBest,\nJohn Smith", "category": "email"}
+{"id": "benign_http_0124", "template": "Normal HTTP request", "attack_code": "GET /health-check HTTP/1.1\nHost: localhost:8080", "category": "http_request"}
+{"id": "benign_sql_0153", "template": "Legitimate SQL query", "attack_code": "SELECT AVG(price) FROM products WHERE in_stock = true", "category": "sql_query"}
+{"id": "benign_code_0089", "template": "Standard code snippet", "attack_code": "pytest tests/ -v --cov=src", "category": "code_snippet"}
+{"id": "benign_email_0053", "template": "Business email", "attack_code": "Subject: Project Update\n\nTeam,\n\nThe Gamma project is on track. Next milestone: 2025-11-09.\n\nRegards,\nDavid Brown", "category": "email"}
+{"id": "benign_cmd_0193", "template": "System command", "attack_code": "systemctl status nginx", "category": "system_command"}
+{"id": "benign_cmd_0196", "template": "System command", "attack_code": "date", "category": "system_command"}
+{"id": "benign_code_0174", "template": "Standard code snippet", "attack_code": "import pandas as pd\ndf = pd.read_csv('data.csv')\nprint(df.head())", "category": "code_snippet"}
+{"id": "benign_email_0012", "template": "Business email", "attack_code": "Subject: Invoice #39649\n\nDear Customer,\n\nYour invoice #39649 for $3731.49 is attached. Payment due by 2025-11-18.\n\nThank you,\nAccounting Team", "category": "email"}
+{"id": "benign_code_0021", "template": "Standard code snippet", "attack_code": "docker ps --filter 'status=running' --format '{{.Names}}'", "category": "code_snippet"}
+{"id": "benign_http_0089", "template": "Normal HTTP request", "attack_code": "PATCH /api/v1/settings HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_http_0173", "template": "Normal HTTP request", "attack_code": "GET /api/v1/products?category=clothing&page=20 HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_http_0175", "template": "Normal HTTP request", "attack_code": "PATCH /api/v1/settings HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_email_0063", "template": "Business email", "attack_code": "Subject: Meeting Follow-up\n\nHi Sarah,\n\nThank you for attending today's meeting. Here are the action items:\n1. Review the proposal\n2. Schedule follow-up\n\nBest,\nDavid Brown", "category": "email"}
+{"id": "benign_sql_0041", "template": "Legitimate SQL query", "attack_code": "SELECT * FROM transactions WHERE date >= '2025-01-01' AND date <= '2025-12-31'", "category": "sql_query"}
+{"id": "benign_code_0183", "template": "Standard code snippet", "attack_code": "curl -X GET https://api.example.com/health -H 'Authorization: Bearer token'", "category": "code_snippet"}
+{"id": "benign_cmd_0117", "template": "System command", "attack_code": "free -m", "category": "system_command"}
+{"id": "benign_http_0196", "template": "Normal HTTP request", "attack_code": "DELETE /api/v1/sessions/sess_5013 HTTP/1.1\nHost: api.example.com", "category": "http_request"}
+{"id": "benign_code_0046", "template": "Standard code snippet", "attack_code": "curl -X GET https://api.example.com/health -H 'Authorization: Bearer token'", "category": "code_snippet"}
+{"id": "benign_code_0157", "template": "Standard code snippet", "attack_code": "docker ps --filter 'status=running' --format '{{.Names}}'", "category": "code_snippet"}
+{"id": "benign_http_0061", "template": "Normal HTTP request", "attack_code": "GET /health-check HTTP/1.1\nHost: localhost:8080", "category": "http_request"}
+{"id": "benign_cmd_0075", "template": "System command", "attack_code": "free -m", "category": "system_command"}
+{"id": "benign_http_0147", "template": "Normal HTTP request", "attack_code": "GET /static/css/styles.css HTTP/1.1\nHost: www.example.com", "category": "http_request"}

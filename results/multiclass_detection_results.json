@@ -1,0 +1,560 @@
+{
+  "task": "Multi-Class Attack Detection Validation (Track 2)",
+  "timestamp": "2025-10-22 20:14:55",
+  "decision": "GO",
+  "target": 75.0,
+  "metrics": {
+    "overall_accuracy": 92.95774647887323,
+    "category_performance": {
+      "xss": {
+        "total": 13,
+        "correct": 13,
+        "accuracy": 100.0
+      },
+      "privilege_escalation": {
+        "total": 8,
+        "correct": 5,
+        "accuracy": 62.5
+      },
+      "unknown": {
+        "total": 13,
+        "correct": 11,
+        "accuracy": 84.61538461538461
+      },
+      "mitm": {
+        "total": 3,
+        "correct": 3,
+        "accuracy": 100.0
+      },
+      "command_injection": {
+        "total": 4,
+        "correct": 4,
+        "accuracy": 100.0
+      },
+      "phishing": {
+        "total": 11,
+        "correct": 11,
+        "accuracy": 100.0
+      },
+      "sql_injection": {
+        "total": 16,
+        "correct": 16,
+        "accuracy": 100.0
+      },
+      "dos": {
+        "total": 3,
+        "correct": 3,
+        "accuracy": 100.0
+      }
+    }
+  },
+  "counts": {
+    "total_samples": 71,
+    "correct": 66,
+    "incorrect": 5
+  },
+  "timing": {
+    "total_time": 52.72919273376465,
+    "avg_per_sample": 0.7426646863910514,
+    "model_load_time": 0.7061302661895752
+  },
+  "results": [
+    {
+      "sample_id": 1,
+      "ground_truth": "xss",
+      "predicted": "xss",
+      "correct": true,
+      "response": "xss"
+    },
+    {
+      "sample_id": 2,
+      "ground_truth": "privilege_escalation",
+      "predicted": "command_injection",
+      "correct": false,
+      "response": "command_injection"
+    },
+    {
+      "sample_id": 3,
+      "ground_truth": "privilege_escalation",
+      "predicted": "privilege_escalation",
+      "correct": true,
+      "response": "privilege_escalation"
+    },
+    {
+      "sample_id": 4,
+      "ground_truth": "privilege_escalation",
+      "predicted": "privilege_escalation",
+      "correct": true,
+      "response": "privilege_escalation"
+    },
+    {
+      "sample_id": 5,
+      "ground_truth": "unknown",
+      "predicted": "unknown",
+      "correct": true,
+      "response": "unknown"
+    },
+    {
+      "sample_id": 6,
+      "ground_truth": "mitm",
+      "predicted": "mitm",
+      "correct": true,
+      "response": "mitm"
+    },
+    {
+      "sample_id": 7,
+      "ground_truth": "command_injection",
+      "predicted": "command_injection",
+      "correct": true,
+      "response": "command_injection"
+    },
+    {
+      "sample_id": 8,
+      "ground_truth": "phishing",
+      "predicted": "phishing",
+      "correct": true,
+      "response": "phishing"
+    },
+    {
+      "sample_id": 9,
+      "ground_truth": "phishing",
+      "predicted": "phishing",
+      "correct": true,
+      "response": "phishing"
+    },
+    {
+      "sample_id": 10,
+      "ground_truth": "unknown",
+      "predicted": "unknown",
+      "correct": true,
+      "response": "unknown"
+    },
+    {
+      "sample_id": 11,
+      "ground_truth": "unknown",
+      "predicted": "unknown",
+      "correct": true,
+      "response": "unknown"
+    },
+    {
+      "sample_id": 12,
+      "ground_truth": "sql_injection",
+      "predicted": "sql_injection",
+      "correct": true,
+      "response": "sql_injection"
+    },
+    {
+      "sample_id": 13,
+      "ground_truth": "sql_injection",
+      "predicted": "sql_injection",
+      "correct": true,
+      "response": "sql_injection"
+    },
+    {
+      "sample_id": 14,
+      "ground_truth": "phishing",
+      "predicted": "phishing",
+      "correct": true,
+      "response": "phishing"
+    },
+    {
+      "sample_id": 15,
+      "ground_truth": "unknown",
+      "predicted": "unknown",
+      "correct": true,
+      "response": "unknown"
+    },
+    {
+      "sample_id": 16,
+      "ground_truth": "xss",
+      "predicted": "xss",
+      "correct": true,
+      "response": "xss"
+    },
+    {
+      "sample_id": 17,
+      "ground_truth": "command_injection",
+      "predicted": "command_injection",
+      "correct": true,
+      "response": "command_injection"
+    },
+    {
+      "sample_id": 18,
+      "ground_truth": "phishing",
+      "predicted": "phishing",
+      "correct": true,
+      "response": "phishing"
+    },
+    {
+      "sample_id": 19,
+      "ground_truth": "command_injection",
+      "predicted": "command_injection",
+      "correct": true,
+      "response": "command_injection"
+    },
+    {
+      "sample_id": 20,
+      "ground_truth": "unknown",
+      "predicted": "unknown",
+      "correct": true,
+      "response": "unknown"
+    },
+    {
+      "sample_id": 21,
+      "ground_truth": "unknown",
+      "predicted": "unknown",
+      "correct": true,
+      "response": "unknown"
+    },
+    {
+      "sample_id": 22,
+      "ground_truth": "mitm",
+      "predicted": "mitm",
+      "correct": true,
+      "response": "mitm"
+    },
+    {
+      "sample_id": 23,
+      "ground_truth": "xss",
+      "predicted": "xss",
+      "correct": true,
+      "response": "xss"
+    },
+    {
+      "sample_id": 24,
+      "ground_truth": "sql_injection",
+      "predicted": "sql_injection",
+      "correct": true,
+      "response": "sql_injection"
+    },
+    {
+      "sample_id": 25,
+      "ground_truth": "sql_injection",
+      "predicted": "sql_injection",
+      "correct": true,
+      "response": "sql_injection"
+    },
+    {
+      "sample_id": 26,
+      "ground_truth": "xss",
+      "predicted": "xss",
+      "correct": true,
+      "response": "xss"
+    },
+    {
+      "sample_id": 27,
+      "ground_truth": "xss",
+      "predicted": "xss",
+      "correct": true,
+      "response": "xss"
+    },
+    {
+      "sample_id": 28,
+      "ground_truth": "unknown",
+      "predicted": "command_injection",
+      "correct": false,
+      "response": "command_injection"
+    },
+    {
+      "sample_id": 29,
+      "ground_truth": "phishing",
+      "predicted": "phishing",
+      "correct": true,
+      "response": "phishing"
+    },
+    {
+      "sample_id": 30,
+      "ground_truth": "phishing",
+      "predicted": "phishing",
+      "correct": true,
+      "response": "phishing"
+    },
+    {
+      "sample_id": 31,
+      "ground_truth": "privilege_escalation",
+      "predicted": "privilege_escalation",
+      "correct": true,
+      "response": "privilege_escalation"
+    },
+    {
+      "sample_id": 32,
+      "ground_truth": "xss",
+      "predicted": "xss",
+      "correct": true,
+      "response": "xss"
+    },
+    {
+      "sample_id": 33,
+      "ground_truth": "mitm",
+      "predicted": "mitm",
+      "correct": true,
+      "response": "mitm"
+    },
+    {
+      "sample_id": 34,
+      "ground_truth": "sql_injection",
+      "predicted": "sql_injection",
+      "correct": true,
+      "response": "sql_injection"
+    },
+    {
+      "sample_id": 35,
+      "ground_truth": "command_injection",
+      "predicted": "command_injection",
+      "correct": true,
+      "response": "command_injection"
+    },
+    {
+      "sample_id": 36,
+      "ground_truth": "sql_injection",
+      "predicted": "sql_injection",
+      "correct": true,
+      "response": "sql_injection"
+    },
+    {
+      "sample_id": 37,
+      "ground_truth": "sql_injection",
+      "predicted": "sql_injection",
+      "correct": true,
+      "response": "sql_injection"
+    },
+    {
+      "sample_id": 38,
+      "ground_truth": "phishing",
+      "predicted": "phishing",
+      "correct": true,
+      "response": "phishing"
+    },
+    {
+      "sample_id": 39,
+      "ground_truth": "xss",
+      "predicted": "xss",
+      "correct": true,
+      "response": "xss"
+    },
+    {
+      "sample_id": 40,
+      "ground_truth": "dos",
+      "predicted": "dos",
+      "correct": true,
+      "response": "dos"
+    },
+    {
+      "sample_id": 41,
+      "ground_truth": "unknown",
+      "predicted": "unknown",
+      "correct": true,
+      "response": "unknown"
+    },
+    {
+      "sample_id": 42,
+      "ground_truth": "sql_injection",
+      "predicted": "sql_injection",
+      "correct": true,
+      "response": "sql_injection"
+    },
+    {
+      "sample_id": 43,
+      "ground_truth": "xss",
+      "predicted": "xss",
+      "correct": true,
+      "response": "xss"
+    },
+    {
+      "sample_id": 44,
+      "ground_truth": "phishing",
+      "predicted": "phishing",
+      "correct": true,
+      "response": "phishing"
+    },
+    {
+      "sample_id": 45,
+      "ground_truth": "privilege_escalation",
+      "predicted": "command_injection",
+      "correct": false,
+      "response": "command_injection"
+    },
+    {
+      "sample_id": 46,
+      "ground_truth": "unknown",
+      "predicted": "unknown",
+      "correct": true,
+      "response": "unknown"
+    },
+    {
+      "sample_id": 47,
+      "ground_truth": "phishing",
+      "predicted": "phishing",
+      "correct": true,
+      "response": "phishing"
+    },
+    {
+      "sample_id": 48,
+      "ground_truth": "unknown",
+      "predicted": "unknown",
+      "correct": true,
+      "response": "unknown"
+    },
+    {
+      "sample_id": 49,
+      "ground_truth": "unknown",
+      "predicted": "unknown",
+      "correct": true,
+      "response": "unknown"
+    },
+    {
+      "sample_id": 50,
+      "ground_truth": "sql_injection",
+      "predicted": "sql_injection",
+      "correct": true,
+      "response": "sql_injection"
+    },
+    {
+      "sample_id": 51,
+      "ground_truth": "sql_injection",
+      "predicted": "sql_injection",
+      "correct": true,
+      "response": "sql_injection"
+    },
+    {
+      "sample_id": 52,
+      "ground_truth": "dos",
+      "predicted": "dos",
+      "correct": true,
+      "response": "dos"
+    },
+    {
+      "sample_id": 53,
+      "ground_truth": "xss",
+      "predicted": "xss",
+      "correct": true,
+      "response": "xss"
+    },
+    {
+      "sample_id": 54,
+      "ground_truth": "unknown",
+      "predicted": "command_injection",
+      "correct": false,
+      "response": "command_injection"
+    },
+    {
+      "sample_id": 55,
+      "ground_truth": "sql_injection",
+      "predicted": "sql_injection",
+      "correct": true,
+      "response": "sql_injection"
+    },
+    {
+      "sample_id": 56,
+      "ground_truth": "dos",
+      "predicted": "dos",
+      "correct": true,
+      "response": "dos"
+    },
+    {
+      "sample_id": 57,
+      "ground_truth": "sql_injection",
+      "predicted": "sql_injection",
+      "correct": true,
+      "response": "sql_injection"
+    },
+    {
+      "sample_id": 58,
+      "ground_truth": "xss",
+      "predicted": "xss",
+      "correct": true,
+      "response": "xss"
+    },
+    {
+      "sample_id": 59,
+      "ground_truth": "sql_injection",
+      "predicted": "sql_injection",
+      "correct": true,
+      "response": "sql_injection"
+    },
+    {
+      "sample_id": 60,
+      "ground_truth": "xss",
+      "predicted": "xss",
+      "correct": true,
+      "response": "xss"
+    },
+    {
+      "sample_id": 61,
+      "ground_truth": "unknown",
+      "predicted": "unknown",
+      "correct": true,
+      "response": "unknown"
+    },
+    {
+      "sample_id": 62,
+      "ground_truth": "phishing",
+      "predicted": "phishing",
+      "correct": true,
+      "response": "phishing"
+    },
+    {
+      "sample_id": 63,
+      "ground_truth": "sql_injection",
+      "predicted": "sql_injection",
+      "correct": true,
+      "response": "sql_injection"
+    },
+    {
+      "sample_id": 64,
+      "ground_truth": "sql_injection",
+      "predicted": "sql_injection",
+      "correct": true,
+      "response": "sql_injection"
+    },
+    {
+      "sample_id": 65,
+      "ground_truth": "sql_injection",
+      "predicted": "sql_injection",
+      "correct": true,
+      "response": "sql_injection"
+    },
+    {
+      "sample_id": 66,
+      "ground_truth": "phishing",
+      "predicted": "phishing",
+      "correct": true,
+      "response": "phishing"
+    },
+    {
+      "sample_id": 67,
+      "ground_truth": "privilege_escalation",
+      "predicted": "privilege_escalation",
+      "correct": true,
+      "response": "privilege_escalation"
+    },
+    {
+      "sample_id": 68,
+      "ground_truth": "xss",
+      "predicted": "xss",
+      "correct": true,
+      "response": "xss"
+    },
+    {
+      "sample_id": 69,
+      "ground_truth": "xss",
+      "predicted": "xss",
+      "correct": true,
+      "response": "xss"
+    },
+    {
+      "sample_id": 70,
+      "ground_truth": "privilege_escalation",
+      "predicted": "privilege_escalation",
+      "correct": true,
+      "response": "privilege_escalation"
+    },
+    {
+      "sample_id": 71,
+      "ground_truth": "privilege_escalation",
+      "predicted": "command_injection",
+      "correct": false,
+      "response": "command_injection"
+    }
+  ]
+}
