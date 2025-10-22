@@ -1,0 +1,43 @@
+{
+  "mcpServers": {
+    "docker": {
+      "command": "node",
+      "args": ["/Users/arthurdell/AYA/mcp_servers/docker-mcp-server.js"],
+      "env": {
+        "DOCKER_HOST": "unix:///var/run/docker.sock"
+      }
+    },
+    "postgres": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-postgres",
+        "postgresql://postgres:Power$$336633$$@localhost:5432/aya_rag"
+      ]
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "***REDACTED***",
+        "GITHUB_OWNER": "arthurelgindell"
+      }
+    },
+    "aya_custom": {
+      "command": "python3",
+      "args": ["/Users/arthurdell/AYA/Agent_Turbo/scripts/mcp_server.py"],
+      "env": {
+        "AGENT_TURBO_PATH": "/Users/arthurdell/AYA/Agent_Turbo",
+        "AGENT_TURBO_MODE": "turbo"
+      }
+    },
+    "lm_studio": {
+      "command": "python3",
+      "args": ["/Users/arthurdell/AYA/Agent_Turbo/scripts/lm_studio_mcp.py"],
+      "env": {
+        "LM_STUDIO_URL": "http://localhost:1234/v1"
+      }
+    }
+  }
+}
+

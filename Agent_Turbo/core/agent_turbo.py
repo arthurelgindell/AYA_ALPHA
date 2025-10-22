@@ -43,7 +43,40 @@ try:
     # Set default device to GPU for maximum performance
     if mx.metal.is_available():
         mx.set_default_device(mx.gpu)
-    GPU_CORES = mx.metal.device_info().get('gpu_cores', 0)
+    
+    # Fix GPU core detection for Apple M3 Ultra
+    device_info = mx.metal.device_info()
+    device_name = device_info.get('device_name', '')
+    
+    # Map device names to known GPU core counts
+    if 'M3 Ultra' in device_name:
+        GPU_CORES = 80  # M3 Ultra has 80 GPU cores
+    elif 'M3 Max' in device_name:
+        GPU_CORES = 40  # M3 Max has 40 GPU cores
+    elif 'M3 Pro' in device_name:
+        GPU_CORES = 18  # M3 Pro has 18 GPU cores
+    elif 'M3' in device_name:
+        GPU_CORES = 10  # M3 has 10 GPU cores
+    elif 'M2 Ultra' in device_name:
+        GPU_CORES = 76  # M2 Ultra has 76 GPU cores
+    elif 'M2 Max' in device_name:
+        GPU_CORES = 38  # M2 Max has 38 GPU cores
+    elif 'M2 Pro' in device_name:
+        GPU_CORES = 19  # M2 Pro has 19 GPU cores
+    elif 'M2' in device_name:
+        GPU_CORES = 10  # M2 has 10 GPU cores
+    elif 'M1 Ultra' in device_name:
+        GPU_CORES = 64  # M1 Ultra has 64 GPU cores
+    elif 'M1 Max' in device_name:
+        GPU_CORES = 32  # M1 Max has 32 GPU cores
+    elif 'M1 Pro' in device_name:
+        GPU_CORES = 16  # M1 Pro has 16 GPU cores
+    elif 'M1' in device_name:
+        GPU_CORES = 8   # M1 has 8 GPU cores
+    else:
+        # Fallback to MLX detection (often returns 0)
+        GPU_CORES = device_info.get('gpu_cores', 0)
+        
 except ImportError:
     GPU_AVAILABLE = False
     GPU_CORES = 0
