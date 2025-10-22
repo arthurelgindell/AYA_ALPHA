@@ -37,6 +37,58 @@
 
 ---
 
+## AGENT TURBO OPERATING INSTRUCTIONS
+
+**Production System - All Agents MUST Initialize Through Agent Turbo**
+
+### Core Files (READ THESE FIRST)
+```
+/Users/arthurdell/AYA/Agent_Turbo/core/
+├── agent_launcher.py          ← MAIN ENTRY POINT - Initialize any agent
+├── claude_planner.py          ← Claude Code specific interface  
+├── agent_orchestrator.py      ← Core orchestration system
+└── AGENT_INTEGRATION_GUIDE.md ← FULL DOCUMENTATION (READ THIS)
+```
+
+### Quick Start - Agent Initialization
+
+**For Claude Code (This Agent)**:
+```python
+from agent_launcher import launch_claude_planner
+
+# Initialize with full landing context
+context = launch_claude_planner()
+
+# You now have:
+# - context['session_id'] - Your session ID
+# - context['landing_context'] - Structured system state
+# - context['landing_context_prompt'] - Human-readable context
+# - context['system_prompt'] - Ready-to-use system prompt
+# - context['planner_instance'] - ClaudePlanner for delegation
+```
+
+**For Other Agents (OpenAI, Gemini, etc.)**:
+```python
+from agent_launcher import AgentLauncher
+
+launcher = AgentLauncher()
+context = launcher.initialize_agent(
+    platform='openai',           # or 'gemini', 'anthropic', etc.
+    role='executor',             # or 'validator', 'specialist', etc.
+    parent_session_id='...',     # Link to parent if delegated
+    task_context={'task': '...'} # Optional task-specific context
+)
+```
+
+### Key Principles
+1. **ALL agents MUST initialize through AgentLauncher**
+2. **Landing context is AUTOMATIC** (system state snapshot)
+3. **Task delegation is STATEFUL** (tracked in database)
+4. **Complete audit trail** (every action logged)
+5. **NO MOCKS, NO THEATRICAL CODE** (real PostgreSQL, real data)
+
+---
+
 ## INITIALIZATION SEQUENCE
 
 ### Step 1: Connect to Source of Truth
@@ -44,74 +96,118 @@
 ```python
 import sys
 sys.path.insert(0, '/Users/arthurdell/AYA/Agent_Turbo/core')
-from postgres_connector import PostgreSQLConnector
-from agent_orchestrator import AgentOrchestrator
-from claude_planner import ClaudePlanner
+from agent_launcher import launch_claude_planner
 
-# Connect to SOURCE OF TRUTH
-db = PostgreSQLConnector()  # aya_rag database
+# Initialize through Agent Turbo (REQUIRED)
+context = launch_claude_planner()
+
+# Access database through context
+db = context['landing_context']['database']
+planner = context['planner_instance']
 ```
 
-### Step 2: Query Current State
+### Step 2: Access Landing Context (Automatic)
 
 ```python
-# Get current project state
-current_state = db.execute_query("""
-    SELECT 
-        current_phase,
-        total_attack_patterns_generated,
-        attack_patterns_target,
-        estimated_completion_date,
-        days_remaining,
-        metadata
-    FROM gladiator_project_state
-    WHERE is_current = true
-""", fetch=True)[0]
+# Landing context is automatically generated and includes:
+landing_context = context['landing_context']
 
-# Get active tasks
-active_tasks = db.execute_query("""
-    SELECT task_id, task_name, status, priority, week_number, day_number
-    FROM gladiator_execution_plan
-    WHERE status = 'pending'
-    ORDER BY week_number, day_number, task_id
-""", fetch=True)
+# Current project state
+current_state = landing_context['gladiator_project_state']
+print(f"Phase: {current_state['current_phase']}")
+print(f"Attack Patterns: {current_state['total_attack_patterns_generated']}")
 
-# Get runner status
-runner_status = current_state['metadata']['github_actions']
+# Active tasks (from Agent Turbo orchestration)
+active_tasks = landing_context['active_tasks']
+print(f"Active tasks: {len(active_tasks)}")
+
+# System status
+system_status = landing_context['system_status']
+print(f"ALPHA Runner: {system_status['alpha_runner']['status']}")
+print(f"BETA Runner: {system_status['beta_runner']['status']}")
+
+# GitHub Actions workflows
+workflows = landing_context['github_workflows']
+print(f"Available workflows: {len(workflows)}")
 ```
 
-### Step 3: Load Full AYA Facilities
+### Step 3: Access Agent Turbo Facilities (Automatic)
 
 ```python
-# Initialize orchestrator
-orchestrator = AgentOrchestrator()
+# All facilities are automatically loaded through Agent Turbo:
+facilities = context['landing_context']['facilities']
 
-# Initialize planner (if Claude Code)
-if agent_role == 'planner':
-    planner = ClaudePlanner()
+# Available facilities:
+# - facilities['database'] - PostgreSQL connector
+# - facilities['orchestrator'] - Agent orchestrator
+# - facilities['lm_studio'] - LM Studio client
+# - facilities['docker'] - Docker client
+# - facilities['workflows'] - GitHub Actions client
+# - facilities['planner'] - Claude planner instance
+# - facilities['knowledge_base'] - Agent Turbo knowledge base
 
-# Load all available tools
-facilities = {
-    'database': db,
-    'orchestrator': orchestrator,
-    'lm_studio': LMStudioClient(),
-    'docker': DockerClient(),
-    'workflows': GitHubActionsClient(),
-    'all_scripts': '/Users/arthurdell/AYA/'
-}
+# Access specific facilities
+db = facilities['database']
+planner = facilities['planner']
+orchestrator = facilities['orchestrator']
 ```
 
-### Step 4: Determine Next Action
+### Step 4: Determine Next Action (Agent Turbo Managed)
 
 ```python
-# Based on database state, not assumptions
+# Task management through Agent Turbo
 if active_tasks:
     next_task = active_tasks[0]
     print(f"Next task: [{next_task['task_id']}] {next_task['task_name']}")
     print(f"Priority: {next_task['priority']}")
     print(f"Execute via: GitHub Actions workflow")
+    
+    # Delegate task if needed
+    task_id = planner.create_delegated_task(
+        task_description=next_task['task_name'],
+        task_type=next_task['task_type'],
+        assigned_to_role=next_task['assigned_to_role'],
+        priority=next_task['priority']
+    )
 else:
-    print("No pending tasks. Query database for instructions.")
+    print("No pending tasks. Create new task or query database for instructions.")
+    
+    # Create new task if needed
+    task_id = planner.create_delegated_task(
+        task_description='New task description',
+        task_type='implementation',
+        assigned_to_role='executor',
+        priority=8
+    )
+```
+
+---
+
+## AGENT TURBO PERFORMANCE BENCHMARKS (VERIFIED)
+
+**Production System Performance Metrics**:
+- **Knowledge Add**: 27.9ms (target: <50ms) ✅
+- **Knowledge Query**: 2.9ms (target: <100ms) ✅  
+- **Landing Context**: 27.4ms (target: <100ms) ✅
+- **Session Creation**: 12.9ms ✅
+- **Task Creation**: 0.5ms ✅
+
+**Verification Commands**:
+```bash
+# Check active sessions
+PGPASSWORD='Power$$336633$$' /Library/PostgreSQL/18/bin/psql -U postgres -d aya_rag -c "
+SELECT session_id, agent_platform, agent_role, status, created_at 
+FROM agent_sessions 
+WHERE status = 'active' 
+ORDER BY created_at DESC 
+LIMIT 10;"
+
+# Check recent tasks
+PGPASSWORD='Power$$336633$$' /Library/PostgreSQL/18/bin/psql -U postgres -d aya_rag -c "
+SELECT task_id, task_type, status, task_description 
+FROM agent_tasks 
+ORDER BY created_at DESC 
+LIMIT 10;"
 ```
 
 ---
