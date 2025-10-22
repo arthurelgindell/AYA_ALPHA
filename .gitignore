@@ -1,82 +1,33 @@
-# Large Data Files (CRITICAL - Do not commit to GitHub)
-models/
-!models/.gitkeep
-*.pth
-*.safetensors
-*.gguf
-*.bin
-*.ckpt
+# Large dataset directories
+datasets/armed_exploits/
+datasets/combat_training/
+datasets/exploit_database/
+datasets/exploit-database/
+datasets/synthetic_base/
+datasets/training_10m/
+datasets/mutations/
+datasets/persona_combat_training/
+datasets/red_team_sync/
+datasets/current_threats/
+datasets/fine_tuning/
 
-# Databases & Indexes
-*.db
-*.sqlite
-*.sqlite3
-indexes/
-retrieval_cache/
+# Model checkpoints (large binary files)
+checkpoints/**/*.safetensors
+models/DavidBianco/
+models/lmstudio-community/
+models/mlx-community/
 
-# Large CSV/JSON data files
-Databases/*.csv
-Databases/*.json
-!Databases/*_urls.txt
-!Databases/*_import.sql
-!Databases/README.md
-
-# Project Data Directories
-projects/GLADIATOR/models/
-projects/GLADIATOR/datasets/
-projects/GLADIATOR/logs/
-
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-build/
-venv/
-env/
-.venv/
-*.egg-info/
-
-# Logs
+# Log files
 *.log
-*.out
-*.err
-logs/
+logs/**/*.log
 
-# Secrets
-.env
-*.key
-*.pem
-credentials.json
-*_token.txt
-
-# macOS
+# Temporary files
+*.pid
 .DS_Store
-._*
-.AppleDouble
-.LSOverride
 
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
+# Docker-related
+docker/
 
-# Temporary
-tmp/
-temp/
-*.tmp
-*.bak
-
-# Agent Turbo Runtime
-Agent_Turbo/data/
-Agent_Turbo/indexes/
-Agent_Turbo/retrieval_cache/
-
-# GitHub Actions
-_work/
-actions-runner/
-
-# PostgreSQL
-postgresql-*.plist
+# Training data (keep only essential)
+training/binary_classification_data/
+training/multiclass_detection_data/
