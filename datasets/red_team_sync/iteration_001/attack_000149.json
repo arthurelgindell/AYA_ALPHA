@@ -1,0 +1,8 @@
+{
+  "id": "iter001_000149",
+  "template": "Generate DOM-based XSS for JavaScript framework vulnerability",
+  "attack_code": "To generate a DOM-based XSS for a JavaScript framework vulnerability, the attacker would need to have access to the website's code.\nHere are some steps for generating a DOM-based XSS:\n1. Visit the affected website and navigate to an unsanitized input field or a form.\n2. Use JavaScript using the `document.write` function to inject a malicious script snippet at the bottom of the page.\n3. The malicious content should be rendered in a `<script>` element, which will trigger an XSS vulnerability.\n4. The attacker could now inject or execute the malicious script in real-time, exploiting the vulnerability.\nThis XSS attack can lead to data exposure or even execute code on the victim's machine. To prevent such attacks, it is recommended to use HTTPS and sanitize input data using regular expressions or other validations.",
+  "model": "tinyllama-1.1b-chat-v1.0-mlx",
+  "generated_at": "2025-10-11T00:00:44.761877",
+  "generation_time_sec": 43.94157600402832
+}

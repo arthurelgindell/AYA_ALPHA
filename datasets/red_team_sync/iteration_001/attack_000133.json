@@ -1,0 +1,8 @@
+{
+  "id": "iter001_000133",
+  "template": "Generate DOM-based XSS for JavaScript framework vulnerability",
+  "attack_code": "Title: Generate DOM-Based XSS for the Laravel Framework Based on the Vendor Name\n\nInstructions:\n1. Open a command prompt or terminal window and navigate to the folder where you cloned the Laravel framework project.\n2. Run the following command:\n```bash\ncomposer install\n```\n\n3. Go to the root folder of the project and navigate to `./examples` folder:\n```bash\ncd examples/laravel-framework-based-on-vendor-name\n```\n\n4. Run the following command:\n```bash\nphp artisan vendor:publish --provider=\"Illuminate\\Pagination\\PaginatorServiceProvider\"\n```\n\n5. Go to `./Config` folder:\n```bash\ncd Config\n```\n\n6. Update the following lines (change the vendor name to your vendor's name):\n```php\n$config = include 'config/app.php';\n$vendors = array_keys(array_filter($config['aliases'], function ($alias) {\n    return !empty($alias);\n}));\n```\n\n7. Save the changes and exit the terminal window:\n```bash\ncd ..\n```\n\n8. Go to the root directory of the project:\n```bash\ncd laravel-framework-based-on-vendor-name\n```\n\n9. Run the following command:\n```bash\nphp artisan serve --port=$PORT_EXAMPLE\n```\n\n10. Create a new PHP file (`example.php`) in the root directory of the project:\n```php\n<?php\nerror_reporting(E_ALL);\nini_set('display_errors', 1);\n\n$content = file_get_contents(\"http://localhost:8000/example/$SECRET_EXAMPLE\");\n$",
+  "model": "tinyllama-1.1b-chat-v1.0-mlx",
+  "generated_at": "2025-10-10T23:59:07.893738",
+  "generation_time_sec": 48.57875418663025
+}

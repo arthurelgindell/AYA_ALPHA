@@ -1,0 +1,8 @@
+{
+  "id": "iter001_000146",
+  "template": "Generate time-based blind SQL injection for Oracle database",
+  "attack_code": "Here is a sample time-based blind SQL injection that injects SQL commands and triggers into Oracle databases using the built-in `BINARY_LIMIT` method.\n\n```sql\nBEGIN\n    DECLARE\n        BINARY_LIMIT NUMBER := 100; -- Set the maximum number of bytes for input and output buffers to be available\n        BINARY_BUF_SIZE NUMBER := 1024; -- Set the maximum number of bytes that the input and output buffers can be expanded to\n        CURSOR cur IS 'SELECT * FROM \"TableName\" LIMIT ? BINARY_LIMIT';\n        query_text TEXT := 'INSERT INTO \"TableName\" VALUES (?, ?)';\n        cursor_name VARCHAR2(40) := 'CursorName';\n        rows NUMBER;\n    BEGIN\n        opening_cursor(cur, cursor_name, CURSOR_NAME); -- Open the cursor\n        loops: LOOP\n            EXIT WHEN rows = 0; -- Exit loop when no rows are returned from the cursor\n            FOR I IN 1..rows LOOP\n                opening_cursor(cur, cursor_name, CURSOR_NAME); -- Open the cursor again\n                BEGIN\n                    opening_cursor(cur, cursor_name, CURSOR_NAME); -- Open the cursor again\n                    IF I <= rows * BINARY_LIMIT THEN -- If the current row is not completely filled, try again\n                        LEAVER_ROW := INSTR(CURSOR_NAME, TEXT(I), BINARY_BUF_SIZE);\n                        EXECUTE IMMEDIATE query_text INTO LEAVER_ROW, TEXT(I);\n                        opening_cursor(cur, cursor_name, CURSOR",
+  "model": "tinyllama-1.1b-chat-v1.0-mlx",
+  "generated_at": "2025-10-11T00:00:31.516308",
+  "generation_time_sec": 48.40233898162842
+}

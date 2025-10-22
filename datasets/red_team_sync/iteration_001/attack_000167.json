@@ -1,0 +1,8 @@
+{
+  "id": "iter001_000167",
+  "template": "Create port scanning pattern targeting web servers",
+  "attack_code": "Port Scan Pattern Targeting Web Servers:\n1. First, enter the IP address of your target web server in a console or command line interface (CLI).\n2. Next, enter the following command: \"nc -l 80\" (without quotes) to create a listening socket for the server.\n3. Enter '80' as the first argument, followed by 'nmap -sC -Pn -T4 -p- 0.0.0.0' (without quotes) to launch a port scan.\n4. The second time you enter this command, replace 'nmap -sC -Pn -T4 -p- 0.0.0.0' with the IP address of your target web server in the argument '--ip-range'.\n5. Enter a space after '--ip-range' and replace the IP address with that of your target web server.\n6. You can then repeat similar steps to conduct a port scan on each of the web server's ports.\n7. Once you have conducted the port scan, refer to any console or command output in a text document, or save it for further analysis.\n\nIn conclusion, launching a port scan pattern targeting web servers can be an effective way to identify and map potential vulnerabilities on the targeted server. By using this pattern, you can quickly locate and fix any issues with web application security.",
+  "model": "tinyllama-1.1b-chat-v1.0-mlx",
+  "generated_at": "2025-10-11T00:02:29.992642",
+  "generation_time_sec": 45.6852548122406
+}

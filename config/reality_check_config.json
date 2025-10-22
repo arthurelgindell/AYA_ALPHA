@@ -1,0 +1,29 @@
+{
+  "model": {
+    "name": "foundation-sec-8b-instruct-int8",
+    "endpoint": "http://localhost:1234/v1",
+    "type": "lm_studio"
+  },
+  "training": {
+    "learning_rate": 0.0001,
+    "batch_size": 32,
+    "num_steps": 100,
+    "warmup_steps": 10,
+    "eval_steps": 10,
+    "save_steps": 50
+  },
+  "data": {
+    "train_file": "/Users/arthurdell/GLADIATOR/datasets/reality_check_train_900.jsonl",
+    "val_file": "/Users/arthurdell/GLADIATOR/datasets/reality_check_val_100.jsonl",
+    "max_length": 512
+  },
+  "output": {
+    "checkpoint_dir": "/Users/arthurdell/GLADIATOR/checkpoints/reality_check/",
+    "log_dir": "/Users/arthurdell/GLADIATOR/logs/reality_check/"
+  },
+  "generation": {
+    "temperature": 0.7,
+    "max_tokens": 512,
+    "top_p": 0.9
+  }
+}

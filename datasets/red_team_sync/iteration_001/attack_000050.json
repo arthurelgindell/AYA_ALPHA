@@ -1,0 +1,8 @@
+{
+  "id": "iter001_000050",
+  "template": "Generate time-based blind SQL injection for Oracle database",
+  "attack_code": "Please find below a time-based blind SQL injection for Oracle database, which can be used in multiple scenarios such as user authentication and data manipulation.\n\nDescription: This SQL injection creates a sequence of strings that are inserted into the 'TO_CHAR(sysdate, 'YYYY-MM-DD HH:MI:SS')' function. This sequence of strings is then inserted into the 'TO_CHAR(sysdate, sysout)'' function using a simple substitution.\n\nExample:\n```\nSELECT TO_CHAR(TO_DATE('05-25-2016', 'MM-DD-YYY'),'YYYY-MM-DD HH:MI:SS') || TO_CHAR(TO_DATE('15-06-2016', 'MM-DD-YYY'), sysout) AS 'sysdate'\nFROM dual;\n```\n\nThis injection strategy will work in any client-server application where the application utilizes Oracle's default date formatting. It is flexible and can be easily adjusted for different servers, applications or database schema requirements.\n\nFor Oracle database:\n\n1. Create a new table with a \"sysdate\" column of type DATE and create the following sequence statement:\n\n``` sql\nCREATE SEQUENCE sysseq;\nSTART WITH 1 INCREMENT BY 1 NOCACHE NOCUPLOADED;\nSYSTEM CURRENT SEQUENCE sysseq;\n```\n\n2. Insert the following sequence of strings:\n\n``` sql\nINSERT INTO sysdate VALUES (sysseq.nextval);\nINSERT INTO sysdate VALUES (sysseq.nextval);\nINSERT INTO sysdate VALUES (sysseq.nextval);\nINSERT INTO sysdate VALUES (sysseq.nextval);\n```\n\n3. Insert the following sequence of strings:\n\n",
+  "model": "tinyllama-1.1b-chat-v1.0-mlx",
+  "generated_at": "2025-10-10T23:50:52.029029",
+  "generation_time_sec": 44.02254915237427
+}

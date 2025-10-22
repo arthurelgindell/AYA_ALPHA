@@ -1,0 +1,8 @@
+{
+  "id": "iter001_000112",
+  "template": "Generate a SQL injection attack targeting login form with authentication bypass",
+  "attack_code": "This is a sample SQL injection attack targeting a login form with authentication bypass. The script may contain errors, but hopefully you'll get the general idea. The database and table details have been changed to protect the innocent.\n\nIMPORT DATA\n```sql\nUSE [mydatabase]\nGO\n\nCREATE TABLE [mytable] (\n  [id] INT PRIMARY KEY NOT NULL,\n  [username] NVARCHAR(255) NULL,\n  [password] NVARCHAR(255) NULL,\n  [first_name] NVARCHAR(100) NULL,\n  [last_name] NVARCHAR(100) NULL,\n  [email] NVARCHAR(255) NULL\n)\n```\n\nLOGIN FORM\n```html\n<form method=\"post\" action=\"/login\">\n  <label for=\"username\">Username:</label>\n  <input type=\"text\" id=\"username\" name=\"username\">\n  <br>\n  <label for=\"password\">Password:</label>\n  <input type=\"text\" id=\"password\" name=\"password\">\n  <br>\n  <input type=\"submit\" value=\"Login\">\n</form>\n```\n\nSQL INJECTION ATTACK\n```sql\nDECLARE @user NVARCHAR(255) = '<username>'\nDECLARE @password NVARCHAR(255) = '<password>'\nSET NOCOUNT ON\n\nBEGIN TRANSACTION\nDEALLOCATE TABLE [mytable]\nINSERT INTO [mytable] ([id], [username], [password], [first_name], [last_name], [email])\nVALUES (1, @user, @password, 'John Doe', 'Doe', '<email>')\nIF",
+  "model": "tinyllama-1.1b-chat-v1.0-mlx",
+  "generated_at": "2025-10-10T23:57:02.253915",
+  "generation_time_sec": 47.899852991104126
+}

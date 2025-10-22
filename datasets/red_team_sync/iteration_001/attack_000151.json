@@ -1,0 +1,8 @@
+{
+  "id": "iter001_000151",
+  "template": "Create port scanning pattern targeting web servers",
+  "attack_code": "A port scanning pattern for targeting web servers is:\n\n1. TCP Port Scan:\n   - 23 (HTTP)\n   - 80 (HTTP)\n   - 443 (HTTPS)\n2. Nmap Scan:\n   - Hostname or IP address of web server (e.g. www.example.com)\n   - Port range from 2000 to 65534 (inclusive)\n   - Wait time: 10 seconds\n   - Scan every x seconds (default is 5)\n3. Burp Suite Proxy:\n   - Hostname or IP address of web server (e.g. www.example.com)\n   - Port range from 80 to 65534 (inclusive)\n   - Wait time: 10 seconds\n\nUse this port scanning pattern for validating the security vulnerabilities of web servers and to identify any unauthorized access to their network.",
+  "model": "tinyllama-1.1b-chat-v1.0-mlx",
+  "generated_at": "2025-10-11T00:00:50.764294",
+  "generation_time_sec": 42.208616971969604
+}

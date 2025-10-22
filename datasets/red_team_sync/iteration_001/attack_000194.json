@@ -1,0 +1,8 @@
+{
+  "id": "iter001_000194",
+  "template": "Generate time-based blind SQL injection for Oracle database",
+  "attack_code": "Oracle is a database management system that supports SQL injection, which allows attackers to execute malicious code in the context of a database. To generate time-based blind SQL injection for Oracle, follow these steps:\n\n1. Start by creating a prepared statement that inserts a timestamp into the database, which will then be executed as part of the SQL injection.\n\n```sql\nDECLARE\n    v_timestamp TIMESTAMP;\nBEGIN\n    SELECT SYSDATE INTO V_TIMESTAMP FROM DUAL;\n    EXECUTE IMMEDIATE 'INSERT INTO TIMESTAMP VALUES (V_TIMESTAMP);';\nEND;\n/\n```\n\n2. Now, insert a trailing comma into the prepared statement to force Oracle to execute the timestamp as part of the SQL injection.\n\n```sql\nDECLARE\n    v_timestamp TIMESTAMP;\nBEGIN\n    SELECT SYSDATE INTO V_TIMESTAMP FROM DUAL;\n    EXECUTE IMMEDIATE 'INSERT INTO TIMESTAMP (TIMESTAMP) VALUES (' || V_TIMESTAMP || ');';\nEND;\n/\n```\n\n3. In the last step, replace the placeholders with a timestamp using a trailing comma to force Oracle to insert the timestamp as part of the SQL injection.\n\n```sql\nDECLARE\n    v_timestamp TIMESTAMP;\nBEGIN\n    SELECT SYSDATE INTO V_TIMESTAMP FROM DUAL;\n    EXECUTE IMMEDIATE 'INSERT INTO TIMESTAMP WITH TIME ZONE (TIMESTAMP) VALUES (' || V_TIMESTAMP.to_char(SYSDATE.TO_CHAR) || ');';\nEND;\n/\n```\n\n4. Next, replace the prepared statement with a second one that returns the inserted timestamp value.",
+  "model": "tinyllama-1.1b-chat-v1.0-mlx",
+  "generated_at": "2025-10-11T00:05:14.255151",
+  "generation_time_sec": 49.3885760307312
+}

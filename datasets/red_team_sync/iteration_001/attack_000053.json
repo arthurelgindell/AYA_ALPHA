@@ -1,0 +1,8 @@
+{
+  "id": "iter001_000053",
+  "template": "Generate DOM-based XSS for JavaScript framework vulnerability",
+  "attack_code": "1. Initialize a new DOM element with a script attribute:\n\n```html\n<script src=\"myscript.js\"></script>\n```\n\n2. include a script tag with the same src attribute:\n\n```html\n<script src=\"myscript.js\"></script>\n```\n\n3. use the same script tag in two different pages:\n\n```html\n<script src=\"myscript.js\"></script>\n<script src=\"myscript-2.js\"></script>\n```\n\n4. create a new element with an onclick event and append it to the DOM:\n\n```javascript\nvar myFunction = function() {\n    alert(\"Clicked!\");\n};\n\n// Create a new element with an onclick attribute \nvar myElement = document.createElement(\"button\");\nmyElement.setAttribute(\"onclick\", \"myFunction();\");\ndocument.body.appendChild(myElement);\n```\n\n5. embed the newly created element into the DOM:\n\n```javascript\n// Replace the body of the page with the newly created element\nvar root = document.querySelector(\"body\");\nroot.appendChild(myElement);\n```\n\n6. use the same script tag in multiple pages:\n\n```html\n<script src=\"myscript.js\"></script>\n<script src=\"myscript.js\"></script>\n```\n\nIn summary, DOM-based XSS vulnerabilities can occur when a user clicks on a link that includes JavaScript code, or includes the same script tag in multiple pages. By using the src attribute of a script tag and embedding them into the DOM, attackers can exploit these vulnerabilities to execute JavaScript code with arbitrary privileges.",
+  "model": "tinyllama-1.1b-chat-v1.0-mlx",
+  "generated_at": "2025-10-10T23:51:12.709747",
+  "generation_time_sec": 48.371224880218506
+}

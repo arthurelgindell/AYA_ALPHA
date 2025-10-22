@@ -1,0 +1,8 @@
+{
+  "id": "iter001_000032",
+  "template": "Generate a SQL injection attack targeting login form with authentication bypass",
+  "attack_code": "To generate a SQL injection attack against a login form with authentication, the attacker can use a JavaScript function to insert a hidden input field into the login form. The following is a sample code that demonstrates how to execute this attack:\n\n```javascript\nfunction injectScript(url, data) {\n  fetch(url, { method: 'POST' })\n    .then((response) => response.json())\n    .then((data) => {\n      const script = document.createElement('script');\n      script.setAttribute('type', 'text/javascript');\n      script.innerHTML = data.injectScript;\n      document.head.appendChild(script);\n    })\n}\n```\n\nLet's assume that the login form's URL is \"https://example.com/login\", and the hidden input field name is \"username\". The JavaScript function will insert the following code into the login form's HTML:\n\n```html\n<input type=\"hidden\" name=\"username\">\n```\n\nNow, when the user submits the login form, the attacker can intercept the input field value using a SQL injection attack. By manipulating the username value, the attacker can gain access to the user's account data and perform other actions such as logging in or resetting their password.",
+  "model": "tinyllama-1.1b-chat-v1.0-mlx",
+  "generated_at": "2025-10-10T23:49:19.626631",
+  "generation_time_sec": 49.207566022872925
+}
