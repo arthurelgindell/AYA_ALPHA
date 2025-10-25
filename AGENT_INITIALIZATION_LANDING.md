@@ -416,7 +416,7 @@ Runner: alpha-m3-ultra (operational)
 **BETA** (Mac Studio M3 Ultra):
 ```
 Hostname: beta.tail5f2bae.ts.net
-RAM: 512GB
+RAM: 256GB
 Storage: 4TB + 16TB Thunderbolt (/Volumes/DATA/)
 Docker: 
 ├─ red_combat (Red Team generation)
