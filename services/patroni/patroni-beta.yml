@@ -1,0 +1,37 @@
+scope: aya-postgres-cluster
+name: beta
+namespace: /service/
+
+restapi:
+  listen: 0.0.0.0:8008
+  connect_address: beta.tail5f2bae.ts.net:8008
+
+etcd3:
+  hosts: alpha.tail5f2bae.ts.net:2379,beta.tail5f2bae.ts.net:2379
+  protocol: http
+
+postgresql:
+  listen: 0.0.0.0:5432
+  connect_address: beta.tail5f2bae.ts.net:5432
+  data_dir: /Volumes/DATA/Agent_Turbo/postgresql/data
+  bin_dir: /Library/PostgreSQL/18/bin
+  pgpass: /tmp/pgpass
+  authentication:
+    replication:
+      username: replicator
+      password: Power$$336633$$
+    superuser:
+      username: postgres
+      password: Power$$336633$$
+  parameters:
+    unix_socket_directories: '/tmp'
+
+watchdog:
+  mode: off
+
+tags:
+  nofailover: false
+  noloadbalance: false
+  clonefrom: true
+  nosync: false
+

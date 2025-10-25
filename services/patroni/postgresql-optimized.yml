@@ -1,0 +1,60 @@
+# PostgreSQL Optimization for M3 Ultra Hardware
+# ALPHA: 512GB RAM, BETA: 256GB RAM
+# Allocated resources for high-concurrency (60 agents)
+
+# Memory Configuration
+shared_buffers: 128GB              # 25% of ALPHA RAM (512GB / 4)
+effective_cache_size: 384GB        # 75% of ALPHA RAM
+work_mem: 512MB                    # Per query (200 connections = ~100GB max)
+maintenance_work_mem: 16GB         # For VACUUM, CREATE INDEX
+max_connections: 300               # Support 60 agents + overhead
+
+# WAL Configuration (write-heavy workload)
+wal_buffers: 64MB
+min_wal_size: 4GB
+max_wal_size: 16GB
+checkpoint_completion_target: 0.9
+checkpoint_timeout: 15min
+
+# Query Planner (SSD optimized)
+random_page_cost: 1.1              # SSD (vs 4.0 for spinning disk)
+effective_io_concurrency: 400      # NVMe SSD capabilities
+max_worker_processes: 24           # M3 Ultra CPU cores
+max_parallel_workers_per_gather: 8
+max_parallel_workers: 24
+max_parallel_maintenance_workers: 8
+
+# Replication (synchronous for zero data loss)
+max_wal_senders: 10
+max_replication_slots: 10
+wal_level: replica
+hot_standby: on
+hot_standby_feedback: on
+synchronous_commit: on
+synchronous_standby_names: 'beta'  # Wait for BETA to confirm
+
+# Logging (production)
+logging_collector: on
+log_directory: 'log'
+log_filename: 'postgresql-%Y-%m-%d_%H%M%S.log'
+log_rotation_age: 1d
+log_rotation_size: 1GB
+log_min_duration_statement: 1000   # Log queries > 1 second
+log_checkpoints: on
+log_connections: on
+log_disconnections: on
+log_lock_waits: on
+log_autovacuum_min_duration: 0
+
+# Autovacuum (aggressive for high-concurrency)
+autovacuum: on
+autovacuum_max_workers: 8
+autovacuum_naptime: 30s
+
+# Performance
+default_statistics_target: 100
+track_activities: on
+track_counts: on
+track_io_timing: on
+track_functions: all
+
