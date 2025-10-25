@@ -1,0 +1,142 @@
+name: GLADIATOR Distributed Workers
+
+on:
+  workflow_dispatch:
+    inputs:
+      workers_per_system:
+        description: 'Number of workers per system'
+        required: true
+        default: '5'
+        type: choice
+        options:
+          - '5'
+          - '10'
+          - '15'
+          - '20'
+
+jobs:
+  deploy-alpha-workers:
+    runs-on: [self-hosted, macOS, arm64, alpha, studio]
+    steps:
+      - name: Deploy ALPHA Workers
+        env:
+          POSTGRES_PASSWORD: 'Power$$336633$$'
+          POSTGRES_HOST: 'alpha.tail5f2bae.ts.net'
+          WORKERS: ${{ github.event.inputs.workers_per_system }}
+        run: |
+          echo "🚀 Deploying $WORKERS GLADIATOR workers on ALPHA..."
+          
+          # Stop any existing workers
+          docker ps -a | grep gladiator-worker-alpha | awk '{print $1}' | xargs -r docker rm -f
+          
+          # Deploy workers
+          for i in $(seq 1 $WORKERS); do
+            WORKER_NAME="gladiator-worker-alpha-$(printf '%02d' $i)"
+            echo "Starting worker: $WORKER_NAME"
+            
+            docker run -d \
+              --name $WORKER_NAME \
+              --restart unless-stopped \
+              -e POSTGRES_HOST=$POSTGRES_HOST \
+              -e POSTGRES_PASSWORD=$POSTGRES_PASSWORD \
+              -e WORKER_ID=$WORKER_NAME \
+              -e SYSTEM=alpha \
+              gladiator-worker:v1
+            
+            echo "✅ $WORKER_NAME started"
+          done
+          
+          echo ""
+          echo "📊 ALPHA Workers Status:"
+          docker ps | grep gladiator-worker-alpha
+          
+  deploy-beta-workers:
+    runs-on: [self-hosted, macOS, arm64, beta, studio]
+    steps:
+      - name: Deploy BETA Workers
+        env:
+          POSTGRES_PASSWORD: 'Power$$336633$$'
+          POSTGRES_HOST: 'alpha.tail5f2bae.ts.net'
+          WORKERS: ${{ github.event.inputs.workers_per_system }}
+        run: |
+          echo "🚀 Deploying $WORKERS GLADIATOR workers on BETA..."
+          
+          # Stop any existing workers
+          docker ps -a | grep gladiator-worker-beta | awk '{print $1}' | xargs -r docker rm -f
+          
+          # Deploy workers
+          for i in $(seq 1 $WORKERS); do
+            WORKER_NAME="gladiator-worker-beta-$(printf '%02d' $i)"
+            echo "Starting worker: $WORKER_NAME"
+            
+            docker run -d \
+              --name $WORKER_NAME \
+              --restart unless-stopped \
+              -e POSTGRES_HOST=$POSTGRES_HOST \
+              -e POSTGRES_PASSWORD=$POSTGRES_PASSWORD \
+              -e WORKER_ID=$WORKER_NAME \
+              -e SYSTEM=beta \
+              gladiator-worker:v1
+            
+            echo "✅ $WORKER_NAME started"
+          done
+          
+          echo ""
+          echo "📊 BETA Workers Status:"
+          docker ps | grep gladiator-worker-beta
+
+  verify-deployment:
+    runs-on: [self-hosted, macOS, arm64, alpha, studio]
+    needs: [deploy-alpha-workers, deploy-beta-workers]
+    steps:
+      - name: Verify Worker Registration
+        env:
+          PGPASSWORD: 'Power$$336633$$'
+        run: |
+          echo "=== VERIFICATION: Worker Registration ==="
+          sleep 5  # Give workers time to register
+          
+          /Library/PostgreSQL/18/bin/psql -U postgres -d aya_rag -c "
+          SELECT 
+              worker_id, 
+              hostname as system, 
+              status, 
+              current_task_id,
+              last_heartbeat
+          FROM gladiator_agent_coordination
+          WHERE worker_id LIKE 'gladiator-worker-%'
+          ORDER BY worker_id;
+          "
+          
+      - name: Check Worker Logs
+        run: |
+          echo "=== ALPHA Worker Logs (first worker) ==="
+          docker logs gladiator-worker-alpha-01 --tail 20
+          
+          echo ""
+          echo "=== BETA Worker Logs (first worker via SSH) ==="
+          ssh beta.tail5f2bae.ts.net "docker logs gladiator-worker-beta-01 --tail 20"
+          
+      - name: Deployment Summary
+        env:
+          PGPASSWORD: 'Power$$336633$$'
+        run: |
+          echo "=== DEPLOYMENT SUMMARY ==="
+          echo ""
+          echo "ALPHA Workers:"
+          docker ps | grep gladiator-worker-alpha | wc -l
+          
+          echo "BETA Workers:"
+          ssh beta.tail5f2bae.ts.net "docker ps | grep gladiator-worker-beta | wc -l"
+          
+          echo ""
+          echo "Total Registered Workers:"
+          /Library/PostgreSQL/18/bin/psql -U postgres -d aya_rag -t -c "
+          SELECT COUNT(*) FROM gladiator_agent_coordination 
+          WHERE worker_id LIKE 'gladiator-worker-%';
+          "
+          
+          echo ""
+          echo "✅ Distributed worker deployment complete!"
+          echo "Workers are now waiting for tasks in gladiator_execution_plan table."
+
