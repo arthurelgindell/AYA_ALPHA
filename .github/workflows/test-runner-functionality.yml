@@ -7,6 +7,23 @@ permissions:
   contents: read
 
 jobs:
+  check-trigger:
+    name: Verify Workflow Trigger
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Log Trigger
+        run: |
+          echo "======================================"
+          echo "Runner Functionality Test Started"
+          echo "======================================"
+          echo "Triggered by: ${{ github.actor }}"
+          echo "Event: ${{ github.event_name }}"
+          echo "Timestamp: $(date -u)"
+          echo ""
+          echo "Testing ALPHA and BETA runners..."
+          echo "This ensures at least one job always runs."
+  
   test-alpha:
     name: Test ALPHA Runner
     runs-on: [self-hosted, macOS, arm64, alpha, studio]
@@ -158,7 +175,7 @@ PYEOF
   summary:
     name: Functionality Summary
     runs-on: ubuntu-latest
-    needs: [test-alpha, test-beta, test-network]
+    needs: [check-trigger, test-alpha, test-beta, test-network]
     if: always()
     
     steps:
@@ -169,19 +186,27 @@ PYEOF
           echo "========================================"
           echo ""
           echo "Test Results:"
+          echo "  Workflow Trigger:   ${{ needs.check-trigger.result }}"
           echo "  ALPHA Runner:       ${{ needs.test-alpha.result }}"
           echo "  BETA Runner:        ${{ needs.test-beta.result }}"
           echo "  Network (BETA→ALPHA): ${{ needs.test-network.result }}"
           echo ""
-          if [[ "${{ needs.test-alpha.result }}" == "success" ]] && \
+          
+          # Check if all jobs succeeded
+          if [[ "${{ needs.check-trigger.result }}" == "success" ]] && \
+             [[ "${{ needs.test-alpha.result }}" == "success" ]] && \
              [[ "${{ needs.test-beta.result }}" == "success" ]] && \
              [[ "${{ needs.test-network.result }}" == "success" ]]; then
             echo "✅ ALL SYSTEMS FUNCTIONAL"
             echo "✅ Ready for GLADIATOR workflows"
             exit 0
-          else
-            echo "❌ ONE OR MORE SYSTEMS FAILED"
+          elif [[ "${{ needs.check-trigger.result }}" == "success" ]]; then
+            echo "⚠️  Self-hosted runners unavailable or tests failed"
             echo "Review job logs for details"
+            echo "Note: Workflow trigger succeeded (prevents 'no jobs' error)"
+            exit 1
+          else
+            echo "❌ WORKFLOW TRIGGER FAILED"
             exit 1
           fi
 
