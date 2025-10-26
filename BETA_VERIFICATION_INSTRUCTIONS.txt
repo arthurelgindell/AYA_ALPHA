@@ -1,0 +1,247 @@
+================================================================================
+BETA SYSTEM VERIFICATION - 2025-10-26
+Copy this entire block to BETA terminal for verification
+================================================================================
+
+CRITICAL PATH CORRECTION:
+- ALPHA Base: /Users/arthurdell/
+- BETA Base: /Volumes/DATA/
+
+ALL BETA FILES MUST BE IN /Volumes/DATA/ - NO EXCEPTIONS!
+
+========================================
+STEP 1: Pull Latest from GitHub
+========================================
+
+cd /Volumes/DATA/AYA
+git fetch origin
+git pull origin main
+
+Expected commit: 338b8d6 "CRITICAL FIX: Correct ALPHA vs BETA path structure"
+
+========================================
+STEP 2: Verify Agent Landing (Corrected Paths)
+========================================
+
+cd /Volumes/DATA/AYA
+grep "Version:" AGENT_INITIALIZATION_LANDING.md | head -1
+# Expected: Version: 2.0 - PostgreSQL Migration Complete
+
+grep -c "BETA Base:  /Volumes/DATA/" AGENT_INITIALIZATION_LANDING.md
+# Expected: At least 2 mentions
+
+grep -c "JITM" AGENT_INITIALIZATION_LANDING.md
+# Expected: 20+ mentions
+
+========================================
+STEP 3: Check Documentation in aya_rag Database
+========================================
+
+PGPASSWORD='Power$$336633$$' /Library/PostgreSQL/18/bin/psql \
+  -U postgres -h alpha.tail5f2bae.ts.net -d aya_rag << 'SQL'
+
+-- Check agent_landing table
+SELECT version, content_length, is_current 
+FROM (
+  SELECT version, length(content) as content_length, is_current, created_at
+  FROM agent_landing
+  WHERE is_current = true
+) t;
+
+-- Check documentation_files
+SELECT 
+    file_name,
+    category,
+    file_size_bytes,
+    to_char(updated_at, 'YYYY-MM-DD HH24:MI:SS') as updated_at
+FROM documentation_files
+WHERE updated_at > NOW() - INTERVAL '1 hour'
+ORDER BY updated_at DESC;
+
+-- Check change_log for JITM
+SELECT id, change_type, table_affected, change_description, changed_by
+FROM change_log
+WHERE change_description LIKE '%JITM%'
+ORDER BY id DESC
+LIMIT 1;
+
+SQL
+
+Expected Results:
+- agent_landing: version 2.0, 3225+ chars, is_current=true
+- documentation_files: 6 files uploaded today
+- change_log: ID 10, JITM Docker Deployment
+
+========================================
+STEP 4: Verify JITM Folder Location
+========================================
+
+# Check correct location
+ls -la /Volumes/DATA/JITM/
+# Expected: Docker files, API code, deployment scripts
+
+# Check for files in WRONG location (should be empty or not exist)
+ls -la /Users/arthurdell/JITM/ 2>/dev/null || echo "✅ No files in wrong location"
+
+# Count JITM files
+find /Volumes/DATA/JITM -type f | wc -l
+# Expected: 24 files (after Syncthing sync from ALPHA)
+
+========================================
+STEP 5: Test Agent Turbo with Correct Path
+========================================
+
+cd /Volumes/DATA/AYA/Agent_Turbo/core
+
+python3 << 'PYEOF'
+import sys
+import os
+
+# Verify BETA path detection
+if os.path.exists('/Volumes/DATA/AYA'):
+    print("✅ BETA path detected correctly")
+    sys.path.insert(0, '/Volumes/DATA/AYA/Agent_Turbo/core')
+else:
+    print("❌ BETA path not found - something wrong")
+    sys.exit(1)
+
+# Test imports
+try:
+    from postgres_connector import PostgreSQLConnector
+    db = PostgreSQLConnector()
+    result = db.execute_query('SELECT COUNT(*) as count FROM agent_sessions', fetch=True)
+    print(f"✅ PostgreSQL connection: {result[0]['count']} sessions")
+    
+    from agent_orchestrator import AgentOrchestrator
+    orch = AgentOrchestrator()
+    context = orch.generate_landing_context()
+    print(f"✅ Agent Orchestrator: {len(context['system_nodes'])} nodes")
+    print(f"✅ Database: {context['database_stats']['total_size_mb']} MB")
+    print(f"✅ Tables: {context['database_stats']['total_tables']}")
+except Exception as e:
+    print(f"❌ Agent Turbo test failed: {e}")
+PYEOF
+
+========================================
+STEP 6: Verify JITM Tables in Database
+========================================
+
+PGPASSWORD='Power$$336633$$' /Library/PostgreSQL/18/bin/psql \
+  -U postgres -h alpha.tail5f2bae.ts.net -d aya_rag -c "
+SELECT 
+    schemaname,
+    tablename,
+    pg_size_pretty(pg_total_relation_size(schemaname||'.'||tablename)) as size
+FROM pg_tables
+WHERE tablename LIKE 'jitm_%'
+ORDER BY tablename;"
+
+Expected: 10 tables (jitm_campaigns, jitm_contracts, jitm_logistics, etc.)
+
+========================================
+STEP 7: Check Syncthing Status
+========================================
+
+# Check if Syncthing is running
+pgrep syncthing && echo "✅ Syncthing running" || echo "❌ Syncthing NOT running"
+
+# If not running, start it:
+# brew services start syncthing
+
+========================================
+STEP 8: Clean Up Wrong Location (IMPORTANT!)
+========================================
+
+# If ANY files exist in /Users/arthurdell/JITM, remove them:
+if [ -d "/Users/arthurdell/JITM" ]; then
+    echo "⚠️  Found JITM in wrong location - removing..."
+    rm -rf /Users/arthurdell/JITM
+    echo "✅ Removed from wrong location"
+fi
+
+# Verify AYA is in correct location
+if [ ! -d "/Volumes/DATA/AYA" ]; then
+    echo "❌ CRITICAL: AYA not in /Volumes/DATA/"
+    echo "Please verify Syncthing configuration"
+fi
+
+================================================================================
+EXPECTED RESULTS SUMMARY
+================================================================================
+
+After running above commands, you should see:
+
+✅ Git:
+   - Current commit: 338b8d6
+   - Agent Landing: Version 2.0
+   - BETA paths: /Volumes/DATA/ (multiple mentions)
+
+✅ Database:
+   - agent_landing: version 2.0, 3225 chars
+   - documentation_files: 6 files (89,593 bytes total)
+   - change_log: ID 10 (JITM deployment)
+   - JITM tables: 10 tables deployed
+
+✅ Agent Turbo:
+   - Path detection: BETA (/Volumes/DATA/AYA)
+   - PostgreSQL connection: Working
+   - Context generation: Working
+   - Database size: 583 MB, 120 tables
+
+✅ JITM:
+   - Location: /Volumes/DATA/JITM/ (24 files)
+   - deploy-beta.sh: Present and executable
+   - docker-compose.yml: Present
+   - Syncthing: Running and syncing
+
+✅ Cleanup:
+   - /Users/arthurdell/JITM: DELETED (wrong location)
+   - /Volumes/DATA/AYA: Present and updated
+   - /Volumes/DATA/JITM: Present and ready
+
+================================================================================
+NEXT STEPS AFTER VERIFICATION
+================================================================================
+
+Once all checks pass:
+
+1. Deploy JITM on BETA:
+   cd /Volumes/DATA/JITM
+   ./deploy-beta.sh
+
+2. Verify deployment:
+   curl http://localhost:8100/health
+   docker ps | grep jitm
+
+3. Test AI manufacturer search:
+   curl -X POST http://localhost:8100/api/v1/manufacturers/search \
+     -H "Content-Type: application/json" \
+     -d '{"query": "PCB manufacturer ISO9001", "limit": 5}'
+
+================================================================================
+DATABASE QUERY FOR LATEST DOCUMENTATION
+================================================================================
+
+Any agent on ALPHA or BETA can query the database for latest docs:
+
+PGPASSWORD='Power$$336633$$' /Library/PostgreSQL/18/bin/psql \
+  -U postgres -h alpha.tail5f2bae.ts.net -d aya_rag -c "
+SELECT content 
+FROM agent_landing 
+WHERE is_current = true;"
+
+PGPASSWORD='Power$$336633$$' /Library/PostgreSQL/18/bin/psql \
+  -U postgres -h alpha.tail5f2bae.ts.net -d aya_rag -c "
+SELECT file_name, category, file_size_bytes
+FROM documentation_files
+WHERE is_latest = true
+ORDER BY updated_at DESC;"
+
+================================================================================
+END OF VERIFICATION INSTRUCTIONS
+================================================================================
+
+All documentation now in aya_rag database.
+All paths corrected for ALPHA vs BETA.
+Ready for BETA deployment after verification.
+
