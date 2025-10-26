@@ -62,18 +62,18 @@ jobs:
       - name: Database Test
         run: |
           echo "====== DATABASE TEST ======"
-          python3 << 'PYEOF'
+          python3 -c "
 import sys
 sys.path.insert(0, '/Users/arthurdell/AYA/Agent_Turbo/core')
 try:
     from postgres_connector import PostgreSQLConnector
     db = PostgreSQLConnector()
-    result = db.execute_query("SELECT version()", fetch=True)
-    print(f"✅ Database connected: {result[0]['version'].split()[0:2]}")
+    result = db.execute_query('SELECT version()', fetch=True)
+    print(f\"✅ Database connected: {result[0]['version'].split()[0:2]}\")
 except Exception as e:
-    print(f"❌ Database connection failed: {e}")
-    exit(1)
-PYEOF
+    print(f\"❌ Database connection failed: {e}\")
+    sys.exit(1)
+"
 
   test-beta:
     name: Test BETA Runner
@@ -124,16 +124,16 @@ PYEOF
       - name: Docker Python Test
         run: |
           echo "====== DOCKER PYTHON TEST ======"
-          docker exec red_combat python3 << 'PYEOF'
+          docker exec red_combat python3 -c "
 from pathlib import Path
-pattern_dir = Path("/gladiator/data/attack_patterns/iteration_001")
+pattern_dir = Path('/gladiator/data/attack_patterns/iteration_001')
 if pattern_dir.exists():
-    files = list(pattern_dir.glob("attack_*.json"))
-    print(f"✅ Docker Python can access GLADIATOR data: {len(files)} pattern files")
+    files = list(pattern_dir.glob('attack_*.json'))
+    print(f'✅ Docker Python can access GLADIATOR data: {len(files)} pattern files')
 else:
-    print("❌ Pattern directory not accessible")
+    print('❌ Pattern directory not accessible')
     exit(1)
-PYEOF
+"
   
   test-network:
     name: Test ALPHA ↔ BETA Network
