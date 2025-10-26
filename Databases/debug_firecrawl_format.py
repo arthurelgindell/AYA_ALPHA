@@ -15,7 +15,11 @@ print("Testing Firecrawl data format...\n")
 test_url = "https://www.firecrawl.dev"
 print(f"Scraping single URL: {test_url}")
 
-result = app.scrape(test_url, formats=['markdown'], only_main_content=True)
+try:
+    result = app.scrape(test_url, formats=['markdown'], only_main_content=True)
+except Exception as e:
+    print(f"Error scraping {test_url}: {e}")
+    raise
 
 print(f"\nResult type: {type(result)}")
 print(f"Result attributes: {dir(result)}")
@@ -36,15 +40,23 @@ test_urls = [
 ]
 
 print(f"Starting batch scrape of {len(test_urls)} URLs...")
-batch_response = app.start_batch_scrape(test_urls, formats=['markdown'], only_main_content=True)
 
-batch_id = batch_response.get('id') if isinstance(batch_response, dict) else batch_response.id
-print(f"Batch ID: {batch_id}")
+try:
+    batch_response = app.start_batch_scrape(test_urls, formats=['markdown'], only_main_content=True)
+    batch_id = batch_response.get('id') if isinstance(batch_response, dict) else batch_response.id
+    print(f"Batch ID: {batch_id}")
+except Exception as e:
+    print(f"Error starting batch scrape: {e}")
+    raise
 
 import time
 while True:
-    status = app.get_batch_scrape_status(batch_id)
-    state = status.status if hasattr(status, 'status') else 'unknown'
+    try:
+        status = app.get_batch_scrape_status(batch_id)
+        state = status.status if hasattr(status, 'status') else 'unknown'
+    except Exception as e:
+        print(f"\nError checking batch status: {e}")
+        raise
 
     print(f"Status: {state}")
 
