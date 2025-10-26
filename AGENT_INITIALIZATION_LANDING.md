@@ -96,9 +96,21 @@ Pool: 2-10 connections (ThreadedConnectionPool)
 
 **For ALL Agents (Claude Code, Claude Desktop, Cursor):**
 
+**CRITICAL - System-Specific Paths:**
+- ALPHA: `/Users/arthurdell/AYA/`
+- BETA: `/Volumes/DATA/AYA/`
+
 ```python
 import sys
-sys.path.insert(0, '/Users/arthurdell/AYA/Agent_Turbo/core')
+import os
+
+# SYSTEM-SPECIFIC PATH
+if os.path.exists('/Volumes/DATA/AYA'):
+    # BETA system
+    sys.path.insert(0, '/Volumes/DATA/AYA/Agent_Turbo/core')
+else:
+    # ALPHA system
+    sys.path.insert(0, '/Users/arthurdell/AYA/Agent_Turbo/core')
 
 # Method 1: Direct PostgreSQL Access (Fastest)
 from postgres_connector import PostgreSQLConnector
@@ -157,7 +169,17 @@ print(f"Task created: {task_id}")
 
 ```python
 import sys
-sys.path.insert(0, '/Users/arthurdell/AYA/Agent_Turbo/core')
+import os
+
+# CRITICAL: System-specific paths
+# ALPHA: /Users/arthurdell/AYA/
+# BETA: /Volumes/DATA/AYA/
+if os.path.exists('/Volumes/DATA/AYA'):
+    AYA_PATH = '/Volumes/DATA/AYA'
+else:
+    AYA_PATH = '/Users/arthurdell/AYA'
+
+sys.path.insert(0, f'{AYA_PATH}/Agent_Turbo/core')
 
 # Choose your initialization method based on needs
 from postgres_connector import PostgreSQLConnector  # Direct DB access
@@ -313,7 +335,9 @@ WHERE executed_at > NOW() - INTERVAL '24 hours';
 
 ```bash
 # Check database connectivity
-cd /Users/arthurdell/AYA/Agent_Turbo/core
+# ALPHA: cd /Users/arthurdell/AYA/Agent_Turbo/core
+# BETA:  cd /Volumes/DATA/AYA/Agent_Turbo/core
+cd ${AYA_ROOT:-/Users/arthurdell/AYA}/Agent_Turbo/core
 python3 -c "from postgres_connector import PostgreSQLConnector; db = PostgreSQLConnector(); print(db.execute_query('SELECT 1', fetch=True))"
 
 # Benchmark query performance
@@ -558,8 +582,16 @@ Evidence:
 ## AYA PLATFORM FACILITIES
 
 ### Core Systems
+
+**CRITICAL - Path Structure:**
 ```
-/Users/arthurdell/AYA/
+ALPHA Base: /Users/arthurdell/
+BETA Base:  /Volumes/DATA/
+```
+
+**Repository Structure** (same on both systems, different base paths):
+```
+AYA/
 ├── Agent_Turbo/              ← Multi-agent orchestration (PostgreSQL v2.0)
 │   ├── core/
 │   │   ├── postgres_connector.py   ← PostgreSQL HA connection
@@ -569,17 +601,25 @@ Evidence:
 │   │   └── agent_turbo_gpu.py      ← MLX GPU acceleration
 │   └── scripts/                    ← Automation tools
 │
-├── JITM/                     ← Just-In-Time Manufacturing ✨NEW (2025-10-26)
-│   ├── docker/
-│   │   └── jitm-api.Dockerfile     ← FastAPI container
-│   ├── api/
-│   │   ├── main.py                 ← FastAPI application
-│   │   ├── database.py             ← PostgreSQL connection
-│   │   └── routers/                ← API endpoints (AI-powered search)
-│   ├── docker-compose.yml          ← 4-container stack per system
-│   ├── deploy-alpha.sh / deploy-beta.sh  ← Deployment automation
-│   └── README.md (505 lines)       ← Complete deployment guide
-│   Note: Syncs via Syncthing ALPHA ↔ BETA (pending Syncthing start on BETA)
+├── .github/workflows/        ← GitHub Actions workflows
+├── projects/GLADIATOR/       ← Attack pattern generation
+└── services/                 ← Supporting services
+
+JITM/ (SEPARATE from AYA)     ← Just-In-Time Manufacturing ✨NEW (2025-10-26)
+├── docker/
+│   └── jitm-api.Dockerfile        ← FastAPI container
+├── api/
+│   ├── main.py                    ← FastAPI application
+│   ├── database.py                ← PostgreSQL connection
+│   └── routers/                   ← API endpoints (AI-powered search)
+├── docker-compose.yml             ← 4-container stack per system
+├── deploy-alpha.sh / deploy-beta.sh  ← Deployment automation
+└── README.md (505 lines)          ← Complete deployment guide
+
+JITM Locations:
+  ALPHA: /Users/arthurdell/JITM
+  BETA:  /Volumes/DATA/JITM
+  Note: Syncs via Syncthing ALPHA ↔ BETA
 │
 ├── .github/workflows/        ← Execution engine (GitHub Actions)
 │   ├── reality-check.yml                  ← GLADIATOR validation
@@ -621,10 +661,15 @@ Evidence:
 Hostname: alpha.tail5f2bae.ts.net
 RAM: 512GB
 Storage: 4TB NVMe SSD
+Base Path: /Users/arthurdell/
+  ├─ AYA/ (repository)
+  ├─ JITM/ (Docker application)
+  └─ GLADIATOR/ (git repo only, NOT data)
 Docker: 
 ├─ blue_combat (Blue Team training)
-└─ gladiator-worker:v1 (Distributed workers) ✨NEW
-PostgreSQL: 18.0 (aya_rag database) ← Central Coordinator
+├─ gladiator-worker:v1 (Distributed workers)
+└─ jitm-api-alpha, jitm-worker-alpha (pending deployment)
+PostgreSQL: 18.0 (aya_rag database) ← HA Cluster Primary
 Purpose: Model fine-tuning, validation, worker coordination
 Runner: alpha-m3-ultra (operational)
 ```
@@ -633,15 +678,21 @@ Runner: alpha-m3-ultra (operational)
 ```
 Hostname: beta.tail5f2bae.ts.net
 RAM: 256GB
-Storage: 4TB + 16TB Thunderbolt (/Volumes/DATA/)
+Storage: 4TB + 16TB Thunderbolt
+Base Path: /Volumes/DATA/  ⚠️ CRITICAL - ALL BETA FILES HERE
+  ├─ AYA/ (repository)
+  ├─ JITM/ (Docker application)
+  ├─ GLADIATOR/ (actual data, 53GB, 34,155 patterns)
+  └─ Agent_Turbo/ (if deployed separately)
 Docker: 
 ├─ red_combat (Red Team generation)
-└─ gladiator-worker:v1 (Distributed workers) ✨NEW
+├─ gladiator-worker:v1 (Distributed workers)
+└─ jitm-api-beta, jitm-worker-beta (pending deployment)
 LM Studio: Qwen3-14B @ 42.5 tok/s
 Purpose: Attack pattern generation, distributed workloads
 Runner: beta-m3-ultra (operational)
-PostgreSQL Access: Remote to ALPHA via Tailscale ✨NEW
-Data Location: /Volumes/DATA/GLADIATOR/ (53GB, 34,155 patterns)
+PostgreSQL Access: Remote to ALPHA via Tailscale
+CRITICAL: NEVER use /Users/arthurdell/ on BETA - ALL files in /Volumes/DATA/
 ```
 
 **Database** (PostgreSQL HA Cluster):
@@ -792,7 +843,12 @@ Task 5 [CRITICAL]: Fine-Tuning Configuration
 
 If GitHub Actions unavailable:
 ```bash
+# ALPHA:
 cd /Users/arthurdell/AYA/gladiator-workflows
+python3 reality_check_pipeline.py
+
+# BETA:
+cd /Volumes/DATA/AYA/gladiator-workflows
 python3 reality_check_pipeline.py
 ```
 
