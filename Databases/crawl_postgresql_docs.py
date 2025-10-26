@@ -39,15 +39,18 @@ try:
     print(f"Crawl started with ID: {crawl_id}")
     print("Waiting for crawl to complete...")
 
-    # Wait for completion
+    # Wait for completion (with timeout to prevent infinite loop)
     import time
-    while True:
+    max_attempts = 720  # 1 hour at 5 second intervals
+    attempts = 0
+    
+    while attempts < max_attempts:
         status = app.get_crawl_status(crawl_id)
         state = status.status if hasattr(status, 'status') else 'unknown'
         total = status.total if hasattr(status, 'total') else 0
         completed = status.completed if hasattr(status, 'completed') else 0
 
-        print(f"Status: {state} | Progress: {completed}/{total}")
+        print(f"Status: {state} | Progress: {completed}/{total} | Attempt: {attempts}/{max_attempts}")
 
         if state == 'completed':
             # Get the final data
@@ -62,6 +65,10 @@ try:
             raise Exception(f"Crawl {state}")
 
         time.sleep(5)
+        attempts += 1
+    
+    if attempts >= max_attempts:
+        raise TimeoutError(f"Crawl timed out after {max_attempts * 5} seconds")
 
     print(f"\n✓ Crawl completed successfully!")
     print(f"Total pages crawled: {len(crawl_result.get('data', []))}")
