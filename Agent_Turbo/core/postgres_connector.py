@@ -35,11 +35,12 @@ class PostgreSQLConnector:
                       Defaults to aya_rag database on localhost
         """
         self.db_config = db_config or {
-            'host': 'localhost',
+            'host': os.getenv('DB_HOST', 'alpha.tail5f2bae.ts.net,beta.tail5f2bae.ts.net'),  # Patroni HA cluster
             'port': 5432,
             'database': 'aya_rag',
             'user': 'postgres',
-            'password': os.getenv('PGPASSWORD', 'Power$$336633$$')
+            'password': os.getenv('PGPASSWORD', 'Power$$336633$$'),
+            'target_session_attrs': 'read-write'  # Patroni: auto-connect to primary for writes
         }
         
         try:
@@ -70,6 +71,8 @@ class PostgreSQLConnector:
         """
         try:
             conn = self.pool.getconn()
+            # Ensure connection is in a clean state
+            conn.rollback()  # Clear any pending transactions
             # Register pgvector on each connection from pool
             register_vector(conn)
             return conn
@@ -115,13 +118,15 @@ class PostgreSQLConnector:
                     # Commit if this is a write operation with RETURNING
                     # (INSERT/UPDATE/DELETE with RETURNING clause)
                     query_upper = query.strip().upper()
-                    if query_upper.startswith(('INSERT', 'UPDATE', 'DELETE')) and 'RETURNING' in query_upper:
+                    if query_upper.startswith(('INSERT', 'UPDATE', 'DELETE')):
                         conn.commit()
                     # Convert RealDictRow to regular dict for easier use
                     return [dict(row) for row in results]
                 else:
                     # Commit for write operations
-                    conn.commit()
+                    query_upper = query.strip().upper()
+                    if query_upper.startswith(('INSERT', 'UPDATE', 'DELETE')):
+                        conn.commit()
                     return None
                     
         except psycopg2.Error as e:
@@ -132,6 +137,11 @@ class PostgreSQLConnector:
             raise
         finally:
             if conn:
+                # Ensure connection is in clean state before returning to pool
+                try:
+                    conn.commit()  # Commit any pending transaction
+                except:
+                    conn.rollback()  # Rollback on commit failure
                 self.release_connection(conn)
     
     def execute_many(self, query, params_list):

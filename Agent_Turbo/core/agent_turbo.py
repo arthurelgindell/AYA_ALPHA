@@ -187,8 +187,10 @@ class AgentTurbo:
     
     def preload_cache(self):
         """Preload frequently accessed files into memory-mapped cache."""
+        # Use explicit Agent_Turbo path to avoid App Translocation issues
+        agent_turbo_dir = Path(__file__).parent.parent
         target_dirs = [
-            Path.cwd(),
+            agent_turbo_dir / 'core',
             Path.home() / '.agent_turbo',
         ]
         
@@ -197,15 +199,21 @@ class AgentTurbo:
             if not base_dir.exists():
                 continue
             
-            for path in base_dir.rglob('*.py'):
-                if path.stat().st_size > 0 and files_loaded < 100:
-                    try:
-                        with open(path, 'rb') as f:
-                            self.mmap_cache[str(path)] = mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ)
-                        files_loaded += 1
-                    except Exception as e:
-                        if "cannot mmap an empty file" not in str(e):
-                            print(f"Error mapping {path}: {e}")
+            try:
+                # Use glob instead of rglob to avoid deep recursion
+                for path in base_dir.glob('*.py'):
+                    if path.stat().st_size > 0 and files_loaded < 100:
+                        try:
+                            with open(path, 'rb') as f:
+                                self.mmap_cache[str(path)] = mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ)
+                            files_loaded += 1
+                        except Exception as e:
+                            if "cannot mmap an empty file" not in str(e):
+                                print(f"Error mapping {path}: {e}")
+            except OSError as e:
+                # Skip directory if we hit filesystem limits (App Translocation, etc.)
+                print(f"⚠️  Skipping {base_dir}: {e}")
+                continue
         
         if files_loaded > 0:
             print(f"  📂 Preloaded {files_loaded} files into memory-mapped cache")
