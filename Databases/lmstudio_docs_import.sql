@@ -11,13 +11,13 @@ DROP TABLE IF EXISTS lmstudio_documentation CASCADE;
 CREATE TABLE lmstudio_documentation (
     id SERIAL PRIMARY KEY,
     url TEXT NOT NULL UNIQUE,
-    title TEXT,
+    title TEXT NOT NULL,                    -- Required for searchability
     description TEXT,
-    content TEXT,
-    markdown TEXT,
+    content TEXT NOT NULL,                  -- Core documentation content
+    markdown TEXT NOT NULL,                 -- Original markdown format
     metadata JSONB,
     crawled_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    word_count INTEGER,
+    word_count INTEGER CHECK (word_count >= 0),  -- Non-negative constraint
     section_type TEXT
 );
 
