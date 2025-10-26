@@ -10,15 +10,15 @@ DROP TABLE IF EXISTS firecrawl_docs CASCADE;
 
 CREATE TABLE firecrawl_docs (
     id SERIAL PRIMARY KEY,
-    url VARCHAR(2048) NOT NULL UNIQUE,      -- Reasonable URL length limit
-    title VARCHAR(512) NOT NULL,            -- Title constraint for index efficiency
+    url TEXT NOT NULL UNIQUE,
+    title TEXT,
     description TEXT,
-    content TEXT NOT NULL,                  -- Core content required
+    content TEXT,
     markdown TEXT,
     metadata JSONB,
     crawled_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    word_count INTEGER CHECK (word_count >= 0),
-    section_type VARCHAR(50)                -- Section type enum-like constraint
+    word_count INTEGER,
+    section_type TEXT
 );
 
 CREATE INDEX idx_firecrawl_docs_url ON firecrawl_docs(url);
