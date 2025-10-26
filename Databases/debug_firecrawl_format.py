@@ -50,7 +50,12 @@ except Exception as e:
     raise
 
 import time
-while True:
+
+# Add timeout to prevent infinite loop
+max_attempts = 360  # 30 minutes at 5 second intervals (debug script)
+attempts = 0
+
+while attempts < max_attempts:
     try:
         status = app.get_batch_scrape_status(batch_id)
         state = status.status if hasattr(status, 'status') else 'unknown'
@@ -58,7 +63,7 @@ while True:
         print(f"\nError checking batch status: {e}")
         raise
 
-    print(f"Status: {state}")
+    print(f"Status: {state} | Attempt: {attempts}/{max_attempts}")
 
     if state == 'completed':
         print(f"\nStatus type: {type(status)}")
@@ -84,4 +89,8 @@ while True:
         print(f"Batch {state}")
         break
 
-    time.sleep(2)
+    time.sleep(5)
+    attempts += 1
+
+if attempts >= max_attempts:
+    print(f"\n⚠️  Timeout: Batch scrape did not complete within {max_attempts * 5} seconds")
