@@ -606,7 +606,7 @@ LIMIT 10;
 
 **Current Capacity:**
 ```
-Hardware: Mac Studio M3 Ultra, 512GB RAM, 80-core GPU
+Hardware: Mac Studio M3 Ultra, 256GB RAM, 80-core GPU
 Current load: 8,489 chunks embedded
 Embedding service: 70 docs/sec sustained
 Database: 231 MB, plenty of headroom

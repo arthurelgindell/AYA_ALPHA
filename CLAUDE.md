@@ -31,7 +31,7 @@ AYA is a production multi-agent orchestration platform featuring Agent Turbo (co
   - Blue team training and planner execution
   - IP: 100.106.170.128 (Tailscale)
 
-- **BETA**: Mac Studio M3 Ultra (512GB RAM, 16TB SSD, 80 GPU cores)
+- **BETA**: Mac Studio M3 Ultra (256GB RAM, 16TB SSD, 80 GPU cores)
   - PostgreSQL replica
   - Red team generation and LLM inference (LM Studio)
   - IP: 100.84.202.68 (Tailscale)

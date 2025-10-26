@@ -21,7 +21,7 @@
 **Current State**:
 - ✅ Strategic pivot approved (Option A)
 - ✅ Red Team foundation: 3,134 high-quality diverse patterns
-- ✅ Infrastructure VALIDATED: ALPHA (512GB RAM), BETA (512GB RAM, 16TB SSD)
+- ✅ Infrastructure VALIDATED: ALPHA (512GB RAM), BETA (256GB RAM, 16TB SSD)
 - ✅ Qwen3-14B VALIDATED: 42.5 tok/s (141% of target)
 - ✅ GitHub Actions deployed: ALPHA & BETA runners operational
 - ✅ Smoke test PASSED: Both runners verified

@@ -49,7 +49,7 @@ AYA Platform
 
 ### Hardware
 - **ALPHA**: Mac Studio M3 Ultra (512GB RAM, Blue Team training)
-- **BETA**: Mac Studio M3 Ultra (512GB RAM, 16TB SSD, Red Team generation)
+- **BETA**: Mac Studio M3 Ultra (256GB RAM, 16TB SSD, Red Team generation)
 - **AIR**: MacBook Air M4 (Monitoring, secondary)
 
 ### Software

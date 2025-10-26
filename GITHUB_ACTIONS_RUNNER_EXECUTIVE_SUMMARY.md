@@ -19,7 +19,7 @@ GitHub Actions self-hosted runner on BETA has been operational for **3 days, 16 
 ### 1. **AUTOMATION INFRASTRUCTURE** - Value: HIGH ✅
 
 **What It Provides**:
-- Automated workflow execution on BETA's powerful hardware (M3 Ultra, 512GB RAM)
+- Automated workflow execution on BETA's powerful hardware (M3 Ultra, 256GB RAM)
 - Background job processing without manual intervention
 - Scheduled and event-driven task execution
 - Integration with GitHub repository workflows
