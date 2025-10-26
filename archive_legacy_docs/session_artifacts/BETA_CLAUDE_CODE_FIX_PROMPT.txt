@@ -1,0 +1,504 @@
+═══════════════════════════════════════════════════════════════════
+BETA PARALLEL EXECUTION - CLAUDE CODE FIX PROMPT
+═══════════════════════════════════════════════════════════════════
+
+CONTEXT: You are on BETA (100.84.202.68 / beta.tail5f2bae.ts.net)
+WORKSPACE: /Volumes/DATA/AYA
+SYSTEM: Mac Studio M3 Ultra, 256GB RAM, macOS
+DATABASE: PostgreSQL HA Cluster (Patroni) - connect to localhost
+OBJECTIVE: Enable parallel agent execution with Claude CLI authentication
+
+═══════════════════════════════════════════════════════════════════
+CURRENT STATUS
+═══════════════════════════════════════════════════════════════════
+
+✅ WORKING:
+- Worker code deployed: /Volumes/DATA/AYA/Agent_Turbo/core/task_worker.py
+- PostgreSQL HA cluster: localhost:5432 (aya_rag database)
+- Task polling from database: Working
+- Worker picking up tasks: Working
+- Launchd plist exists: ~/Library/LaunchAgents/com.aya.agent-turbo-worker.plist
+
+❌ BROKEN:
+- Claude CLI authentication: FAILING (exit code 1, "Invalid API key")
+- Tasks fail immediately when worker tries to execute them
+- ANTHROPIC_API_KEY in plist: Has placeholder "YOUR_BETA_CLAUDE_API_KEY_HERE"
+
+═══════════════════════════════════════════════════════════════════
+THE PROBLEM
+═══════════════════════════════════════════════════════════════════
+
+Worker log shows continuous failures:
+```
+ERROR: Claude CLI failed with return code 1
+ERROR: Invalid API key · Please run /login
+```
+
+When testing manually:
+```bash
+~/.npm-global/bin/claude -p 'Echo: test'
+# Output: Invalid API key · Please run /login
+```
+
+ROOT CAUSE: Claude CLI not authenticated for background service execution.
+
+═══════════════════════════════════════════════════════════════════
+MISSION: FIX CLAUDE CLI AUTHENTICATION
+═══════════════════════════════════════════════════════════════════
+
+You need to:
+1. Get Claude CLI authenticated on BETA
+2. Configure ANTHROPIC_API_KEY in launchd plist
+3. Restart worker service
+4. Verify tasks execute successfully
+
+═══════════════════════════════════════════════════════════════════
+STEP 1: GET CLAUDE API KEY
+═══════════════════════════════════════════════════════════════════
+
+Option A - Find Existing Key:
+Check if Claude CLI has stored credentials:
+```bash
+# Check for config files
+find ~ -name "*claude*" -type f 2>/dev/null | grep -i config
+ls -la ~/.config/claude/
+cat ~/.anthropic/config 2>/dev/null
+cat ~/.claude/config.json 2>/dev/null
+```
+
+Option B - Use Environment Variable:
+Check if key is already in environment:
+```bash
+echo $ANTHROPIC_API_KEY
+```
+
+Option C - Interactive Login (if above fail):
+Run Claude CLI login interactively:
+```bash
+~/.npm-global/bin/claude
+# Then use /login command
+# Follow prompts to authenticate
+```
+
+After authentication, find where the key is stored:
+```bash
+# Check common locations
+cat ~/.config/claude/config.json
+cat ~/.anthropic/config
+# Or check process environment
+ps aux | grep claude
+```
+
+Option D - Get from Console:
+If you can't find stored key, you'll need to get it from:
+https://console.anthropic.com/settings/keys
+
+═══════════════════════════════════════════════════════════════════
+STEP 2: UPDATE LAUNCHD PLIST
+═══════════════════════════════════════════════════════════════════
+
+Once you have the API key, update the plist:
+
+FILE: ~/Library/LaunchAgents/com.aya.agent-turbo-worker.plist
+
+Find this line:
+```xml
+<key>ANTHROPIC_API_KEY</key>
+<string>YOUR_BETA_CLAUDE_API_KEY_HERE</string>
+```
+
+Replace with your actual key:
+```xml
+<key>ANTHROPIC_API_KEY</key>
+<string>sk-ant-api03-YOUR_ACTUAL_KEY_HERE</string>
+```
+
+CRITICAL: Make sure the key is inside the <EnvironmentVariables> section.
+
+Full plist should look like this (with your real key):
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.aya.agent-turbo-worker</string>
+    
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/bin/python3</string>
+        <string>/Volumes/DATA/AYA/Agent_Turbo/core/task_worker.py</string>
+    </array>
+    
+    <key>WorkingDirectory</key>
+    <string>/Volumes/DATA/AYA/Agent_Turbo/core</string>
+    
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>MAX_CONCURRENT_AGENTS</key>
+        <string>5</string>
+        <key>POLL_INTERVAL</key>
+        <string>1.0</string>
+        
+        <key>DB_HOST</key>
+        <string>localhost</string>
+        <key>PGHOST</key>
+        <string>localhost</string>
+        <key>PGPORT</key>
+        <string>5432</string>
+        <key>PGDATABASE</key>
+        <string>aya_rag</string>
+        <key>PGUSER</key>
+        <string>postgres</string>
+        <key>PGPASSWORD</key>
+        <string>Power$$336633$$</string>
+        
+        <key>CLAUDE_CLI_PATH</key>
+        <string>/Users/arthurdell/.npm-global/bin/claude</string>
+        
+        <key>ANTHROPIC_API_KEY</key>
+        <string>sk-ant-api03-YOUR_REAL_KEY_HERE</string>
+        
+        <key>PATH</key>
+        <string>/Users/arthurdell/.npm-global/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+        
+        <key>PYTHONPATH</key>
+        <string>/Volumes/DATA/AYA/Agent_Turbo/core</string>
+    </dict>
+    
+    <key>StandardOutPath</key>
+    <string>/Users/arthurdell/Library/Logs/AgentTurbo/worker.log</string>
+    
+    <key>StandardErrorPath</key>
+    <string>/Users/arthurdell/Library/Logs/AgentTurbo/worker.log</string>
+    
+    <key>RunAtLoad</key>
+    <true/>
+    
+    <key>KeepAlive</key>
+    <dict>
+        <key>SuccessfulExit</key>
+        <false/>
+    </dict>
+    
+    <key>ProcessType</key>
+    <string>Background</string>
+    
+    <key>ThrottleInterval</key>
+    <integer>10</integer>
+</dict>
+</plist>
+```
+
+═══════════════════════════════════════════════════════════════════
+STEP 3: STOP CURRENT WORKER
+═══════════════════════════════════════════════════════════════════
+
+Stop the manually started worker:
+```bash
+# Kill the current worker process
+pkill -f task_worker.py
+
+# Verify it's stopped
+ps aux | grep task_worker | grep -v grep
+# Should return nothing
+```
+
+═══════════════════════════════════════════════════════════════════
+STEP 4: DEPLOY LAUNCHD PLIST TO BETA
+═══════════════════════════════════════════════════════════════════
+
+The plist needs to be in the LaunchAgents directory:
+```bash
+# Copy from workspace to LaunchAgents
+cp /Volumes/DATA/AYA/Agent_Turbo/config/com.aya.agent-turbo-worker.plist \
+   ~/Library/LaunchAgents/
+
+# Verify permissions
+chmod 644 ~/Library/LaunchAgents/com.aya.agent-turbo-worker.plist
+
+# Verify the file
+cat ~/Library/LaunchAgents/com.aya.agent-turbo-worker.plist
+```
+
+═══════════════════════════════════════════════════════════════════
+STEP 5: START LAUNCHD SERVICE
+═══════════════════════════════════════════════════════════════════
+
+Load and start the service:
+```bash
+# Unload first (in case it's already loaded)
+launchctl unload ~/Library/LaunchAgents/com.aya.agent-turbo-worker.plist 2>/dev/null
+
+# Create log directory
+mkdir -p ~/Library/Logs/AgentTurbo
+
+# Load the service
+launchctl load ~/Library/LaunchAgents/com.aya.agent-turbo-worker.plist
+
+# Verify it's running
+launchctl list | grep com.aya.agent-turbo-worker
+# Should show: PID  Status  Label
+
+# Check the process
+ps aux | grep task_worker | grep -v grep
+```
+
+═══════════════════════════════════════════════════════════════════
+STEP 6: VERIFY AUTHENTICATION WORKS
+═══════════════════════════════════════════════════════════════════
+
+Test Claude CLI with the environment variable:
+```bash
+# Test with explicit API key
+ANTHROPIC_API_KEY="sk-ant-api03-YOUR_KEY" \
+  ~/.npm-global/bin/claude -p 'Echo: authentication test'
+
+# Should output something, NOT "Invalid API key"
+```
+
+If this works, the launchd service should work too.
+
+═══════════════════════════════════════════════════════════════════
+STEP 7: MONITOR WORKER LOGS
+═══════════════════════════════════════════════════════════════════
+
+Watch the worker log in real-time:
+```bash
+tail -f ~/Library/Logs/AgentTurbo/worker.log
+```
+
+Look for:
+✅ GOOD: "Task worker initialized"
+✅ GOOD: "Worker loop started"
+✅ GOOD: "Task assigned"
+✅ GOOD: "Spawning Claude CLI"
+✅ GOOD: "Task completed successfully"
+
+❌ BAD: "Invalid API key"
+❌ BAD: "Claude CLI failed with return code 1"
+
+═══════════════════════════════════════════════════════════════════
+STEP 8: CREATE TEST TASK
+═══════════════════════════════════════════════════════════════════
+
+From BETA, create a test task to verify end-to-end:
+```bash
+cd /Volumes/DATA/AYA/Agent_Turbo/core
+
+python3 << 'EOF'
+from postgres_connector import PostgreSQLConnector
+import uuid
+
+db = PostgreSQLConnector()
+task_id = f'beta_auth_test_{uuid.uuid4().hex[:8]}'
+
+db.execute_query('''
+    INSERT INTO agent_tasks (
+        task_id,
+        task_type,
+        task_description,
+        status,
+        task_priority
+    ) VALUES (%s, %s, %s, %s, %s)
+''', (
+    task_id,
+    'verification',
+    'Echo: BETA Claude CLI authentication successful',
+    'pending',
+    100
+), fetch=False)
+
+print(f'✅ Created test task: {task_id}')
+print('Watch worker log: tail -f ~/Library/Logs/AgentTurbo/worker.log')
+EOF
+```
+
+═══════════════════════════════════════════════════════════════════
+STEP 9: VERIFY TASK COMPLETION
+═══════════════════════════════════════════════════════════════════
+
+Check task status in database:
+```bash
+psql -h localhost -U postgres -d aya_rag -c "
+  SELECT 
+    task_id,
+    status,
+    assigned_worker_id,
+    created_at,
+    completed_at,
+    error_message
+  FROM agent_tasks
+  WHERE task_id LIKE 'beta_auth_test%'
+  ORDER BY created_at DESC
+  LIMIT 5;
+"
+```
+
+Expected output:
+- status: 'completed' (NOT 'failed')
+- assigned_worker_id: Should contain 'beta' or your hostname
+- completed_at: Should have timestamp
+- error_message: Should be NULL
+
+═══════════════════════════════════════════════════════════════════
+STEP 10: VERIFY DISTRIBUTED EXECUTION
+═══════════════════════════════════════════════════════════════════
+
+Check that both ALPHA and BETA are processing tasks:
+```bash
+psql -h localhost -U postgres -d aya_rag -c "
+  SELECT 
+    CASE 
+      WHEN assigned_worker_id LIKE '%alpha%' THEN 'ALPHA'
+      WHEN assigned_worker_id LIKE '%beta%' THEN 'BETA'
+      ELSE assigned_worker_id
+    END as system,
+    status,
+    COUNT(*) as count
+  FROM agent_tasks 
+  WHERE created_at > NOW() - INTERVAL '1 hour'
+  GROUP BY 1, 2
+  ORDER BY 1, 2;
+"
+```
+
+Expected output:
+```
+ system | status    | count 
+--------+-----------+-------
+ ALPHA  | completed |   X
+ BETA   | completed |   Y   <-- Should see BETA here!
+```
+
+═══════════════════════════════════════════════════════════════════
+TROUBLESHOOTING
+═══════════════════════════════════════════════════════════════════
+
+If Still Failing After Steps Above:
+
+1. Check plist was actually updated:
+```bash
+grep ANTHROPIC_API_KEY ~/Library/LaunchAgents/com.aya.agent-turbo-worker.plist
+# Should NOT show "YOUR_BETA_CLAUDE_API_KEY_HERE"
+```
+
+2. Check service is using the plist:
+```bash
+launchctl list | grep agent-turbo
+# Should show status 0 and a PID
+```
+
+3. Check worker is actually running:
+```bash
+ps aux | grep task_worker
+# Should show process running
+```
+
+4. Check PostgreSQL connectivity:
+```bash
+psql -h localhost -U postgres -d aya_rag -c "SELECT 1;"
+# Should return 1
+```
+
+5. Check Claude CLI path:
+```bash
+ls -la /Users/arthurdell/.npm-global/bin/claude
+# Should exist and be executable
+```
+
+6. Test Claude CLI manually with API key:
+```bash
+ANTHROPIC_API_KEY="your_actual_key" \
+  /Users/arthurdell/.npm-global/bin/claude -p "Echo: manual test"
+# Should work without error
+```
+
+7. Check worker log for specific errors:
+```bash
+tail -100 ~/Library/Logs/AgentTurbo/worker.log | grep -i error
+```
+
+8. Restart the service:
+```bash
+launchctl unload ~/Library/LaunchAgents/com.aya.agent-turbo-worker.plist
+sleep 2
+launchctl load ~/Library/LaunchAgents/com.aya.agent-turbo-worker.plist
+```
+
+═══════════════════════════════════════════════════════════════════
+SUCCESS CRITERIA
+═══════════════════════════════════════════════════════════════════
+
+When successful, you should see:
+
+✅ Claude CLI works with ANTHROPIC_API_KEY set
+✅ Launchd service running (shows in launchctl list)
+✅ Worker log shows "Task completed successfully"
+✅ Database shows tasks completed by BETA worker
+✅ No "Invalid API key" errors in logs
+✅ Tasks distribute across ALPHA and BETA
+
+═══════════════════════════════════════════════════════════════════
+QUICK VERIFICATION COMMANDS
+═══════════════════════════════════════════════════════════════════
+
+Run these to verify everything:
+
+# 1. Check service status
+launchctl list | grep agent-turbo
+
+# 2. Check worker process
+ps aux | grep task_worker | grep -v grep
+
+# 3. Check recent log entries
+tail -20 ~/Library/Logs/AgentTurbo/worker.log
+
+# 4. Check task distribution
+psql -h localhost -U postgres -d aya_rag -c "
+  SELECT 
+    CASE WHEN assigned_worker_id LIKE '%beta%' THEN 'BETA' ELSE 'OTHER' END,
+    COUNT(*) 
+  FROM agent_tasks 
+  WHERE created_at > NOW() - INTERVAL '1 hour'
+  GROUP BY 1;
+"
+
+═══════════════════════════════════════════════════════════════════
+IMPORTANT NOTES
+═══════════════════════════════════════════════════════════════════
+
+1. SECURITY: The API key will be in plain text in the plist file.
+   File permissions (644) restrict it to your user, but be aware.
+
+2. DATABASE: Connect to localhost, NOT alpha.tail5f2bae.ts.net.
+   PostgreSQL is an HA cluster - both systems have local instances.
+
+3. SYNCTHING: /Volumes/DATA/AYA syncs from ALPHA. Don't edit files
+   there directly - they'll be overwritten. The plist in ~/Library
+   is the correct place.
+
+4. SEPARATE SUBSCRIPTIONS: ALPHA and BETA have separate Claude Pro
+   subscriptions. Each needs its own ANTHROPIC_API_KEY.
+
+5. WORKER IDENTITY: Worker identifies using socket.gethostname().
+   Verify with: python3 -c "import socket; print(socket.gethostname())"
+
+═══════════════════════════════════════════════════════════════════
+POST-FIX ACTIONS
+═══════════════════════════════════════════════════════════════════
+
+After BETA is working:
+
+1. Update documentation to reflect completed deployment
+2. Create 10 test tasks to verify load distribution
+3. Monitor for 24 hours to ensure stability
+4. Plan Phase 3: Scale to 30 concurrent (15 per system)
+
+═══════════════════════════════════════════════════════════════════
+END OF CLAUDE CODE FIX PROMPT
+═══════════════════════════════════════════════════════════════════
+
+EXECUTE THESE STEPS IN ORDER. VERIFY EACH STEP BEFORE PROCEEDING.
+REPORT BACK WITH RESULTS.
+

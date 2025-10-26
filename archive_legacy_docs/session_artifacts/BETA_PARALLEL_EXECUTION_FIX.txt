@@ -1,0 +1,315 @@
+═══════════════════════════════════════════════════════════════════
+BETA PARALLEL EXECUTION - CONFIGURATION FIX
+═══════════════════════════════════════════════════════════════════
+
+SYSTEM: BETA (Mac Studio M3 Ultra, 256GB RAM)
+TAILSCALE: 100.84.202.68 / beta.tail5f2bae.ts.net
+WORKSPACE: /Volumes/DATA/AYA
+DATABASE: PostgreSQL HA Cluster (Patroni, synchronized across ALPHA+BETA)
+
+───────────────────────────────────────────────────────────────────
+CURRENT STATUS
+───────────────────────────────────────────────────────────────────
+
+✅ WORKING:
+- Agent Turbo worker is deployed to BETA
+- Database coordination working (task polling successful)
+- BETA worker picking up tasks from queue
+- Task failover working (BETA failures → ALPHA completes)
+
+❌ BROKEN:
+1. Claude CLI authentication failing (exit code 1: "Invalid API key")
+2. BETA launchd config has incorrect environment variables
+3. BETA launchd config missing database host configuration
+
+───────────────────────────────────────────────────────────────────
+ISSUE #1: CLAUDE CLI AUTHENTICATION
+───────────────────────────────────────────────────────────────────
+
+SYMPTOM:
+Every task execution fails with:
+  ERROR: Claude CLI failed with return code 1
+  ERROR: Invalid API key · Please run /login
+
+CURRENT STATE:
+- Claude CLI installed: ~/.npm-global/bin/claude (v2.0.26)
+- When run from SSH: Works interactively
+- When run from launchd service: Authentication fails
+
+ROOT CAUSE:
+Claude CLI uses keychain/environment authentication that's available
+in interactive sessions but not in launchd background services.
+
+FIX REQUIRED:
+Authenticate Claude CLI and ensure API key is accessible to background
+service. Options:
+
+A. Export ANTHROPIC_API_KEY environment variable in launchd plist
+B. Run `claude` login interactively, then configure launchd to access
+   the stored credentials
+C. Use alternative authentication method for headless execution
+
+VERIFY:
+ssh arthurdell@100.84.202.68 "~/.npm-global/bin/claude -p 'Echo: test'"
+
+This should work WITHOUT prompting for login.
+
+───────────────────────────────────────────────────────────────────
+ISSUE #2: INCORRECT LAUNCHD CONFIGURATION
+───────────────────────────────────────────────────────────────────
+
+CURRENT FILE: ~/Library/LaunchAgents/com.aya.agent-turbo-worker.plist
+
+PROBLEMS:
+1. PATH points to NVM directory that doesn't exist on BETA:
+   /Users/arthurdell/.nvm/versions/node/v24.9.0/bin
+   
+2. Missing CLAUDE_CLI_PATH environment variable
+   Should be: /Users/arthurdell/.npm-global/bin/claude
+   
+3. Missing DB_HOST environment variable
+   PostgreSQL is a HA cluster, need to specify connection target
+
+CORRECTED LAUNCHD PLIST:
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.aya.agent-turbo-worker</string>
+    
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/bin/python3</string>
+        <string>/Volumes/DATA/AYA/Agent_Turbo/core/task_worker.py</string>
+    </array>
+    
+    <key>WorkingDirectory</key>
+    <string>/Volumes/DATA/AYA/Agent_Turbo/core</string>
+    
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>MAX_CONCURRENT_AGENTS</key>
+        <string>5</string>
+        <key>POLL_INTERVAL</key>
+        <string>1.0</string>
+        <key>PGPASSWORD</key>
+        <string>Power$$336633$$</string>
+        <key>DB_HOST</key>
+        <string>localhost</string>
+        <key>CLAUDE_CLI_PATH</key>
+        <string>/Users/arthurdell/.npm-global/bin/claude</string>
+        <key>PATH</key>
+        <string>/Users/arthurdell/.npm-global/bin:/usr/local/bin:/usr/bin:/bin</string>
+        <key>ANTHROPIC_API_KEY</key>
+        <string>YOUR_BETA_CLAUDE_API_KEY_HERE</string>
+    </dict>
+    
+    <key>StandardOutPath</key>
+    <string>/Users/arthurdell/Library/Logs/AgentTurbo/worker.log</string>
+    
+    <key>StandardErrorPath</key>
+    <string>/Users/arthurdell/Library/Logs/AgentTurbo/worker.log</string>
+    
+    <key>RunAtLoad</key>
+    <true/>
+    
+    <key>KeepAlive</key>
+    <dict>
+        <key>SuccessfulExit</key>
+        <false/>
+    </dict>
+    
+    <key>ProcessType</key>
+    <string>Background</string>
+</dict>
+</plist>
+
+───────────────────────────────────────────────────────────────────
+ISSUE #3: DATABASE HOST CONFIGURATION
+───────────────────────────────────────────────────────────────────
+
+CRITICAL CORRECTION:
+PostgreSQL is NOT centralized on ALPHA. It's a HA CLUSTER using
+Patroni with synchronous replication across ALPHA and BETA.
+
+ARCHITECTURE:
+- ALPHA: PostgreSQL primary (or standby, depending on failover state)
+- BETA: PostgreSQL standby (or primary, depending on failover state)
+- Patroni: Manages automatic failover between systems
+- Both systems: Full read/write capability via local connection
+
+BETA SHOULD CONNECT TO LOCALHOST:
+Since PostgreSQL HA cluster is running on BETA itself, the worker
+should connect to localhost:5432, NOT to ALPHA's Tailscale address.
+
+DB_HOST should be: localhost (or 127.0.0.1)
+
+VERIFY BETA POSTGRESQL:
+1. Check PostgreSQL is running locally:
+   pg_isready -h localhost -p 5432
+   
+2. Verify database connection:
+   psql -h localhost -U postgres -d aya_rag -c "SELECT 1;"
+   
+3. Check Patroni cluster status:
+   patronictl -c /etc/patroni.yml list
+
+───────────────────────────────────────────────────────────────────
+EXECUTION PLAN
+───────────────────────────────────────────────────────────────────
+
+Step 1: Authenticate Claude CLI
+-------------------------------
+Find where BETA's Claude subscription API key is stored or obtain it,
+then add ANTHROPIC_API_KEY to launchd plist environment variables.
+
+Alternative: Run `claude` interactively to complete /login, then
+verify the stored credentials work for background processes.
+
+Step 2: Update LaunchAgent Configuration
+-----------------------------------------
+1. Stop current worker service:
+   launchctl unload ~/Library/LaunchAgents/com.aya.agent-turbo-worker.plist
+
+2. Update plist file with corrected environment variables:
+   - DB_HOST=localhost
+   - CLAUDE_CLI_PATH=/Users/arthurdell/.npm-global/bin/claude
+   - PATH=/Users/arthurdell/.npm-global/bin:/usr/local/bin:/usr/bin:/bin
+   - ANTHROPIC_API_KEY=<BETA_KEY>
+
+3. Reload service:
+   launchctl load ~/Library/LaunchAgents/com.aya.agent-turbo-worker.plist
+
+Step 3: Verify PostgreSQL Connectivity
+---------------------------------------
+Confirm BETA can connect to local PostgreSQL HA cluster node:
+
+psql -h localhost -U postgres -d aya_rag -c "
+  SELECT COUNT(*) FROM agent_tasks WHERE status = 'pending';
+"
+
+Step 4: Test Worker Execution
+------------------------------
+1. Create test task from ALPHA or BETA:
+   cd /Volumes/DATA/AYA/Agent_Turbo/core
+   python3 -c "
+   from postgres_connector import PostgreSQLConnector
+   import uuid
+   db = PostgreSQLConnector()
+   task_id = f'beta_test_{uuid.uuid4().hex[:8]}'
+   db.execute_query('''
+     INSERT INTO agent_tasks (task_id, task_type, task_description, status)
+     VALUES (%s, %s, %s, %s)
+   ''', (task_id, 'test', 'Echo: BETA worker test', 'pending'), fetch=False)
+   print(f'Created task: {task_id}')
+   "
+
+2. Monitor BETA worker log:
+   tail -f ~/Library/Logs/AgentTurbo/worker.log
+
+3. Verify task completion in database:
+   psql -h localhost -U postgres -d aya_rag -c "
+     SELECT task_id, status, assigned_worker_id, completed_at
+     FROM agent_tasks
+     WHERE task_id LIKE 'beta_test_%'
+     ORDER BY created_at DESC LIMIT 5;
+   "
+
+Step 5: Verify Distributed Execution
+-------------------------------------
+Once BETA worker is functional, create 10 test tasks and verify
+they distribute across ALPHA (5) and BETA (5):
+
+psql -h localhost -U postgres -d aya_rag -c "
+  SELECT 
+    CASE 
+      WHEN assigned_worker_id LIKE '%alpha%' THEN 'ALPHA'
+      WHEN assigned_worker_id LIKE '%beta%' THEN 'BETA'
+      ELSE 'UNKNOWN'
+    END as system,
+    COUNT(*) as active_tasks
+  FROM agent_tasks 
+  WHERE status = 'running'
+  GROUP BY 1;
+"
+
+Expected: ALPHA: 5, BETA: 5 (or distribution based on queue timing)
+
+───────────────────────────────────────────────────────────────────
+CRITICAL NOTES
+───────────────────────────────────────────────────────────────────
+
+1. PostgreSQL HA Cluster:
+   Both ALPHA and BETA run PostgreSQL with Patroni managing failover.
+   Workers should ALWAYS connect to localhost, not Tailscale addresses.
+
+2. Claude API Keys:
+   ALPHA and BETA have separate Claude Code subscriptions.
+   Each system needs its own ANTHROPIC_API_KEY configured.
+
+3. File Permissions:
+   BETA's /Volumes/DATA/AYA is synced from ALPHA via Syncthing.
+   LaunchAgent may have issues with noowners flag - verify access:
+   ls -la /Volumes/DATA/AYA/Agent_Turbo/core/task_worker.py
+
+4. Worker Identity:
+   Worker identifies itself using socket.gethostname().
+   Verify this returns a distinguishable name:
+   python3 -c "import socket; print(socket.gethostname())"
+
+───────────────────────────────────────────────────────────────────
+SUCCESS CRITERIA
+───────────────────────────────────────────────────────────────────
+
+After fixes applied, verify:
+
+✅ BETA worker log shows successful Claude CLI executions
+✅ Tasks assigned to BETA complete (not just fail and requeue)
+✅ Database shows both ALPHA and BETA as assigned_worker_id values
+✅ 10 concurrent tasks distribute across both systems
+✅ No authentication errors in logs
+✅ No database connection errors in logs
+
+───────────────────────────────────────────────────────────────────
+FILES TO UPDATE
+───────────────────────────────────────────────────────────────────
+
+1. ~/Library/LaunchAgents/com.aya.agent-turbo-worker.plist
+   - Add DB_HOST=localhost
+   - Add CLAUDE_CLI_PATH=/Users/arthurdell/.npm-global/bin/claude
+   - Fix PATH to use .npm-global, not .nvm
+   - Add ANTHROPIC_API_KEY
+
+2. Verify Agent_Turbo/core/postgres_connector.py has:
+   'host': os.getenv('DB_HOST', 'localhost')
+   
+3. Verify Agent_Turbo/core/claude_executor.py has:
+   self.claude_path = claude_path or os.getenv('CLAUDE_CLI_PATH') or ...
+
+───────────────────────────────────────────────────────────────────
+POST-FIX VALIDATION
+───────────────────────────────────────────────────────────────────
+
+Run this validation query to confirm distributed execution:
+
+psql -h localhost -U postgres -d aya_rag -c "
+  SELECT 
+    status,
+    COUNT(*) as count,
+    STRING_AGG(DISTINCT assigned_worker_id, ', ') as workers
+  FROM agent_tasks 
+  WHERE created_at > NOW() - INTERVAL '1 hour'
+  GROUP BY status
+  ORDER BY status;
+"
+
+Expected output should show tasks completed by both:
+- alpha.tail5f2bae.ts.net
+- beta.tail5f2bae.ts.net (or BETA's actual hostname)
+
+═══════════════════════════════════════════════════════════════════
+END OF BETA CONFIGURATION FIX INSTRUCTIONS
+═══════════════════════════════════════════════════════════════════
+

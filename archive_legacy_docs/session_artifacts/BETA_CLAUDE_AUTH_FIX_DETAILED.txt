@@ -1,0 +1,448 @@
+═══════════════════════════════════════════════════════════════════
+BETA CLAUDE CLI AUTHENTICATION - DETAILED FIX PROMPT
+═══════════════════════════════════════════════════════════════════
+
+SYSTEM: BETA (Mac Studio M3 Ultra, 256GB RAM)
+LOCATION: /Volumes/DATA/AYA
+ISSUE: Claude CLI authentication works interactively but NOT in background processes
+OBJECTIVE: Make Claude CLI accessible to task_worker.py background processes
+
+═══════════════════════════════════════════════════════════════════
+VERIFIED FACTS
+═══════════════════════════════════════════════════════════════════
+
+✅ WORKING ON ALPHA:
+- Claude CLI at: /Users/arthurdell/.nvm/versions/node/v24.9.0/bin/claude
+- Background worker can execute Claude CLI WITHOUT API key
+- Worker spawns claude subprocess successfully
+- Authentication works via session (no ANTHROPIC_API_KEY needed)
+
+❌ FAILING ON BETA:
+- Claude CLI at: /Users/arthurdell/.npm-global/bin/claude
+- Interactive sessions: Claude CLI WORKS (3 active sessions found)
+  - PID 50146 in s000
+  - PID 86656 in s014 (cwd: /Volumes/DATA/AYA)
+  - PID 61950 in s009
+- Background worker: Claude CLI returns "Invalid API key · Please run /login"
+- Claude Desktop app IS RUNNING (PID 25823)
+- Worker spawns claude but subprocess has no authentication
+
+TESTED SCENARIOS:
+1. SSH to BETA → run claude → FAILS (Invalid API key)
+2. SSH to BETA in home dir → run claude → FAILS
+3. SSH to BETA in /Volumes/DATA/AYA → run claude → FAILS
+4. Interactive terminal sessions on BETA → claude WORKS
+5. Background python subprocess spawning claude → FAILS
+
+═══════════════════════════════════════════════════════════════════
+ROOT CAUSE HYPOTHESIS
+═══════════════════════════════════════════════════════════════════
+
+ALPHA vs BETA Authentication Difference:
+
+ALPHA:
+- Claude CLI installed via nvm (per-user node installation)
+- Session authentication stored in user-accessible location
+- Background processes inherit authentication context
+
+BETA:
+- Claude CLI installed via npm global (system-wide installation)
+- Claude Desktop app running (stores auth in Application Support)
+- SSH sessions and background processes CANNOT access Desktop app auth
+- Authentication tied to GUI login session, not shell environment
+
+LIKELY CAUSES:
+1. macOS Keychain access restrictions for SSH/background processes
+2. Claude CLI looking for auth in Desktop app's Application Support
+3. File permissions on ~/.config/claude or similar auth storage
+4. SSH session not inheriting user's GUI session environment
+5. Launchd/background processes running in different security context
+
+═══════════════════════════════════════════════════════════════════
+INVESTIGATION STEPS
+═══════════════════════════════════════════════════════════════════
+
+Step 1: Find Where Claude Stores Authentication
+-----------------------------------------------
+
+Check all possible authentication storage locations:
+
+```bash
+# Check for Claude config directories
+ls -la ~/.config/ | grep -i claude
+ls -la ~/Library/Application\ Support/Claude/
+ls -la ~/.claude/
+ls -la ~/.anthropic/
+
+# Check for auth tokens/session files
+find ~ -name "*claude*" -type f 2>/dev/null | grep -E "(auth|token|session|config)" | head -20
+
+# Check environment variables in working sessions
+# In one of the interactive claude sessions:
+env | grep -i claude
+env | grep -i anthropic
+
+# Check if Claude Desktop stores auth
+ls -la ~/Library/Application\ Support/Claude/
+cat ~/Library/Application\ Support/Claude/Preferences 2>/dev/null
+```
+
+Step 2: Compare Auth Access Between Interactive and SSH
+-------------------------------------------------------
+
+```bash
+# Test 1: From interactive terminal where claude works
+whoami
+pwd
+env | grep -E "(HOME|USER|SSH|DISPLAY)" | sort
+
+# Test 2: From SSH session
+ssh arthurdell@100.84.202.68 'whoami; pwd; env | grep -E "(HOME|USER|SSH|DISPLAY)" | sort'
+
+# Test 3: Check keychain access
+security dump-keychain 2>&1 | grep -i claude
+
+# Test 4: Check if Desktop app auth is accessible
+ps aux | grep -i claude | grep -v grep
+lsof -p <CLAUDE_DESKTOP_PID> | grep -E "(config|auth|token)"
+```
+
+Step 3: Test Authentication Inheritance
+---------------------------------------
+
+```bash
+# Test if spawned subprocess can access auth
+# From interactive terminal where claude works:
+python3 << 'EOF'
+import subprocess
+result = subprocess.run(
+    ['/Users/arthurdell/.npm-global/bin/claude', '-p', 'Echo: subprocess test'],
+    capture_output=True,
+    text=True
+)
+print("STDOUT:", result.stdout)
+print("STDERR:", result.stderr)
+print("Return code:", result.returncode)
+EOF
+
+# If that works, test from SSH:
+ssh arthurdell@100.84.202.68 "python3 << 'EOF'
+import subprocess
+result = subprocess.run(
+    ['/Users/arthurdell/.npm-global/bin/claude', '-p', 'Echo: SSH subprocess test'],
+    capture_output=True,
+    text=True
+)
+print('STDOUT:', result.stdout)
+print('STDERR:', result.stderr)
+print('Return code:', result.returncode)
+EOF
+"
+```
+
+Step 4: Check File Permissions and Ownership
+--------------------------------------------
+
+```bash
+# Check Claude CLI permissions
+ls -la /Users/arthurdell/.npm-global/bin/claude
+file /Users/arthurdell/.npm-global/bin/claude
+
+# Check Application Support permissions
+ls -la ~/Library/Application\ Support/Claude/
+find ~/Library/Application\ Support/Claude/ -type f -exec ls -la {} \; | head -20
+
+# Check if worker user can read auth files
+stat ~/Library/Application\ Support/Claude/Cookies 2>/dev/null
+stat ~/Library/Application\ Support/Claude/Local\ Storage/ 2>/dev/null
+```
+
+═══════════════════════════════════════════════════════════════════
+SOLUTION STRATEGIES
+═══════════════════════════════════════════════════════════════════
+
+Solution A: Enable Keychain Access for SSH/Background Processes
+---------------------------------------------------------------
+
+If auth is in macOS Keychain:
+
+```bash
+# Check keychain for Claude credentials
+security find-generic-password -l "Claude" 2>&1
+security find-internet-password -s "claude.ai" 2>&1
+
+# If found, make it accessible to SSH sessions
+# Add to ~/.ssh/environment (if SSH permits)
+echo "ANTHROPIC_API_KEY=$(security find-generic-password -w -l 'Claude')" >> ~/.ssh/environment
+
+# Or export in shell profile
+echo "export ANTHROPIC_API_KEY=$(security find-generic-password -w -l 'Claude')" >> ~/.zshrc
+```
+
+Solution B: Copy Authentication from Interactive Session
+--------------------------------------------------------
+
+If one of the interactive claude sessions (PID 86656) has working auth:
+
+```bash
+# Find auth files used by working session
+lsof -p 86656 | grep -E "(config|auth|\.claude)"
+
+# Copy auth to location accessible by background processes
+# Example if using ~/.config/claude:
+mkdir -p ~/.config/claude
+cp -r <AUTH_LOCATION> ~/.config/claude/
+
+# Set correct permissions
+chmod 700 ~/.config/claude
+chmod 600 ~/.config/claude/*
+```
+
+Solution C: Use Claude Desktop's Authentication
+----------------------------------------------
+
+Claude Desktop app (PID 25823) has valid authentication. Make it accessible:
+
+```bash
+# Option 1: Symlink Desktop app's auth to CLI location
+# Find where CLI looks for auth
+strings /Users/arthurdell/.npm-global/bin/claude | grep -E "(config|\.claude|anthropic)"
+
+# Create symlink if needed
+ln -s ~/Library/Application\ Support/Claude/.auth ~/.config/claude/config
+
+# Option 2: Set environment to point to Desktop app auth
+export CLAUDE_CONFIG_DIR=~/Library/Application\ Support/Claude
+```
+
+Solution D: Run Worker in Interactive Terminal Context
+------------------------------------------------------
+
+Make background worker inherit terminal session authentication:
+
+```bash
+# Option 1: Use tmux/screen to run worker in persistent terminal
+tmux new-session -d -s beta-worker
+tmux send-keys -t beta-worker "cd ~/AYA/Agent_Turbo/core && python3 task_worker.py" Enter
+
+# Option 2: Use launchd with UserName and SessionCreate
+# Modify plist to run in user GUI session context:
+<key>SessionCreate</key>
+<true/>
+<key>KeepAlive</key>
+<dict>
+    <key>SuccessfulExit</key>
+    <false/>
+</dict>
+```
+
+Solution E: Direct Claude CLI Installation (Match ALPHA)
+--------------------------------------------------------
+
+Install Claude CLI the same way as ALPHA (via nvm):
+
+```bash
+# Check if nvm is available on BETA
+which nvm
+nvm --version
+
+# If not, install nvm
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+
+# Install node via nvm (match ALPHA version)
+nvm install v24.9.0
+nvm use v24.9.0
+
+# Install Claude CLI via npx (not global npm)
+npx -y @anthropic-ai/claude
+
+# Verify authentication works
+claude -p "Echo: nvm installation test"
+
+# If it works, update worker to use nvm path
+# Update CLAUDE_CLI_PATH in plist to nvm path
+```
+
+Solution F: Extract and Set Session Token
+-----------------------------------------
+
+If Claude stores session token in accessible format:
+
+```bash
+# Look for session tokens in working sessions
+lsof -p 86656 | grep -E "\.json|token"
+
+# Check Claude Desktop's stored credentials
+sqlite3 ~/Library/Application\ Support/Claude/Cookies \
+  "SELECT name, value FROM cookies WHERE host_key LIKE '%claude%' OR host_key LIKE '%anthropic%';"
+
+# If found, set as environment variable
+export ANTHROPIC_SESSION_TOKEN="<extracted_token>"
+
+# Or create config file Claude CLI expects
+mkdir -p ~/.config/claude
+echo '{"session_token": "<extracted_token>"}' > ~/.config/claude/config.json
+chmod 600 ~/.config/claude/config.json
+```
+
+═══════════════════════════════════════════════════════════════════
+RECOMMENDED APPROACH
+═══════════════════════════════════════════════════════════════════
+
+Priority 1: Match ALPHA's Setup
+--------------------------------
+
+Since ALPHA works perfectly, replicate its configuration on BETA:
+
+1. Check exact Claude CLI installation method on ALPHA:
+   ```bash
+   ssh arthurdell@alpha.tail5f2bae.ts.net
+   which claude
+   ls -la /Users/arthurdell/.nvm/versions/node/v24.9.0/bin/claude
+   npm list -g @anthropic-ai/claude 2>&1
+   ```
+
+2. Install Claude CLI on BETA using IDENTICAL method
+3. Verify background process access works
+
+Priority 2: Enable Session Authentication for Background
+--------------------------------------------------------
+
+If installation method is same, difference is session context:
+
+1. Find where ALPHA's Claude stores session auth
+2. Verify ALPHA's background worker can access it
+3. Replicate those permissions/access on BETA
+
+Priority 3: Use Persistent Terminal Session
+-------------------------------------------
+
+Fallback if above don't work:
+
+1. Use tmux session with working claude auth
+2. Run worker in that tmux session
+3. tmux persists across SSH disconnects
+
+═══════════════════════════════════════════════════════════════════
+VERIFICATION PROTOCOL
+═══════════════════════════════════════════════════════════════════
+
+After applying fix, verify in this order:
+
+Test 1: SSH Claude Access
+```bash
+ssh arthurdell@100.84.202.68 "~/.npm-global/bin/claude -p 'Echo: SSH test'"
+# Expected: Valid response, NOT "Invalid API key"
+```
+
+Test 2: Background Process Claude Access
+```bash
+ssh arthurdell@100.84.202.68 "python3 -c \"
+import subprocess
+result = subprocess.run(['/Users/arthurdell/.npm-global/bin/claude', '-p', 'Echo: background test'], capture_output=True, text=True)
+print(result.stdout)
+print(result.stderr)
+\""
+# Expected: Valid response
+```
+
+Test 3: Worker Process Claude Access
+```bash
+ssh arthurdell@100.84.202.68 "cd ~/AYA/Agent_Turbo/core && python3 << 'EOF'
+from task_worker import TaskWorker
+worker = TaskWorker()
+result = worker.execute_task({'task_id': 'auth_test', 'task_type': 'test', 'task_description': 'Echo: worker test'})
+print('Success:', result.get('success'))
+print('Error:', result.get('error'))
+EOF
+"
+# Expected: success: True
+```
+
+Test 4: Full Integration Test
+```bash
+# Start worker on BETA
+ssh arthurdell@100.84.202.68 "cd ~/AYA/Agent_Turbo/core && python3 task_worker.py > ~/Library/Logs/AgentTurbo/worker.log 2>&1 &"
+
+# Create test task on ALPHA
+psql -U postgres -d aya_rag -c "INSERT INTO agent_tasks (task_id, task_type, task_description, status, task_priority) VALUES ('beta_auth_final', 'verification', 'BETA auth fix verification', 'pending', 100);"
+
+# Wait 30 seconds
+sleep 30
+
+# Verify BETA claimed and completed it
+psql -U postgres -d aya_rag -c "SELECT task_id, status, assigned_worker_id FROM agent_tasks WHERE task_id = 'beta_auth_final';"
+
+# Expected: status='completed', assigned_worker_id contains 'beta'
+```
+
+═══════════════════════════════════════════════════════════════════
+ALPHA REFERENCE CONFIGURATION
+═══════════════════════════════════════════════════════════════════
+
+For comparison, ALPHA's working setup:
+
+Claude CLI Path: /Users/arthurdell/.nvm/versions/node/v24.9.0/bin/claude
+Installation: Via nvm (node version manager)
+Authentication: Session-based (no API key needed)
+Access: Works from SSH, background processes, launchd services
+Storage: User-local (within ~/.nvm directory)
+
+Worker Configuration on ALPHA:
+- Spawns: /Users/arthurdell/.nvm/versions/node/v24.9.0/bin/claude
+- Environment: Standard user environment
+- No ANTHROPIC_API_KEY set
+- No special keychain access needed
+- Works immediately after login
+
+KEY DIFFERENCE:
+ALPHA uses nvm (per-user node) → auth stored in user space
+BETA uses npm global (system-wide) → auth might be in system space or Desktop app only
+
+═══════════════════════════════════════════════════════════════════
+SUCCESS CRITERIA
+═══════════════════════════════════════════════════════════════════
+
+✅ SSH claude command works without "Invalid API key"
+✅ Python subprocess spawning claude works from SSH
+✅ Worker process can execute claude tasks successfully
+✅ Background/launchd service can access claude
+✅ No API key or manual auth needed (session-based like ALPHA)
+✅ BETA worker completes tasks with status='completed'
+✅ assigned_worker_id shows beta.tail5f2bae.ts.net
+
+═══════════════════════════════════════════════════════════════════
+EXECUTION CHECKLIST
+═══════════════════════════════════════════════════════════════════
+
+□ Step 1: Investigation - Find auth storage location
+□ Step 2: Investigation - Compare ALPHA vs BETA installation
+□ Step 3: Investigation - Test subprocess auth inheritance
+□ Step 4: Investigation - Check permissions and access
+□ Step 5: Apply Solution A, B, C, D, E, or F (in priority order)
+□ Step 6: Verify Test 1 (SSH access)
+□ Step 7: Verify Test 2 (subprocess access)
+□ Step 8: Verify Test 3 (worker access)
+□ Step 9: Verify Test 4 (full integration)
+□ Step 10: Document solution for future reference
+
+═══════════════════════════════════════════════════════════════════
+IMPORTANT NOTES
+═══════════════════════════════════════════════════════════════════
+
+1. DO NOT use the API key provided earlier - it has no credits
+2. The goal is SESSION-BASED auth like ALPHA (no API key needed)
+3. Claude Desktop app IS running and authenticated on BETA
+4. Interactive terminals CAN access claude successfully
+5. The block is specifically SSH and background process access
+6. This is likely a macOS security context issue, not a Claude issue
+7. Solution must work for launchd/background services
+8. ALPHA works perfectly - use it as reference template
+
+═══════════════════════════════════════════════════════════════════
+END OF BETA CLAUDE AUTHENTICATION FIX PROMPT
+═══════════════════════════════════════════════════════════════════
+
+EXECUTE INVESTIGATION STEPS FIRST. APPLY SOLUTIONS IN PRIORITY ORDER.
+VERIFY EACH STEP. REPORT FINDINGS.
+
