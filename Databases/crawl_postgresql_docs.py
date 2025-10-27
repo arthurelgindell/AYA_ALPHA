@@ -99,115 +99,120 @@ try:
     # Create SQLite database for PostgreSQL import preparation
     db_path = '/Volumes/DATA/Databases/postgresql_18_docs.db'
     conn = sqlite3.connect(db_path)
-    cursor = conn.cursor()
+    
+    try:
+        cursor = conn.cursor()
 
-    # Create table with PostgreSQL-compatible structure
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS documentation (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            url TEXT NOT NULL UNIQUE,
-            title TEXT,
-            content TEXT,
-            markdown TEXT,
-            metadata TEXT,
-            crawled_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            word_count INTEGER,
-            section_type TEXT
-        )
-    ''')
+            # Create table with PostgreSQL-compatible structure
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS documentation (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                url TEXT NOT NULL UNIQUE,
+                title TEXT,
+                content TEXT,
+                markdown TEXT,
+                metadata TEXT,
+                crawled_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                word_count INTEGER,
+                section_type TEXT
+            )
+        ''')
 
-    # Create indexes for better query performance
-    cursor.execute('CREATE INDEX IF NOT EXISTS idx_url ON documentation(url)')
-    cursor.execute('CREATE INDEX IF NOT EXISTS idx_title ON documentation(title)')
-    cursor.execute('CREATE INDEX IF NOT EXISTS idx_section_type ON documentation(section_type)')
+        # Create indexes for better query performance
+        cursor.execute('CREATE INDEX IF NOT EXISTS idx_url ON documentation(url)')
+        cursor.execute('CREATE INDEX IF NOT EXISTS idx_title ON documentation(title)')
+        cursor.execute('CREATE INDEX IF NOT EXISTS idx_section_type ON documentation(section_type)')
 
-    # Insert crawled data
-    data = crawl_result.get('data', [])
-    inserted_count = 0
+        # Insert crawled data
+        data = crawl_result.get('data', [])
+        inserted_count = 0
 
-    for page in data:
-        # Handle both dict and object formats
-        if hasattr(page, '__dict__'):
-            page_dict = {k: v for k, v in page.__dict__.items() if not k.startswith('_')}
-        else:
-            page_dict = page
+        for page in data:
+            # Handle both dict and object formats
+            if hasattr(page, '__dict__'):
+                page_dict = {k: v for k, v in page.__dict__.items() if not k.startswith('_')}
+            else:
+                page_dict = page
 
-        url = page_dict.get('url', '')
-        title = page_dict.get('title', '')
-        content = page_dict.get('content', '') or page_dict.get('markdown', '')
-        markdown = page_dict.get('markdown', '')
-        metadata = json.dumps(page_dict.get('metadata', {}))
-        word_count = len(content.split()) if content else 0
+            url = page_dict.get('url', '')
+            title = page_dict.get('title', '')
+            content = page_dict.get('content', '') or page_dict.get('markdown', '')
+            markdown = page_dict.get('markdown', '')
+            metadata = json.dumps(page_dict.get('metadata', {}))
+            word_count = len(content.split()) if content else 0
 
-        # Determine section type from URL
-        section_type = 'general'
-        if '/sql-' in url:
-            section_type = 'sql'
-        elif '/admin' in url:
-            section_type = 'administration'
-        elif '/tutorial' in url:
-            section_type = 'tutorial'
-        elif '/ref' in url:
-            section_type = 'reference'
+            # Determine section type from URL
+            section_type = 'general'
+            if '/sql-' in url:
+                section_type = 'sql'
+            elif '/admin' in url:
+                section_type = 'administration'
+            elif '/tutorial' in url:
+                section_type = 'tutorial'
+            elif '/ref' in url:
+                section_type = 'reference'
 
-        try:
-            cursor.execute('''
-                INSERT INTO documentation (url, title, content, markdown, metadata, word_count, section_type)
-                VALUES (?, ?, ?, ?, ?, ?, ?)
-            ''', (url, title, content, markdown, metadata, word_count, section_type))
-            inserted_count += 1
-        except sqlite3.IntegrityError:
-            # Skip duplicates
-            pass
+            try:
+                cursor.execute('''
+                    INSERT INTO documentation (url, title, content, markdown, metadata, word_count, section_type)
+                    VALUES (?, ?, ?, ?, ?, ?, ?)
+                ''', (url, title, content, markdown, metadata, word_count, section_type))
+                inserted_count += 1
+            except sqlite3.IntegrityError:
+                # Skip duplicates
+                pass
 
-    conn.commit()
+        conn.commit()
 
-    # Generate statistics
-    cursor.execute('SELECT COUNT(*) FROM documentation')
-    total_docs = cursor.fetchone()[0]
+        # Generate statistics
+        cursor.execute('SELECT COUNT(*) FROM documentation')
+        total_docs = cursor.fetchone()[0]
 
-    cursor.execute('SELECT SUM(word_count) FROM documentation')
-    total_words = cursor.fetchone()[0] or 0
+        cursor.execute('SELECT SUM(word_count) FROM documentation')
+        total_words = cursor.fetchone()[0] or 0
 
-    cursor.execute('SELECT section_type, COUNT(*) FROM documentation GROUP BY section_type')
-    sections = cursor.fetchall()
+        cursor.execute('SELECT section_type, COUNT(*) FROM documentation GROUP BY section_type')
+        sections = cursor.fetchall()
 
-    print(f"\n✓ Database created: {db_path}")
-    print(f"✓ Documents inserted: {inserted_count}")
-    print(f"✓ Total documents: {total_docs}")
-    print(f"✓ Total words: {total_words:,}")
-    print(f"\nSection breakdown:")
-    for section, count in sections:
-        print(f"  - {section}: {count} documents")
+        print(f"\n✓ Database created: {db_path}")
+        print(f"✓ Documents inserted: {inserted_count}")
+        print(f"✓ Total documents: {total_docs}")
+        print(f"✓ Total words: {total_words:,}")
+        print(f"\nSection breakdown:")
+        for section, count in sections:
+            print(f"  - {section}: {count} documents")
 
-    # Export PostgreSQL import SQL
-    sql_export_path = '/Volumes/DATA/Databases/postgresql_18_docs_import.sql'
-    with open(sql_export_path, 'w', encoding='utf-8') as f:
-        f.write("-- PostgreSQL 18 Documentation Import\n")
-        f.write(f"-- Generated: {datetime.now().isoformat()}\n")
-        f.write(f"-- Total documents: {total_docs}\n\n")
+        # Export PostgreSQL import SQL
+        sql_export_path = '/Volumes/DATA/Databases/postgresql_18_docs_import.sql'
+        with open(sql_export_path, 'w', encoding='utf-8') as f:
+            f.write("-- PostgreSQL 18 Documentation Import\n")
+            f.write(f"-- Generated: {datetime.now().isoformat()}\n")
+            f.write(f"-- Total documents: {total_docs}\n\n")
 
-        f.write("CREATE TABLE IF NOT EXISTS documentation (\n")
-        f.write("    id SERIAL PRIMARY KEY,\n")
-        f.write("    url TEXT NOT NULL UNIQUE,\n")
-        f.write("    title TEXT,\n")
-        f.write("    content TEXT,\n")
-        f.write("    markdown TEXT,\n")
-        f.write("    metadata JSONB,\n")
-        f.write("    crawled_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n")
-        f.write("    word_count INTEGER,\n")
-        f.write("    section_type TEXT\n")
-        f.write(");\n\n")
+            f.write("CREATE TABLE IF NOT EXISTS documentation (\n")
+            f.write("    id SERIAL PRIMARY KEY,\n")
+            f.write("    url TEXT NOT NULL UNIQUE,\n")
+            f.write("    title TEXT,\n")
+            f.write("    content TEXT,\n")
+            f.write("    markdown TEXT,\n")
+            f.write("    metadata JSONB,\n")
+            f.write("    crawled_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n")
+            f.write("    word_count INTEGER,\n")
+            f.write("    section_type TEXT\n")
+            f.write(");\n\n")
 
-        f.write("CREATE INDEX IF NOT EXISTS idx_doc_url ON documentation(url);\n")
-        f.write("CREATE INDEX IF NOT EXISTS idx_doc_title ON documentation(title);\n")
-        f.write("CREATE INDEX IF NOT EXISTS idx_doc_section ON documentation(section_type);\n")
-        f.write("CREATE INDEX IF NOT EXISTS idx_doc_metadata ON documentation USING GIN(metadata);\n\n")
+            f.write("CREATE INDEX IF NOT EXISTS idx_doc_url ON documentation(url);\n")
+            f.write("CREATE INDEX IF NOT EXISTS idx_doc_title ON documentation(title);\n")
+            f.write("CREATE INDEX IF NOT EXISTS idx_doc_section ON documentation(section_type);\n")
+            f.write("CREATE INDEX IF NOT EXISTS idx_doc_metadata ON documentation USING GIN(metadata);\n\n")
 
-    print(f"✓ PostgreSQL import schema saved: {sql_export_path}")
+            print(f"✓ PostgreSQL import schema saved: {sql_export_path}")
+            print("\n✓ All tasks completed successfully!")
 
-    conn.close()
-    print("\n✓ All tasks completed successfully!")
+    finally:
+        # Ensure connection is always closed (prevents resource leak)
+        if 'conn' in locals():
+            conn.close()
 
 except Exception as e:
     print(f"\n✗ Error during crawl: {str(e)}")
