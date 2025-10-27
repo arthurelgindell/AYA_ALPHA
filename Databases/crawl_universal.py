@@ -168,11 +168,19 @@ def crawl_site(base_url, db_name, table_name="documentation"):
                 if inserted_count % 50 == 0:
                     print(f"  Inserted {inserted_count} documents...", end='\r')
 
-            except sqlite3.IntegrityError:
+            except sqlite3.IntegrityError as e:
+                # Duplicate URL - expected, just count it
                 error_count += 1
+            except (KeyError, AttributeError) as e:
+                # Missing expected field in document data
+                error_count += 1
+                print(f"\n  Warning: Missing field in document: {e}")
             except Exception as e:
+                # Unexpected error - log full details for debugging
                 error_count += 1
-                print(f"\n  Warning: {str(e)[:100]}")
+                print(f"\n  Error processing document: {type(e).__name__}: {e}")
+                import traceback
+                traceback.print_exc()
 
         conn.commit()
 
@@ -274,5 +282,26 @@ if __name__ == "__main__":
     url = sys.argv[1]
     db_name = sys.argv[2]
     table_name = sys.argv[3] if len(sys.argv) > 3 else "documentation"
+    
+    # Input validation to prevent errors and security issues
+    import re
+    
+    # Validate URL format
+    if not url.startswith(('http://', 'https://')):
+        print(f"Error: Invalid URL format: {url}")
+        print("URL must start with http:// or https://")
+        sys.exit(1)
+    
+    # Validate database name (alphanumeric, underscores, hyphens only)
+    if not re.match(r'^[a-zA-Z0-9_-]+$', db_name):
+        print(f"Error: Invalid database name: {db_name}")
+        print("Database name must contain only letters, numbers, underscores, and hyphens")
+        sys.exit(1)
+    
+    # Validate table name (alphanumeric, underscores only - SQL identifier)
+    if not re.match(r'^[a-zA-Z_][a-zA-Z0-9_]*$', table_name):
+        print(f"Error: Invalid table name: {table_name}")
+        print("Table name must be a valid SQL identifier")
+        sys.exit(1)
 
     crawl_site(url, db_name, table_name)
