@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.aya.agent-turbo-worker</string>
+    
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/bin/python3</string>
+        <string>/Volumes/DATA/AYA/Agent_Turbo/core/task_worker.py</string>
+    </array>
+    
+    <key>WorkingDirectory</key>
+    <string>/Volumes/DATA/AYA/Agent_Turbo/core</string>
+    
+    <key>EnvironmentVariables</key>
+    <dict>
+        <!-- Worker Configuration -->
+        <key>MAX_CONCURRENT_AGENTS</key>
+        <string>5</string>
+        <key>POLL_INTERVAL</key>
+        <string>1.0</string>
+        
+        <!-- PostgreSQL HA Cluster Configuration -->
+        <!-- CRITICAL: Workers on BETA connect to ALPHA primary for write access -->
+        <!-- BETA replica is read-only, workers need write access to claim tasks -->
+        <key>DB_HOST</key>
+        <string>alpha.tail5f2bae.ts.net</string>
+        <key>PGHOST</key>
+        <string>alpha.tail5f2bae.ts.net</string>
+        <key>PGPORT</key>
+        <string>5432</string>
+        <key>PGDATABASE</key>
+        <string>aya_rag</string>
+        <key>PGUSER</key>
+        <string>postgres</string>
+        <key>PGPASSWORD</key>
+        <string>Power$$336633$$</string>
+        
+        <!-- Claude CLI Configuration -->
+        <key>CLAUDE_CLI_PATH</key>
+        <string>/Users/arthurdell/.npm-global/bin/claude</string>
+        
+        <!-- IMPORTANT: Set your BETA system's Claude API key here -->
+        <!-- This is required for Claude CLI authentication in background service -->
+        <!-- Get your key from: https://console.anthropic.com/settings/keys -->
+        <key>ANTHROPIC_API_KEY</key>
+        <string>YOUR_CLAUDE_API_KEY_HERE</string>
+        
+        <!-- PATH Configuration -->
+        <!-- Include .npm-global for Claude CLI, NOT .nvm -->
+        <key>PATH</key>
+        <string>/Users/arthurdell/.npm-global/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+        
+        <!-- Python Path -->
+        <key>PYTHONPATH</key>
+        <string>/Volumes/DATA/AYA/Agent_Turbo/core</string>
+    </dict>
+    
+    <!-- Logging Configuration -->
+    <key>StandardOutPath</key>
+    <string>/Users/arthurdell/Library/Logs/AgentTurbo/worker.log</string>
+    
+    <key>StandardErrorPath</key>
+    <string>/Users/arthurdell/Library/Logs/AgentTurbo/worker.log</string>
+    
+    <!-- Auto-start on boot -->
+    <key>RunAtLoad</key>
+    <true/>
+    
+    <!-- Auto-restart on failure -->
+    <key>KeepAlive</key>
+    <dict>
+        <key>SuccessfulExit</key>
+        <false/>
+    </dict>
+    
+    <!-- Background process (no GUI) -->
+    <key>ProcessType</key>
+    <string>Background</string>
+    
+    <!-- Throttle restart to prevent rapid crash loops -->
+    <key>ThrottleInterval</key>
+    <integer>10</integer>
+</dict>
+</plist>
+
