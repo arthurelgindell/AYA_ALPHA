@@ -12,6 +12,14 @@
       "args": [
         "-y",
         "@modelcontextprotocol/server-postgres",
+        "postgresql://yugabyte:yugabyte@127.0.0.1:5433/aya_rag_prod"
+      ]
+    },
+    "postgres_original": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-postgres",
         "postgresql://postgres:Power$$336633$$@localhost:5432/aya_rag"
       ]
     },

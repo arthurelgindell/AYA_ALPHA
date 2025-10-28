@@ -99,7 +99,7 @@ class AgentTurbo:
     - All operations query/write actual PostgreSQL data (NO MOCKS)
     """
     
-    def __init__(self):
+    def __init__(self, silent=False):
         # PostgreSQL connector (replaces SQLite)
         self.db = PostgreSQLConnector()
         
@@ -120,8 +120,8 @@ class AgentTurbo:
         # LM Studio client will be initialized in init_turbo_mode()
         self.lm_studio_client = None
         
-        self.init_turbo_mode()
-        self.init_ram_disk_cache()
+        self.init_turbo_mode(silent=silent)
+        self.init_ram_disk_cache(silent=silent)
     
     def generate_embedding(self, text: str) -> list:
         """
@@ -149,22 +149,27 @@ class AgentTurbo:
             print(f"❌ Embedding generation failed: {e}", file=sys.stderr)
             raise
     
-    def init_turbo_mode(self):
+    def init_turbo_mode(self, silent=False):
         """Initialize turbo mode with GPU acceleration."""
-        print(f"🚀 Initializing AGENT_TURBO Mode...")
+        if not silent:
+            print(f"🚀 Initializing AGENT_TURBO Mode...")
         if GPU_AVAILABLE:
-            print(f"✅ MLX GPU acceleration enabled ({GPU_CORES} cores)")
+            if not silent:
+                print(f"✅ MLX GPU acceleration enabled ({GPU_CORES} cores)")
         else:
-            print("⚠️  GPU not available, using CPU mode")
+            if not silent:
+                print("⚠️  GPU not available, using CPU mode")
         
         # Initialize GPU optimizer
         if GPU_AVAILABLE:
             try:
                 from core.agent_turbo_gpu import AgentTurboGPUOptimizer
                 self.gpu_optimizer = AgentTurboGPUOptimizer()
-                print(f"🚀 GPU optimizer initialized: {GPU_CORES} cores")
+                if not silent:
+                    print(f"🚀 GPU optimizer initialized: {GPU_CORES} cores")
             except ImportError:
-                print("⚠️  GPU optimizer not available")
+                if not silent:
+                    print("⚠️  GPU optimizer not available")
                 self.gpu_optimizer = None
         else:
             self.gpu_optimizer = None
@@ -173,19 +178,23 @@ class AgentTurbo:
         try:
             from core.lm_studio_client import LMStudioClient
             self.lm_studio_client = LMStudioClient()
-            print("🚀 LM Studio client initialized")
+            if not silent:
+                print("🚀 LM Studio client initialized")
         except ImportError:
-            print("⚠️  LM Studio client not available")
+            if not silent:
+                print("⚠️  LM Studio client not available")
             self.lm_studio_client = None
         except Exception as e:
-            print(f"⚠️  LM Studio client initialization failed: {e}")
+            if not silent:
+                print(f"⚠️  LM Studio client initialization failed: {e}")
             self.lm_studio_client = None
         
         # Preload memory-mapped files
-        self.preload_cache()
-        print("✅ AGENT_TURBO Mode ready!")
+        self.preload_cache(silent=silent)
+        if not silent:
+            print("✅ AGENT_TURBO Mode ready!")
     
-    def preload_cache(self):
+    def preload_cache(self, silent=False):
         """Preload frequently accessed files into memory-mapped cache."""
         # Use explicit Agent_Turbo path to avoid App Translocation issues
         agent_turbo_dir = Path(__file__).parent.parent
@@ -209,18 +218,22 @@ class AgentTurbo:
                             files_loaded += 1
                         except Exception as e:
                             if "cannot mmap an empty file" not in str(e):
-                                print(f"Error mapping {path}: {e}")
+                                if not silent:
+                                    print(f"Error mapping {path}: {e}")
             except OSError as e:
                 # Skip directory if we hit filesystem limits (App Translocation, etc.)
-                print(f"⚠️  Skipping {base_dir}: {e}")
+                if not silent:
+                    print(f"⚠️  Skipping {base_dir}: {e}")
                 continue
         
         if files_loaded > 0:
-            print(f"  📂 Preloaded {files_loaded} files into memory-mapped cache")
+            if not silent:
+                print(f"  📂 Preloaded {files_loaded} files into memory-mapped cache")
     
-    def init_ram_disk_cache(self):
+    def init_ram_disk_cache(self, silent=False):
         """Initialize RAM disk cache system for ultra-fast operations."""
-        print("  🚀 Initializing RAM disk cache system...")
+        if not silent:
+            print("  🚀 Initializing RAM disk cache system...")
         
         # Create cache subdirectories
         cache_dirs = [
@@ -237,7 +250,8 @@ class AgentTurbo:
         # Load existing cache files into memory
         self.load_cache_files()
         
-        print(f"  ✅ RAM disk cache system ready ({len(cache_dirs)} directories)")
+        if not silent:
+            print(f"  ✅ RAM disk cache system ready ({len(cache_dirs)} directories)")
     
     def load_cache_files(self):
         """Load existing cache files into memory for instant access."""
@@ -679,10 +693,11 @@ def main():
     parser = argparse.ArgumentParser(description='AGENT_TURBO - Unified High-Performance Knowledge System')
     parser.add_argument('command', choices=['add', 'query', 'stats', 'verify'], help='Command to execute')
     parser.add_argument('content', nargs='?', help='Content for add/query commands')
+    parser.add_argument('--silent', action='store_true', help='Suppress initialization messages')
     
     args = parser.parse_args()
     
-    agent_turbo = AgentTurbo()
+    agent_turbo = AgentTurbo(silent=args.silent or args.command == 'stats')
     
     if args.command == 'add':
         if not args.content:

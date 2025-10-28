@@ -10,7 +10,9 @@ import os
 from pathlib import Path
 
 # Add Agent Turbo to path
-sys.path.insert(0, '/Volumes/DATA/Agent_Turbo')
+import os
+AYA_ROOT = '/Volumes/DATA/AYA' if os.path.exists('/Volumes/DATA/AYA') else '/Users/arthurdell/AYA'
+sys.path.insert(0, os.path.join(AYA_ROOT, 'Agent_Turbo'))
 
 from core.agent_turbo import AgentTurbo
 
@@ -51,8 +53,10 @@ class AgentTurboMCPServer:
         """Verify Agent Turbo system."""
         try:
             # Run verification
+            import subprocess
+            agent_turbo_path = os.path.join(AYA_ROOT, 'Agent_Turbo', 'core', 'agent_turbo.py')
             result = subprocess.run([
-                "python3", "/Volumes/DATA/Agent_Turbo/core/agent_turbo.py", "verify"
+                "python3", agent_turbo_path, "verify"
             ], capture_output=True, text=True, timeout=30)
             
             return {
@@ -79,7 +83,8 @@ class AgentTurboMCPServer:
     def get_cache_status(self) -> dict:
         """Get cache status."""
         try:
-            cache_dir = Path("/Volumes/DATA/Agent_RAM/cache")
+            import os
+            cache_dir = Path(os.path.join(AYA_ROOT, "Agent_RAM", "cache"))
             if cache_dir.exists():
                 cache_files = list(cache_dir.glob("*"))
                 return {

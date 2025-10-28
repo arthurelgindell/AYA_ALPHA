@@ -43,7 +43,7 @@ fi
 # Run verification
 echo ""
 echo "[5/6] Verifying Agent Turbo..."
-python3 core/agent_turbo.py verify && {
+python3 Agent_Turbo/core/agent_turbo.py verify && {
     echo "✅ Agent Turbo verified"
 } || {
     echo "❌ Verification failed"
@@ -53,14 +53,14 @@ python3 core/agent_turbo.py verify && {
 # Get stats
 echo ""
 echo "[6/6] Getting system statistics..."
-python3 core/agent_turbo.py stats | python3 -m json.tool
+python3 Agent_Turbo/core/agent_turbo.py stats | python3 -m json.tool
 
 echo ""
 echo "====================================="
 echo "✅ Agent Turbo is OPERATIONAL on ALPHA"
 echo ""
 echo "Next steps:"
-echo "- Test query: python3 core/agent_turbo.py query 'test'"
-echo "- Add knowledge: python3 core/agent_turbo.py add 'your knowledge'"
+echo "- Test query: python3 Agent_Turbo/core/agent_turbo.py query 'test'"
+echo "- Add knowledge: python3 Agent_Turbo/core/agent_turbo.py add 'your knowledge'"
 echo "- Full guide: cat ALPHA_DEPLOYMENT_GUIDE.md"
 

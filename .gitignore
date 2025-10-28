@@ -45,3 +45,86 @@ __pycache__/
 dellight-landing/
 Databases/*.csv
 Databases/*.db
+
+# Syncthing sync files
+.stfolder/
+.stversions/
+.stignore
+.sync-conflict-*
+
+# Cursor/IDE files
+.cursor/
+
+# Large data directories
+data/
+models/
+yugabyte/
+yugabyte_data/
+yugabyte_migration/
+yugabyte_monitoring/
+
+# Backup files
+*.backup
+*.backup_*
+backups/
+
+# Temporary files
+*.tmp
+Databases/temp/
+
+# Service data
+services/redis/data/
+Agent_Turbo/services/
+
+# Status reports and session summaries
+*_STATUS_*.md
+*_SUMMARY_*.md
+*_REPORT_*.md
+*_COMPLETE_*.md
+*_VERIFICATION_*.md
+*_INTEGRATION_*.md
+*_DEPLOYMENT_*.md
+*_OPERATIONAL_*.md
+*_GUIDE_*.md
+*_ANALYSIS_*.md
+*_PROMPT_*.md
+*_ASSIMILATION_*.md
+CURSOR_*
+BETA_*
+AIR_*
+JITM_*
+GLADIATOR_*
+MCP_*
+ARTHUR_*
+FOR_*
+PATHS_*
+ACTIVE_*
+FINAL_*
+INITIALIZATION_*
+SESSION_*
+FUNCTIONAL_*
+PROJECTS_*
+RUNNERS_*
+TODAYS_*
+MISSION_*
+
+# Test and verification scripts
+verify_*.sh
+verify_*.py
+check_*.py
+RUN_BETA_*.sh
+
+# Agent Turbo test/migration files
+Agent_Turbo/migrations/
+Agent_Turbo/core/*.backup
+Agent_Turbo/core/*.sync-conflict*
+Agent_Turbo/test_*.py
+
+# GitHub workflows that might be experimental
+.github/workflows/jitm-parallel-deployment.yml
+
+# GLADIATOR project files (experimental)
+projects/GLADIATOR/
+
+# Sync conflict files
+*.sync-conflict*

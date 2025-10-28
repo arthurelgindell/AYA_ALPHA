@@ -10,15 +10,15 @@ DROP TABLE IF EXISTS crush_documentation CASCADE;
 
 CREATE TABLE crush_documentation (
     id SERIAL PRIMARY KEY,
-    url TEXT NOT NULL UNIQUE,
-    title TEXT,
+    url VARCHAR(2048) NOT NULL UNIQUE,      -- URL length limit for index efficiency
+    title VARCHAR(512) NOT NULL,            -- Required title field
     description TEXT,
-    content TEXT,
+    content TEXT NOT NULL,                  -- Core documentation required
     markdown TEXT,
     metadata JSONB,
     crawled_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    word_count INTEGER,
-    section_type TEXT
+    word_count INTEGER CHECK (word_count >= 0),  -- Non-negative constraint
+    section_type VARCHAR(50)                -- Section categorization
 );
 
 CREATE INDEX idx_crush_documentation_url ON crush_documentation(url);

@@ -42,6 +42,43 @@ class AgentOrchestrator:
         """Initialize orchestrator with PostgreSQL connection."""
         self.db = PostgreSQLConnector()
     
+    
+    def validate_agent_platform(self, agent_platform: str, agent_role: str) -> tuple:
+        """
+        Validate agent platform and role combination.
+        
+        Architecture (Oct 2025 - Clean Slate Reconfiguration):
+        - PRIMARY: cursor, claude (main workflow agents)
+        - AUDIT: gemini, codex (supplementary verification only)
+        - SYSTEM: n8n (workflow automation)
+        
+        Args:
+            agent_platform: Platform ID
+            agent_role: Role
+            
+        Returns:
+            tuple: (is_valid, error_message)
+        """
+        ALLOWED_PLATFORMS = {
+            'cursor': {'roles': ['planner', 'executor', 'developer'], 'type': 'primary'},
+            'claude': {'roles': ['planner', 'orchestrator', 'architect'], 'type': 'primary'},
+            'gemini': {'roles': ['auditor', 'validator'], 'type': 'audit'},
+            'codex': {'roles': ['auditor', 'validator'], 'type': 'audit'},
+            'n8n': {'roles': ['workflow_executor'], 'type': 'system'},
+        }
+        
+        if agent_platform not in ALLOWED_PLATFORMS:
+            return False, f"Platform '{agent_platform}' not allowed. Use: {', '.join(ALLOWED_PLATFORMS.keys())}"
+        
+        platform_config = ALLOWED_PLATFORMS[agent_platform]
+        if agent_role not in platform_config['roles']:
+            return False, f"Role '{agent_role}' not valid for {agent_platform}. Allowed: {', '.join(platform_config['roles'])}"
+        
+        if platform_config['type'] == 'audit':
+            print(f"⚠️  {agent_platform} is audit-only (supplementary use)", flush=True)
+        
+        return True, ""
+
     def generate_landing_context(self) -> Dict:
         """
         Generate complete system state snapshot for agent initialization.
@@ -61,16 +98,22 @@ class AgentOrchestrator:
         # 1. System nodes (hardware specs)
         try:
             nodes = self.db.execute_query("""
-                SELECT 
+                SELECT
                     node_name,
                     node_role,
                     cpu_model,
                     cpu_cores_total as cpu_cores,
                     ram_gb,
                     storage_internal_tb,
+                    storage_external_tb,
+                    storage_external_device,
                     model_name,
-                    gpu_model
+                    gpu_model,
+                    gpu_cores,
+                    metadata->>'working_path' as working_path,
+                    status
                 FROM system_nodes
+                WHERE status = 'active'
                 ORDER BY node_name
             """, fetch=True)
             context['system_nodes'] = nodes
@@ -164,251 +207,21 @@ class AgentOrchestrator:
         """
         Initialize a new agent session with full landing context.
         
+        Architecture enforced: cursor/claude (primary), gemini/codex (audit only)
+        
         Args:
-            agent_platform: Platform ID ('claude_code', 'openai', 'gemini', etc.)
-            agent_role: Role ('planner', 'executor', 'auditor', 'validator')
+            agent_platform: Platform ID ('cursor', 'claude', 'gemini', 'codex', 'n8n')
+            agent_role: Role (varies by platform)
             parent_session_id: Optional parent session for delegation chains
         
         Returns:
             dict: Session info with session_id and landing_context
         """
-        # Generate unique session ID
-        session_id = f"{agent_platform}_{agent_role}_{uuid.uuid4().hex[:8]}"
-        
-        # Generate landing context
-        landing_context = self.generate_landing_context()
-        
-        # Serialize datetime objects for JSON storage
-        landing_context_serialized = serialize_datetime(landing_context)
-        
-        # Insert session into database
-        insert_sql = """
-            INSERT INTO agent_sessions 
-            (session_id, agent_platform, agent_role, parent_session_id, 
-             landing_context, status, created_at, last_active)
-            VALUES (%s, %s, %s, %s, %s, 'active', NOW(), NOW())
-            RETURNING id, session_id, created_at
-        """
-        
-        try:
-            result = self.db.execute_query(
-                insert_sql,
-                (session_id, agent_platform, agent_role, parent_session_id, 
-                 json.dumps(landing_context_serialized)),
-                fetch=True
-            )
-            
-            return {
-                'session_id': session_id,
-                'agent_platform': agent_platform,
-                'agent_role': agent_role,
-                'landing_context': landing_context,
-                'created_at': result[0]['created_at'].isoformat() if result else datetime.now().isoformat()
-            }
-        except Exception as e:
-            raise Exception(f"Failed to initialize agent session: {e}")
-    
-    def create_task(
-        self,
-        session_id: str,
-        task_type: str,
-        task_description: str,
-        assigned_to_role: str,
-        priority: int = 5,
-        depends_on_tasks: Optional[List[str]] = None,
-        required_context: Optional[Dict] = None
-    ) -> str:
-        """
-        Create a new task for agent execution.
-        
-        Args:
-            session_id: Session ID that created this task
-            task_type: Type of task ('code_review', 'implementation', 'testing', etc.)
-            task_description: Human-readable description
-            assigned_to_role: Target agent role
-            priority: Priority 1-10 (10 = highest)
-            depends_on_tasks: List of task_ids this depends on
-            required_context: Additional context needed for task
-        
-        Returns:
-            str: task_id
-        """
-        task_id = f"task_{uuid.uuid4().hex[:12]}"
-        
-        insert_sql = """
-            INSERT INTO agent_tasks
-            (task_id, session_id, task_type, task_description, task_priority,
-             assigned_to_role, depends_on_tasks, required_context, status, created_at)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, 'pending', NOW())
-            RETURNING task_id
-        """
-        
-        try:
-            result = self.db.execute_query(
-                insert_sql,
-                (task_id, session_id, task_type, task_description, priority,
-                 assigned_to_role, depends_on_tasks or [], 
-                 json.dumps(required_context or {})),
-                fetch=True
-            )
-            return result[0]['task_id'] if result else task_id
-        except Exception as e:
-            raise Exception(f"Failed to create task: {e}")
-    
-    def log_agent_action(
-        self,
-        session_id: str,
-        task_id: Optional[str],
-        action_type: str,
-        action_description: str,
-        input_data: Optional[Dict] = None,
-        output_data: Optional[Dict] = None,
-        success: bool = True,
-        execution_time_ms: Optional[int] = None
-    ) -> str:
-        """
-        Log an agent action for audit trail.
-        
-        Args:
-            session_id: Session performing the action
-            task_id: Optional task this action belongs to
-            action_type: Type ('query', 'write', 'command', 'api_call')
-            action_description: Human-readable description
-            input_data: Input parameters
-            output_data: Output results
-            success: Whether action succeeded
-            execution_time_ms: Execution time in milliseconds
-        
-        Returns:
-            str: action_id
-        """
-        action_id = f"action_{uuid.uuid4().hex[:12]}"
-        
-        insert_sql = """
-            INSERT INTO agent_actions
-            (action_id, session_id, task_id, action_type, action_description,
-             input_data, output_data, success, execution_time_ms, executed_at)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, NOW())
-            RETURNING action_id
-        """
-        
-        try:
-            result = self.db.execute_query(
-                insert_sql,
-                (action_id, session_id, task_id, action_type, action_description,
-                 json.dumps(input_data or {}), json.dumps(output_data or {}),
-                 success, execution_time_ms),
-                fetch=True
-            )
-            return result[0]['action_id'] if result else action_id
-        except Exception as e:
-            raise Exception(f"Failed to log action: {e}")
-    
-    def get_session_history(self, session_id: str) -> Dict:
-        """
-        Get complete history for a session.
-        
-        Args:
-            session_id: Session to retrieve
-        
-        Returns:
-            dict: Session info with tasks and actions
-        """
-        # Get session info
-        session = self.db.execute_query("""
-            SELECT * FROM agent_sessions WHERE session_id = %s
-        """, (session_id,), fetch=True)
-        
-        if not session:
-            raise Exception(f"Session not found: {session_id}")
-        
-        # Get tasks
-        tasks = self.db.execute_query("""
-            SELECT * FROM agent_tasks 
-            WHERE session_id = %s 
-            ORDER BY created_at DESC
-        """, (session_id,), fetch=True)
-        
-        # Get actions
-        actions = self.db.execute_query("""
-            SELECT * FROM agent_actions 
-            WHERE session_id = %s 
-            ORDER BY executed_at DESC
-        """, (session_id,), fetch=True)
-        
-        return {
-            'session': session[0],
-            'tasks': tasks,
-            'actions': actions
-        }
-    
-    def update_task_status(
-        self,
-        task_id: str,
-        status: str,
-        progress_percentage: Optional[int] = None,
-        current_step: Optional[str] = None,
-        output_data: Optional[Dict] = None
-    ) -> bool:
-        """
-        Update task status and progress.
-        
-        Args:
-            task_id: Task to update
-            status: New status ('pending', 'in_progress', 'completed', 'failed', 'blocked')
-            progress_percentage: Progress 0-100
-            current_step: Description of current step
-            output_data: Task output data
-        
-        Returns:
-            bool: Success
-        """
-        update_parts = ["status = %s"]
-        params = [status]
-        
-        if progress_percentage is not None:
-            update_parts.append("progress_percentage = %s")
-            params.append(progress_percentage)
-        
-        if current_step is not None:
-            update_parts.append("current_step = %s")
-            params.append(current_step)
-        
-        if output_data is not None:
-            update_parts.append("output_data = %s")
-            params.append(json.dumps(output_data))
-        
-        if status == 'in_progress':
-            update_parts.append("started_at = NOW()")
-        elif status == 'completed':
-            update_parts.append("completed_at = NOW()")
-            # Only set progress to 100 if not already set above
-            if progress_percentage is None:
-                update_parts.append("progress_percentage = 100")
-        
-        params.append(task_id)
-        
-        update_sql = f"""
-            UPDATE agent_tasks
-            SET {', '.join(update_parts)}
-            WHERE task_id = %s
-        """
-        
-        try:
-            self.db.execute_query(update_sql, tuple(params), fetch=False)
-            return True
-        except Exception as e:
-            print(f"Failed to update task: {e}")
-            return False
+        # Validate platform and role
+        is_valid, error_msg = self.validate_agent_platform(agent_platform, agent_role)
+        if not is_valid:
+            raise ValueError(f"Agent platform validation failed: {error_msg}")
 
-
-# Verification function
-def verify_orchestrator():
-    """
-    Verify orchestrator functionality.
-    
-    Prime Directive #1: Tests actual database operations.
-    """
     print("🔍 Verifying Agent Orchestrator...")
     
     try:

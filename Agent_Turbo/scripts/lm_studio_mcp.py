@@ -10,7 +10,9 @@ import requests
 from pathlib import Path
 
 # Add Agent Turbo to path
-sys.path.insert(0, '/Volumes/DATA/Agent_Turbo')
+import os
+AYA_ROOT = '/Volumes/DATA/AYA' if os.path.exists('/Volumes/DATA/AYA') else '/Users/arthurdell/AYA'
+sys.path.insert(0, os.path.join(AYA_ROOT, 'Agent_Turbo'))
 
 from core.lm_studio_client import LMStudioClient
 
