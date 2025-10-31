@@ -1,0 +1,175 @@
+{
+  "version": "1.0.0",
+  "created": "2025-10-29",
+  "description": "AYA Platform Coding Standards and Enforcement Levels",
+  
+  "enforcement_levels": {
+    "CRITICAL": "block",
+    "HIGH": "warn",
+    "MEDIUM": "log",
+    "LOW": "info"
+  },
+  
+  "thresholds": {
+    "max_critical": 0,
+    "max_high": 3,
+    "max_medium": 10,
+    "max_complexity": 15
+  },
+  
+  "severity_definitions": {
+    "CRITICAL": {
+      "description": "Security vulnerabilities that must be fixed immediately",
+      "examples": [
+        "SQL injection",
+        "XSS (Cross-site scripting)",
+        "CSRF vulnerabilities",
+        "Authentication bypass",
+        "Privilege escalation",
+        "Command injection",
+        "Path traversal",
+        "Code injection",
+        "Remote code execution",
+        "Deserialization vulnerabilities",
+        "Buffer overflow"
+      ],
+      "action": "block",
+      "override_required": true
+    },
+    "HIGH": {
+      "description": "Serious bugs or security concerns",
+      "examples": [
+        "Hardcoded secrets or passwords",
+        "Missing input validation",
+        "Insecure configuration",
+        "Race conditions",
+        "Deadlocks",
+        "Memory leaks",
+        "Null pointer dereferences"
+      ],
+      "action": "warn",
+      "override_required": false
+    },
+    "MEDIUM": {
+      "description": "Code quality issues",
+      "examples": [
+        "High complexity",
+        "Duplicate code",
+        "Code smells",
+        "Anti-patterns",
+        "Poor error handling",
+        "Magic numbers"
+      ],
+      "action": "log",
+      "override_required": false
+    },
+    "LOW": {
+      "description": "Suggestions and optimizations",
+      "examples": [
+        "Style improvements",
+        "Documentation suggestions",
+        "Performance optimizations",
+        "Best practice recommendations"
+      ],
+      "action": "info",
+      "override_required": false
+    }
+  },
+  
+  "code_review_requirements": {
+    "security": {
+      "required": true,
+      "checks": [
+        "Input validation",
+        "Output encoding",
+        "Authentication",
+        "Authorization",
+        "Session management",
+        "Cryptography",
+        "Error handling",
+        "Logging"
+      ]
+    },
+    "performance": {
+      "required": true,
+      "checks": [
+        "Algorithm efficiency",
+        "Memory usage",
+        "Database queries",
+        "API calls",
+        "Caching strategy"
+      ]
+    },
+    "maintainability": {
+      "required": true,
+      "checks": [
+        "Code structure",
+        "Naming conventions",
+        "Documentation",
+        "Test coverage",
+        "Complexity metrics"
+      ]
+    }
+  },
+  
+  "language_specific": {
+    "python": {
+      "required_imports": [],
+      "style_guide": "PEP 8",
+      "type_hints": "recommended",
+      "docstrings": "required",
+      "max_line_length": 100,
+      "max_complexity": 15
+    },
+    "javascript": {
+      "style_guide": "ESLint recommended",
+      "type_hints": "TypeScript recommended",
+      "max_line_length": 100,
+      "max_complexity": 15
+    },
+    "bash": {
+      "shellcheck": "required",
+      "max_line_length": 120,
+      "safety_checks": ["set -euo pipefail"]
+    }
+  },
+  
+  "best_practices": {
+    "commenting": {
+      "requirement": "Clear, contextual comments explaining WHY, not WHAT",
+      "examples": [
+        "Explain complex algorithms",
+        "Document assumptions",
+        "Clarify business logic",
+        "Note performance considerations"
+      ]
+    },
+    "error_handling": {
+      "requirement": "Comprehensive error handling with clear messages",
+      "examples": [
+        "Use specific exception types",
+        "Provide actionable error messages",
+        "Log errors appropriately",
+        "Handle edge cases"
+      ]
+    },
+    "security": {
+      "requirement": "Security-first approach",
+      "examples": [
+        "Validate all inputs",
+        "Use parameterized queries",
+        "Implement proper authentication",
+        "Follow principle of least privilege"
+      ]
+    }
+  },
+  
+  "model_configuration": {
+    "default_model": "qwen3-next-80b-a3b-instruct-mlx",
+    "rationale": "4.6x faster than 480B model with identical code review quality",
+    "concurrent_reviews": 8,
+    "max_response_time": 10,
+    "fallback_model": "qwen3-coder-480b-a35b-instruct"
+  }
+}
+

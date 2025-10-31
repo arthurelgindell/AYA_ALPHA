@@ -1,0 +1,281 @@
+{
+  "name": "Intelligence Scout - Failsafe Crawl Scheduler",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 6
+            }
+          ]
+        }
+      },
+      "id": "cron-trigger",
+      "name": "Every 6 Hours",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT id, url, technology_name, priority, max_pages, status, error_message, retry_count FROM intelligence_scout_queue WHERE status IN ('pending', 'failed') AND (retry_count IS NULL OR retry_count < 3) ORDER BY priority DESC, CASE WHEN status = 'failed' THEN 0 ELSE 1 END, created_at ASC LIMIT 1"
+      },
+      "id": "get-pending-or-failed",
+      "name": "Get Pending or Failed",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [450, 300],
+      "credentials": {
+        "postgres": {
+          "id": "1",
+          "name": "PostgreSQL aya_rag"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "condition-1",
+              "leftValue": "={{ $json.length }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "has-items",
+      "name": "Has Items?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [650, 300]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "updateKey": "id",
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "queued",
+            "retry_count": "={{ $json.retry_count || 0 }}",
+            "last_retry_at": "={{ $now }}",
+            "scheduled_at": "={{ $now }}"
+          }
+        },
+        "table": "intelligence_scout_queue"
+      },
+      "id": "mark-queued",
+      "name": "Mark as Queued",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [850, 200],
+      "credentials": {
+        "postgres": {
+          "id": "1",
+          "name": "PostgreSQL aya_rag"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "command": "cd /Users/arthurdell/AYA/services/intelligence_scout && timeout 7200 python3 scout_orchestrator.py process --queue-id {{ $json.id }} || echo 'TIMEOUT_OR_ERROR'",
+        "options": {}
+      },
+      "id": "execute-crawler",
+      "name": "Execute Crawler (2hr timeout)",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [850, 400],
+      "onError": "continueAll",
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "condition-1",
+              "leftValue": "={{ $json.stdout }}",
+              "rightValue": "TIMEOUT_OR_ERROR",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "id": "check-execution-status",
+      "name": "Execution Failed?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [1050, 400]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT status, pages_crawled, error_message FROM intelligence_scout_queue WHERE id = {{ $json.id }}"
+      },
+      "id": "verify-status",
+      "name": "Verify Queue Status",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [1050, 600],
+      "credentials": {
+        "postgres": {
+          "id": "1",
+          "name": "PostgreSQL aya_rag"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "condition-1",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "completed",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "is-completed",
+      "name": "Is Completed?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [1250, 600]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "updateKey": "id",
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "failed",
+            "error_message": "={{ `Execution timeout or error. Last status: ${$json.status}, Pages: ${$json.pages_crawled || 0}` }}",
+            "retry_count": "={{ ($json.retry_count || 0) + 1 }}"
+          }
+        },
+        "table": "intelligence_scout_queue"
+      },
+      "id": "mark-failed",
+      "name": "Mark as Failed",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [1250, 800],
+      "credentials": {
+        "postgres": {
+          "id": "1",
+          "name": "PostgreSQL aya_rag"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "webhook",
+        "httpMethod": "POST",
+        "path": "scout-success",
+        "options": {}
+      },
+      "id": "notify-success",
+      "name": "Notify Success",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [1450, 400]
+    },
+    {
+      "parameters": {
+        "resource": "webhook",
+        "httpMethod": "POST",
+        "path": "scout-failure",
+        "options": {}
+      },
+      "id": "notify-failure",
+      "name": "Notify Failure",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [1450, 800]
+    }
+  ],
+  "connections": {
+    "Every 6 Hours": {
+      "main": [[{"node": "Get Pending or Failed", "type": "main", "index": 0}]]
+    },
+    "Get Pending or Failed": {
+      "main": [[{"node": "Has Items?", "type": "main", "index": 0}]]
+    },
+    "Has Items?": {
+      "main": [
+        [{"node": "Mark as Queued", "type": "main", "index": 0}],
+        []
+      ]
+    },
+    "Mark as Queued": {
+      "main": [[{"node": "Execute Crawler (2hr timeout)", "type": "main", "index": 0}]]
+    },
+    "Execute Crawler (2hr timeout)": {
+      "main": [[{"node": "Check Execution Status", "type": "main", "index": 0}]]
+    },
+    "Check Execution Status": {
+      "main": [
+        [{"node": "Verify Queue Status", "type": "main", "index": 0}],
+        [{"node": "Verify Queue Status", "type": "main", "index": 0}]
+      ]
+    },
+    "Verify Queue Status": {
+      "main": [[{"node": "Is Completed?", "type": "main", "index": 0}]]
+    },
+    "Is Completed?": {
+      "main": [
+        [{"node": "Notify Success", "type": "main", "index": 0}],
+        [{"node": "Mark as Failed", "type": "main", "index": 0}]
+      ]
+    },
+    "Mark as Failed": {
+      "main": [[{"node": "Notify Failure", "type": "main", "index": 0}]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "saveExecutionProgress": true,
+    "errorWorkflow": ""
+  },
+  "tags": ["intelligence-scout", "automation", "failsafe"]
+}
+

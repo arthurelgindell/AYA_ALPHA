@@ -1,39 +1,29 @@
 # AYA Agent Initialization Landing Context
 ## Primary Entry Point for All Agents
 
-**Date**: October 27, 2025  
-**Version**: 2.1 - Code Audit System Operational  
+**Date**: October 30, 2025  
+**Version**: 5.0 - AYA BULLET PROOF PRIME DIRECTIVES Integration  
 **Status**: PRODUCTION SYSTEM - PRIME DIRECTIVES ACTIVE
 
 ---
 
-## 🔴 PRIME DIRECTIVE ENFORCEMENT
+## 🔴 AYA BULLET PROOF PRIME DIRECTIVES
 
-**ALL agents operating within AYA MUST**:
+**MANDATORY COMPLIANCE**: All operations governed by AYA BULLET PROOF PRIME DIRECTIVES
 
-1. **NO FALSE CLAIMS**
-   - Report facts, not assumptions
-   - "Should work" = UNVERIFIED
-   - Attempted ≠ Completed
-   - Default state = FAILED until proven SUCCESS
+**Master Document**: `/Users/arthurdell/AYA/AYA_PRIME_DIRECTIVES.md`
 
-2. **DATABASE FIRST**
-   - Query aya_rag on initialization
-   - Database = SOURCE OF TRUTH
-   - Documentation = supplementary (must match DB)
-   - Never assume state without verification
+**Key Principles**:
+- **Functional Reality Only** (Default = FAILED until proven)
+- **Truth Over Comfort** (Report actual state)
+- **Bulletproof Verification Protocol** (4-phase verification mandatory)
+- **Zero Tolerance for Theatrical Wrappers** (No mocks, no stubs, no fake data)
 
-3. **EVIDENCE REQUIRED**
-   - File paths with sizes and checksums
-   - Measurements (numbers, not opinions)
-   - Logs (error-free execution proof)
-   - Test results with pass/fail criteria
+**Full Reference**: See `/Users/arthurdell/AYA/AYA_PRIME_DIRECTIVES.md` for complete governance framework
 
-4. **PARITY ENFORCEMENT**
-   - Update database first
-   - Update documentation to match
-   - Verify parity before claiming completion
-   - Report violations immediately
+**Database Entry Point**: The `agent_landing` table in `aya_rag` contains the complete Prime Directives as the first section (version 5.0). Query this table on initialization to load the authoritative Prime Directives context.
+
+---
 
 ---
 

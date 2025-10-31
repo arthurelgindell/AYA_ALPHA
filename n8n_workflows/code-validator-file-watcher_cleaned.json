@@ -1,0 +1,267 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 5
+            }
+          ]
+        }
+      },
+      "id": "schedule-trigger",
+      "name": "Every 5 Minutes",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [
+        250,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "command": "find",
+        "arguments": "/Users/arthurdell/AYA -type f \\( -name '*.py' -o -name '*.js' -o -name '*.ts' -o -name '*.sh' \\) -mmin -5 -exec ls -lt {} + | head -20",
+        "options": {}
+      },
+      "id": "find-changed-files",
+      "name": "Find Changed Files",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        450,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const output = [];\nconst input = $input.first().json.stdout;\nconst lines = input.split('\\n').filter(line => line.trim());\n\nfor (const line of lines) {\n  // Extract file path (last column of ls -lt output)\n  const parts = line.trim().split(/\\s+/);\n  if (parts.length > 0) {\n    const filePath = parts[parts.length - 1];\n    if (filePath.startsWith('/Users/arthurdell/AYA') && \n        (filePath.endsWith('.py') || filePath.endsWith('.js') || \n         filePath.endsWith('.ts') || filePath.endsWith('.sh'))) {\n      output.push({ file_path: filePath });\n    }\n  }\n}\n\nreturn output.map(item => ({ json: item }));"
+      },
+      "id": "parse-files",
+      "name": "Parse File Paths",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        650,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "batch-size",
+              "name": "batch_size",
+              "value": "8",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "set-batch-size",
+      "name": "Set Batch Size",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [
+        850,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "batchSize": 8,
+        "options": {}
+      },
+      "id": "batch-process",
+      "name": "Batch Process",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1050,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "command": "python3",
+        "arguments": "/Users/arthurdell/AYA/services/code_validator_n8n.py",
+        "options": {
+          "stdin": "={{ JSON.stringify({ file_path: $json.file_path, agent_name: 'file_watcher' }) }}"
+        }
+      },
+      "id": "validate-file",
+      "name": "Validate File",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        1250,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "critical-condition",
+              "leftValue": "={{ $json.enforcement_action }}",
+              "rightValue": "block",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "check-critical",
+      "name": "Check Critical Issues",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        1450,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "insert",
+        "table": {
+          "value": "code_validations",
+          "mode": "list",
+          "cachedResultName": "code_validations"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "validation_id": "={{ $json.validation_id }}",
+            "file_path": "={{ $json.file_path }}",
+            "filename": "={{ $json.filename }}",
+            "agent_name": "={{ $json.agent_name }}",
+            "enforcement_action": "={{ $json.enforcement_action }}",
+            "issues_detected": "={{ $json.issues_detected }}"
+          }
+        },
+        "options": {}
+      },
+      "id": "log-validation",
+      "name": "Log Validation",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2,
+      "position": [
+        1650,
+        300
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "1",
+          "name": "PostgreSQL aya_rag"
+        }
+      }
+    }
+  ],
+  "staticData": null,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "name": "Code Validator - File Watcher",
+  "connections": {
+    "Every 5 Minutes": {
+      "main": [
+        [
+          {
+            "node": "Find Changed Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Changed Files": {
+      "main": [
+        [
+          {
+            "node": "Parse File Paths",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse File Paths": {
+      "main": [
+        [
+          {
+            "node": "Set Batch Size",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Batch Size": {
+      "main": [
+        [
+          {
+            "node": "Batch Process",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Batch Process": {
+      "main": [
+        [
+          {
+            "node": "Validate File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate File": {
+      "main": [
+        [
+          {
+            "node": "Check Critical Issues",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Critical Issues": {
+      "main": [
+        [
+          {
+            "node": "Log Validation",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Log Validation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "tags": []
+}

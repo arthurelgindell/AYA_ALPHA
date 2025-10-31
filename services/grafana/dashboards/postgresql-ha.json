@@ -1,0 +1,244 @@
+{
+  "dashboard": {
+    "title": "AYA Platform - PostgreSQL HA Cluster",
+    "uid": "aya-postgresql-ha",
+    "tags": ["aya", "postgresql", "ha"],
+    "timezone": "browser",
+    "schemaVersion": 38,
+    "version": 1,
+    "refresh": "10s",
+    "time": {
+      "from": "now-1h",
+      "to": "now"
+    },
+    "panels": [
+      {
+        "id": 1,
+        "type": "stat",
+        "title": "Total Tables",
+        "gridPos": {"h": 4, "w": 4, "x": 0, "y": 0},
+        "targets": [
+          {
+            "datasource": {"type": "prometheus", "uid": "PBFA97CFB590B2093"},
+            "expr": "aya_table_count_total",
+            "refId": "A"
+          }
+        ],
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "center"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "color": {"mode": "thresholds"},
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"value": 0, "color": "blue"},
+                {"value": 100, "color": "green"},
+                {"value": 150, "color": "yellow"}
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": 2,
+        "type": "stat",
+        "title": "Database Size - aya_rag",
+        "gridPos": {"h": 4, "w": 5, "x": 4, "y": 0},
+        "targets": [
+          {
+            "datasource": {"type": "prometheus", "uid": "PBFA97CFB590B2093"},
+            "expr": "aya_database_size_bytes{database=\"aya_rag\"}",
+            "refId": "A"
+          }
+        ],
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "unit": "bytes",
+            "decimals": 2,
+            "color": {"mode": "thresholds"},
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"value": 0, "color": "green"},
+                {"value": 1073741824, "color": "yellow"},
+                {"value": 5368709120, "color": "red"}
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": 3,
+        "type": "stat",
+        "title": "Agent Landing Version",
+        "gridPos": {"h": 4, "w": 5, "x": 9, "y": 0},
+        "targets": [
+          {
+            "datasource": {"type": "prometheus", "uid": "PBFA97CFB590B2093"},
+            "expr": "aya_agent_landing_version",
+            "legendFormat": "v{{version}}",
+            "refId": "A"
+          }
+        ],
+        "options": {
+          "colorMode": "background",
+          "graphMode": "none",
+          "justifyMode": "center",
+          "textMode": "name"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "fixed", "fixedColor": "green"}
+          }
+        }
+      },
+      {
+        "id": 4,
+        "type": "stat",
+        "title": "Agent Sessions",
+        "gridPos": {"h": 4, "w": 5, "x": 14, "y": 0},
+        "targets": [
+          {
+            "datasource": {"type": "prometheus", "uid": "PBFA97CFB590B2093"},
+            "expr": "aya_agent_sessions_total",
+            "refId": "A"
+          }
+        ],
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "color": {"mode": "palette-classic"}
+          }
+        }
+      },
+      {
+        "id": 5,
+        "type": "stat",
+        "title": "Knowledge Entries",
+        "gridPos": {"h": 4, "w": 5, "x": 19, "y": 0},
+        "targets": [
+          {
+            "datasource": {"type": "prometheus", "uid": "PBFA97CFB590B2093"},
+            "expr": "aya_knowledge_entries",
+            "refId": "A"
+          }
+        ],
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "color": {"mode": "palette-classic"}
+          }
+        }
+      },
+      {
+        "id": 6,
+        "type": "bargauge",
+        "title": "Agent Turbo Tables by Size",
+        "gridPos": {"h": 12, "w": 12, "x": 0, "y": 4},
+        "targets": [
+          {
+            "datasource": {"type": "prometheus", "uid": "PBFA97CFB590B2093"},
+            "expr": "aya_agent_turbo_tables",
+            "legendFormat": "{{table_name}}",
+            "refId": "A"
+          }
+        ],
+        "options": {
+          "orientation": "horizontal",
+          "displayMode": "gradient",
+          "showUnfilled": true
+        },
+        "fieldConfig": {
+          "defaults": {
+            "unit": "bytes",
+            "color": {"mode": "palette-classic"}
+          }
+        }
+      },
+      {
+        "id": 7,
+        "type": "timeseries",
+        "title": "Database Size Growth",
+        "gridPos": {"h": 12, "w": 12, "x": 12, "y": 4},
+        "targets": [
+          {
+            "datasource": {"type": "prometheus", "uid": "PBFA97CFB590B2093"},
+            "expr": "aya_database_size_bytes{database=\"aya_rag\"}",
+            "legendFormat": "aya_rag",
+            "refId": "A"
+          },
+          {
+            "datasource": {"type": "prometheus", "uid": "PBFA97CFB590B2093"},
+            "expr": "aya_database_size_bytes{database=\"n8n_aya\"}",
+            "legendFormat": "n8n_aya",
+            "refId": "B"
+          }
+        ],
+        "options": {
+          "tooltip": {"mode": "multi"},
+          "legend": {"displayMode": "table", "placement": "bottom"}
+        },
+        "fieldConfig": {
+          "defaults": {
+            "custom": {
+              "drawStyle": "line",
+              "lineInterpolation": "smooth",
+              "lineWidth": 2,
+              "fillOpacity": 20
+            },
+            "unit": "bytes",
+            "color": {"mode": "palette-classic"}
+          }
+        }
+      },
+      {
+        "id": 8,
+        "type": "timeseries",
+        "title": "Table Growth Trend",
+        "gridPos": {"h": 8, "w": 24, "x": 0, "y": 16},
+        "targets": [
+          {
+            "datasource": {"type": "prometheus", "uid": "PBFA97CFB590B2093"},
+            "expr": "aya_table_count_total",
+            "legendFormat": "Tables",
+            "refId": "A"
+          }
+        ],
+        "options": {
+          "tooltip": {"mode": "single"},
+          "legend": {"displayMode": "list", "placement": "bottom"}
+        },
+        "fieldConfig": {
+          "defaults": {
+            "custom": {
+              "drawStyle": "line",
+              "lineInterpolation": "smooth",
+              "lineWidth": 2,
+              "fillOpacity": 20
+            },
+            "unit": "short",
+            "color": {"mode": "palette-classic"}
+          }
+        }
+      }
+    ]
+  },
+  "overwrite": true
+}

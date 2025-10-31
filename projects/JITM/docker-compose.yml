@@ -1,0 +1,185 @@
+version: '3.8'
+
+# JITM Docker Deployment
+# Clustered across ALPHA + BETA systems
+# Coordinates via PostgreSQL aya_rag
+
+services:
+  jitm-api:
+    build:
+      context: .
+      dockerfile: docker/jitm-api.Dockerfile
+    container_name: jitm-api-${SYSTEM_NAME:-alpha}
+    ports:
+      - "${JITM_API_PORT:-8100}:8000"
+    environment:
+      # System identification
+      - SYSTEM_NAME=${SYSTEM_NAME:-alpha}
+      - SYSTEM_ID=${SYSTEM_ID:-1}
+      
+      # PostgreSQL aya_rag (single source of truth)
+      - POSTGRES_HOST=${POSTGRES_HOST:-alpha.tail5f2bae.ts.net}
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=aya_rag
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-Power$$336633$$}
+      
+      # Redis for task queue
+      - REDIS_HOST=jitm-redis
+      - REDIS_PORT=6379
+      
+      # Agent Turbo integration
+      - AGENT_TURBO_URL=${AGENT_TURBO_URL:-http://host.docker.internal:8765}
+      
+      # n8n workflow integration
+      - N8N_WEBHOOK_URL=${N8N_WEBHOOK_URL:-http://host.docker.internal:8080/webhook}
+      
+      # API configuration
+      - API_SECRET_KEY=${API_SECRET_KEY:-jitm-production-secret-change-me}
+      - API_WORKERS=4
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      
+      # Clustering
+      - CLUSTER_MODE=true
+      - PEER_SYSTEMS=${PEER_SYSTEMS:-alpha.tail5f2bae.ts.net:8100,beta.tail5f2bae.ts.net:8100}
+    
+    volumes:
+      - jitm_data:/app/data
+      - jitm_logs:/app/logs
+    
+    networks:
+      - jitm_network
+    
+    restart: unless-stopped
+    
+    depends_on:
+      jitm-redis:
+        condition: service_healthy
+    
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  jitm-worker:
+    build:
+      context: .
+      dockerfile: docker/jitm-api.Dockerfile
+    environment:
+      # System identification
+      - SYSTEM_NAME=${SYSTEM_NAME:-alpha}
+      - WORKER_ID=${HOSTNAME}
+      
+      # PostgreSQL aya_rag
+      - POSTGRES_HOST=${POSTGRES_HOST:-alpha.tail5f2bae.ts.net}
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=aya_rag
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-Power$$336633$$}
+      
+      # Redis for task queue
+      - REDIS_HOST=jitm-redis
+      - REDIS_PORT=6379
+      
+      # Agent Turbo integration
+      - AGENT_TURBO_URL=${AGENT_TURBO_URL:-http://host.docker.internal:8765}
+      
+      # Worker configuration
+      - CELERY_BROKER_URL=redis://jitm-redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://jitm-redis:6379/0
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+    
+    volumes:
+      - jitm_data:/app/data
+      - jitm_logs:/app/logs
+    
+    networks:
+      - jitm_network
+    
+    restart: unless-stopped
+    
+    depends_on:
+      jitm-redis:
+        condition: service_healthy
+      jitm-api:
+        condition: service_started
+    
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    
+    command: celery -A api.tasks worker --loglevel=info --concurrency=4
+    
+    deploy:
+      replicas: ${JITM_WORKERS:-2}
+
+  jitm-redis:
+    image: redis:7-alpine
+    container_name: jitm-redis-${SYSTEM_NAME:-alpha}
+    command: redis-server --appendonly yes --maxmemory 2gb --maxmemory-policy allkeys-lru
+    ports:
+      - "${JITM_REDIS_PORT:-6380}:6379"
+    volumes:
+      - jitm_redis_data:/data
+    networks:
+      - jitm_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+  jitm-scheduler:
+    build:
+      context: .
+      dockerfile: docker/jitm-api.Dockerfile
+    container_name: jitm-scheduler-${SYSTEM_NAME:-alpha}
+    environment:
+      # System identification
+      - SYSTEM_NAME=${SYSTEM_NAME:-alpha}
+      
+      # PostgreSQL aya_rag
+      - POSTGRES_HOST=${POSTGRES_HOST:-alpha.tail5f2bae.ts.net}
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=aya_rag
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-Power$$336633$$}
+      
+      # Redis for task queue
+      - REDIS_HOST=jitm-redis
+      - REDIS_PORT=6379
+      
+      # Scheduler configuration
+      - CELERY_BROKER_URL=redis://jitm-redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://jitm-redis:6379/0
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+    
+    volumes:
+      - jitm_logs:/app/logs
+    
+    networks:
+      - jitm_network
+    
+    restart: unless-stopped
+    
+    depends_on:
+      jitm-redis:
+        condition: service_healthy
+      jitm-api:
+        condition: service_started
+    
+    command: celery -A api.tasks beat --loglevel=info
+
+networks:
+  jitm_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.26.0.0/16
+
+volumes:
+  jitm_data:
+    driver: local
+  jitm_logs:
+    driver: local
+  jitm_redis_data:
+    driver: local
+

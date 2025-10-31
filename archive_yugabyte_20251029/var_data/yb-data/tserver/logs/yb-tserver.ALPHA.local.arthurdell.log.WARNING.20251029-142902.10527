@@ -1,0 +1,19 @@
+Log file created at: 2025/10/29 14:29:02
+Current UTC time: 2025/10/29 10:29:02
+Running on machine: ALPHA.local
+Application fingerprint: version 2.19.2.0 build 121 revision f5330e713fe6eb3a66ee76ba34d3c71585845056 build_type RELEASE built at 06 Sep 2023 18:58:08 GMT
+Running duration (h:mm:ss): 0:00:00
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+W1029 14:29:02.574921 4278306816 hybrid_clock.cc:133] HybridClock initialized in local mode (OS X only). Not suitable for distributed clusters.
+W1029 14:29:02.579329 1891708928 client-internal.cc:1443] GetTableSchemaRpc(table_identifier: table_name: "metrics" namespace { name: "system" database_type: YQL_DATABASE_CQL }, num_attempts: 1) failed: Not found (yb/master/catalog_manager.cc:5318): Table system.metrics not found: OBJECT_NOT_FOUND (master error 3)
+W1029 14:29:02.579389 1889415168 metrics_snapshotter.cc:508] P 1bc80c76376544caba9a6c3e0ddbb285: Failed to snapshot metrics, code=Not found (yb/master/catalog_manager.cc:5318): Table system.metrics not found: OBJECT_NOT_FOUND (master error 3)
+W1029 14:29:02.986900 4278306816 pg_wrapper.cc:455] No hba configuration lines found, defaulting to trust all configuration.
+W1029 15:07:32.085980 1891708928 client-internal.cc:1443] GetTableSchemaRpc(table_identifier: table_id: "0000ffff00003000800000000000ffff", num_attempts: 1) failed: Not found (yb/master/catalog_manager.cc:5339): Table with identifier 0000ffff00003000800000000000ffff not found: OBJECT_NOT_FOUND (master error 3)
+W1029 15:08:00.263809 1907191808 yb_rpc.cc:335] Call yb.tserver.PgClientService.WaitForBackendsCatalogVersion 127.0.0.1:57673 => 127.0.0.1:9100 (request call id 619) took 20005ms (client timeout 24999ms).
+W1029 15:08:59.299623 1907191808 yb_rpc.cc:335] Call yb.tserver.PgClientService.WaitForBackendsCatalogVersion 127.0.0.1:57673 => 127.0.0.1:9100 (request call id 2109) took 19999ms (client timeout 24999ms).
+W1029 15:13:41.382191 1894576128 client-internal.cc:1443] GetTableSchemaRpc(table_identifier: table_id: "00004000000030008000000000004089", num_attempts: 1) failed: Not found (yb/master/catalog_manager.cc:5339): Table with identifier 00004000000030008000000000004089 not found: OBJECT_NOT_FOUND (master error 3)
+W1029 15:17:07.265192 1892282368 yb_rpc.cc:335] Call yb.tserver.PgClientService.WaitForBackendsCatalogVersion 127.0.0.1:59476 => 127.0.0.1:9100 (request call id 271) took 20002ms (client timeout 24999ms).
+W1029 15:17:27.457957 1893429248 yb_rpc.cc:335] Call yb.tserver.PgClientService.WaitForBackendsCatalogVersion 127.0.0.1:59476 => 127.0.0.1:9100 (request call id 303) took 20003ms (client timeout 24999ms).
+W1029 15:17:55.608310 1907765248 yb_rpc.cc:335] Call yb.tserver.PgClientService.WaitForBackendsCatalogVersion 127.0.0.1:59476 => 127.0.0.1:9100 (request call id 619) took 20003ms (client timeout 24999ms).
+W1029 15:18:37.331547 1894576128 yb_rpc.cc:335] Call yb.tserver.PgClientService.WaitForBackendsCatalogVersion 127.0.0.1:59476 => 127.0.0.1:9100 (request call id 1257) took 20003ms (client timeout 24999ms).
+W1029 15:43:21.626081 1894002688 client-internal.cc:1443] GetTableSchemaRpc(table_identifier: table_id: "00004000000030008000000000004113", num_attempts: 1) failed: Not found (yb/master/catalog_manager.cc:5339): Table with identifier 00004000000030008000000000004113 not found: OBJECT_NOT_FOUND (master error 3)

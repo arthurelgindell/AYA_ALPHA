@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-Enhanced PostgreSQL Connector with YugabyteDB Support
-Supports both PostgreSQL and YugabyteDB with automatic failover
+PostgreSQL Connector for Agent Turbo
+Connects to PostgreSQL 18 production database
 
-Created: October 28, 2025
+Created: October 29, 2025
 """
 
 import psycopg2
@@ -11,20 +11,7 @@ from psycopg2 import pool
 import psycopg2.extras
 import os
 import sys
-import time
-import random
 from pathlib import Path
-
-# Import YugabyteDB configuration
-sys.path.insert(0, str(Path(__file__).parent.parent))
-try:
-    from config.yugabyte_config import (
-        YUGABYTE_CONFIG, YUGABYTE_NODES, USE_YUGABYTE,
-        ENABLE_FAILOVER, POOL_SETTINGS
-    )
-except ImportError:
-    USE_YUGABYTE = False
-    YUGABYTE_CONFIG = None
 
 # Import pgvector if available
 try:
@@ -36,47 +23,33 @@ except ImportError:
 
 class PostgreSQLConnector:
     """
-    Enhanced PostgreSQL/YugabyteDB connector with:
-    - Support for both PostgreSQL and YugabyteDB
-    - Automatic failover for YugabyteDB nodes
-    - Connection pooling optimized for distributed systems
-    - Vector support for both databases
+    PostgreSQL connector for Agent Turbo.
+    - Connection pooling for PostgreSQL 18
+    - Vector support via pgvector extension
     """
     
-    def __init__(self, db_config=None, use_yugabyte=None):
+    def __init__(self, db_config=None):
         """
-        Initialize connection pool for PostgreSQL or YugabyteDB.
+        Initialize connection pool for PostgreSQL.
         
         Args:
             db_config: Optional dict with connection parameters
-            use_yugabyte: Override global USE_YUGABYTE setting
         """
-        # Determine which database to use
-        self.use_yugabyte = use_yugabyte if use_yugabyte is not None else USE_YUGABYTE
-        
-        # Set up configuration based on database type
-        if self.use_yugabyte and YUGABYTE_CONFIG:
-            print("🚀 Connecting to YugabyteDB distributed database...")
-            self.db_config = db_config or YUGABYTE_CONFIG.copy()
-            self.nodes = YUGABYTE_NODES
-            self.current_node_index = 0
-        else:
-            print("🐘 Connecting to PostgreSQL...")
-            self.db_config = db_config or {
-                'host': os.getenv('DB_HOST', 'localhost'),
-                'port': 5432,
-                'database': 'aya_rag',
-                'user': 'postgres',
-                'password': os.getenv('PGPASSWORD', 'Power$$336633$$')
-            }
-            self.nodes = None
+        print("🐘 Connecting to PostgreSQL 18...")
+        self.db_config = db_config or {
+            'host': os.getenv('DB_HOST', 'localhost'),
+            'port': 5432,
+            'database': 'aya_rag',
+            'user': 'postgres',
+            'password': os.getenv('PGPASSWORD', 'Power$$336633$$')
+        }
         
         # Initialize connection pool
         self._init_pool()
     
     def _init_pool(self):
         """Initialize connection pool with appropriate settings."""
-        pool_config = POOL_SETTINGS if self.use_yugabyte else {
+        pool_config = {
             'minconn': 2,
             'maxconn': 10
         }
@@ -101,51 +74,12 @@ class PostgreSQLConnector:
             self.pool.putconn(test_conn)
             
         except psycopg2.Error as e:
-            if self.use_yugabyte and ENABLE_FAILOVER and self.nodes:
-                print(f"⚠️  Failed to connect to node {self.current_node_index}, trying next...")
-                self._failover()
-            else:
-                print(f"❌ Failed to create connection pool: {e}", file=sys.stderr)
-                raise
-    
-    def _failover(self):
-        """Try to connect to the next YugabyteDB node."""
-        if not self.nodes or len(self.nodes) <= 1:
-            raise psycopg2.Error("No alternative nodes available for failover")
-        
-        # Try each node
-        original_index = self.current_node_index
-        attempts = 0
-        
-        while attempts < len(self.nodes):
-            self.current_node_index = (self.current_node_index + 1) % len(self.nodes)
-            node = self.nodes[self.current_node_index]
-            
-            print(f"🔄 Attempting failover to node {self.current_node_index}: {node['host']}:{node['port']}")
-            
-            # Update configuration with new node
-            self.db_config['host'] = node['host']
-            self.db_config['port'] = node['port']
-            
-            try:
-                self._init_pool()
-                print(f"✅ Failover successful to node {self.current_node_index}")
-                return
-            except Exception as e:
-                print(f"❌ Failover to node {self.current_node_index} failed: {e}")
-                attempts += 1
-        
-        raise psycopg2.Error("All YugabyteDB nodes are unavailable")
+            print(f"❌ Failed to create connection pool: {e}", file=sys.stderr)
+            raise
     
     def get_connection(self):
         """Get a connection from the pool."""
-        try:
-            return self.pool.getconn()
-        except psycopg2.pool.PoolError as e:
-            if self.use_yugabyte and ENABLE_FAILOVER:
-                self._failover()
-                return self.pool.getconn()
-            raise
+        return self.pool.getconn()
     
     def return_connection(self, conn, close=False):
         """Return a connection to the pool."""
@@ -155,48 +89,43 @@ class PostgreSQLConnector:
     def execute_query(self, query, params=None, fetch='all'):
         """
         Execute a query with automatic connection management.
-        Enhanced with YugabyteDB retry logic.
         """
         conn = None
-        max_retries = 3 if self.use_yugabyte else 1
-        retry_delay = 0.1
-        
-        for attempt in range(max_retries):
-            try:
-                conn = self.get_connection()
-                cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-                
-                cursor.execute(query, params)
-                
-                if fetch == 'all':
-                    result = cursor.fetchall()
-                elif fetch == 'one':
-                    result = cursor.fetchone()
-                elif fetch == 'many':
-                    result = cursor.fetchmany()
-                else:  # fetch == 'none'
-                    result = None
-                    conn.commit()
-                
-                cursor.close()
-                return result
-                
-            except psycopg2.Error as e:
-                if conn:
-                    conn.rollback()
-                
-                # Check if this is a retriable error
-                if attempt < max_retries - 1 and self.use_yugabyte:
-                    if "conflict" in str(e).lower() or "retry" in str(e).lower():
-                        time.sleep(retry_delay * (2 ** attempt))  # Exponential backoff
-                        continue
-                
-                print(f"❌ Query error: {e}", file=sys.stderr)
-                raise
-                
-            finally:
-                if conn:
-                    self.return_connection(conn)
+        try:
+            conn = self.get_connection()
+            cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+            
+            cursor.execute(query, params)
+            
+            # Check if this is a write operation (INSERT, UPDATE, DELETE)
+            query_upper = query.strip().upper()
+            is_write = query_upper.startswith(('INSERT', 'UPDATE', 'DELETE'))
+            
+            if fetch == 'all':
+                result = cursor.fetchall()
+            elif fetch == 'one':
+                result = cursor.fetchone()
+            elif fetch == 'many':
+                result = cursor.fetchmany()
+            else:  # fetch == 'none'
+                result = None
+            
+            # CRITICAL FIX: Commit write operations regardless of fetch type
+            if is_write:
+                conn.commit()
+            
+            cursor.close()
+            return result
+            
+        except psycopg2.Error as e:
+            if conn:
+                conn.rollback()
+            print(f"❌ Query error: {e}", file=sys.stderr)
+            raise
+            
+        finally:
+            if conn:
+                self.return_connection(conn)
     
     def test_vector_search(self, limit=3):
         """Test vector search functionality."""
@@ -241,23 +170,20 @@ class PostgreSQLConnector:
 
 # Quick test when run directly
 if __name__ == "__main__":
-    print("Testing PostgreSQL/YugabyteDB Connector...")
-    
-    # Test YugabyteDB connection
-    print("\n1. Testing YugabyteDB:")
-    yb_connector = PostgreSQLConnector(use_yugabyte=True)
-    stats = yb_connector.get_stats()
-    print(f"   Database: {stats['database']}")
-    print(f"   Size: {stats['size']}")
-    print(f"   Knowledge Entries: {stats['knowledge_entries']}")
-    yb_connector.test_vector_search()
-    yb_connector.close()
+    print("Testing PostgreSQL Connector...")
     
     # Test PostgreSQL connection
-    print("\n2. Testing PostgreSQL:")
-    pg_connector = PostgreSQLConnector(use_yugabyte=False)
+    print("\n1. Testing PostgreSQL 18:")
+    pg_connector = PostgreSQLConnector()
     stats = pg_connector.get_stats()
     print(f"   Database: {stats['database']}")
     print(f"   Size: {stats['size']}")
-    print(f"   Knowledge Entries: {stats['knowledge_entries']}")
+    print(f"   Knowledge entries: {stats['knowledge_entries']}")
+    print(f"   Sessions: {stats['sessions']}")
+    print(f"   Tasks: {stats['tasks']}")
+    
+    # Test vector search
+    pg_connector.test_vector_search()
+    
     pg_connector.close()
+    print("\n✅ All tests passed!")

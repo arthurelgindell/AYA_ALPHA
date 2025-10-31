@@ -1,0 +1,15 @@
+#!/bin/bash
+# AYA Code Validator Wrapper
+# Automatically uses correct endpoint based on node
+
+# Detect node and set appropriate flag
+HOSTNAME=$(hostname)
+if [[ "$HOSTNAME" == *"alpha"* ]] || [[ "$HOSTNAME" == *"ALPHA"* ]]; then
+    # On ALPHA - use localhost
+    EXTRA_FLAGS="--local"
+else
+    # On BETA, Gamma, AIR - use Tailscale
+    EXTRA_FLAGS=""
+fi
+
+exec python3 /Users/arthurdell/AYA/services/code_validator_service.py $EXTRA_FLAGS "$@"

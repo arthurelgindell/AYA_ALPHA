@@ -1,0 +1,83 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: 'aya'
+    environment: 'production'
+
+scrape_configs:
+  # PostgreSQL Metrics
+  - job_name: 'postgres-alpha'
+    static_configs:
+      - targets: ['alpha.tail5f2bae.ts.net:9187']
+        labels:
+          node: 'alpha'
+          role: 'primary'
+          
+  - job_name: 'postgres-beta'
+    static_configs:
+      - targets: ['beta.tail5f2bae.ts.net:9187']
+        labels:
+          node: 'beta'
+          role: 'standby'
+          
+  # System Node Metrics
+  - job_name: 'node-alpha'
+    static_configs:
+      - targets: ['alpha.tail5f2bae.ts.net:9100']
+        labels:
+          node: 'alpha'
+          hardware: 'm3-ultra-512gb'
+          
+  - job_name: 'node-beta'
+    static_configs:
+      - targets: ['beta.tail5f2bae.ts.net:9100']
+        labels:
+          node: 'beta'
+          hardware: 'm3-ultra-256gb'
+          
+  # Patroni HA Cluster Metrics
+  - job_name: 'patroni-alpha'
+    static_configs:
+      - targets: ['alpha.tail5f2bae.ts.net:8008']
+        labels:
+          node: 'alpha'
+          service: 'patroni'
+          
+  - job_name: 'patroni-beta'
+    static_configs:
+      - targets: ['beta.tail5f2bae.ts.net:8008']
+        labels:
+          node: 'beta'
+          service: 'patroni'
+          
+  # AYA Custom Metrics Exporters
+  - job_name: 'aya-metrics-alpha'
+    static_configs:
+      - targets: ['alpha.tail5f2bae.ts.net:9200']
+        labels:
+          node: 'alpha'
+          service: 'aya-metrics'
+          
+  - job_name: 'aya-metrics-beta'
+    static_configs:
+      - targets: ['beta.tail5f2bae.ts.net:9200']
+        labels:
+          node: 'beta'
+          service: 'aya-metrics'
+          
+  # Tailscale Network Metrics
+  - job_name: 'tailscale-alpha'
+    static_configs:
+      - targets: ['alpha.tail5f2bae.ts.net:9201']
+        labels:
+          node: 'alpha'
+          service: 'tailscale'
+          
+  - job_name: 'tailscale-beta'
+    static_configs:
+      - targets: ['beta.tail5f2bae.ts.net:9201']
+        labels:
+          node: 'beta'
+          service: 'tailscale'
+

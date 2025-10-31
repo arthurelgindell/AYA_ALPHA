@@ -1,0 +1,274 @@
+{
+  "dashboard": {
+    "title": "AYA Platform - Code Audit System",
+    "uid": "aya-code-audit",
+    "tags": ["aya", "code-audit", "security"],
+    "timezone": "browser",
+    "schemaVersion": 38,
+    "version": 1,
+    "refresh": "1m",
+    "time": {
+      "from": "now-24h",
+      "to": "now"
+    },
+    "panels": [
+      {
+        "id": 1,
+        "type": "stat",
+        "title": "Total Audit Runs",
+        "gridPos": {"h": 4, "w": 6, "x": 0, "y": 0},
+        "targets": [
+          {
+            "datasource": {"type": "prometheus", "uid": "PBFA97CFB590B2093"}, "expr": "sum(aya_code_audit_runs)",
+            "refId": "A"
+          }
+        ],
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "center"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "color": {"mode": "palette-classic"}
+          }
+        }
+      },
+      {
+        "id": 2,
+        "type": "stat",
+        "title": "Critical Findings",
+        "gridPos": {"h": 4, "w": 6, "x": 6, "y": 0},
+        "targets": [
+          {
+            "datasource": {"type": "prometheus", "uid": "PBFA97CFB590B2093"}, "expr": "aya_code_audit_findings{severity=\"CRITICAL\"}",
+            "refId": "A"
+          }
+        ],
+        "options": {
+          "colorMode": "background",
+          "graphMode": "area",
+          "justifyMode": "center"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "color": {"mode": "thresholds"},
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"value": 0, "color": "green"},
+                {"value": 1, "color": "orange"},
+                {"value": 5, "color": "red"}
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": 3,
+        "type": "stat",
+        "title": "High Severity Findings",
+        "gridPos": {"h": 4, "w": 6, "x": 12, "y": 0},
+        "targets": [
+          {
+            "datasource": {"type": "prometheus", "uid": "PBFA97CFB590B2093"}, "expr": "aya_code_audit_findings{severity=\"HIGH\"}",
+            "refId": "A"
+          }
+        ],
+        "options": {
+          "colorMode": "background",
+          "graphMode": "area",
+          "justifyMode": "center"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "color": {"mode": "thresholds"},
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"value": 0, "color": "green"},
+                {"value": 5, "color": "yellow"},
+                {"value": 10, "color": "orange"}
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": 4,
+        "type": "stat",
+        "title": "Medium Severity Findings",
+        "gridPos": {"h": 4, "w": 6, "x": 18, "y": 0},
+        "targets": [
+          {
+            "datasource": {"type": "prometheus", "uid": "PBFA97CFB590B2093"}, "expr": "aya_code_audit_findings{severity=\"MEDIUM\"}",
+            "refId": "A"
+          }
+        ],
+        "options": {
+          "colorMode": "background",
+          "graphMode": "area",
+          "justifyMode": "center"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "color": {"mode": "thresholds"},
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"value": 0, "color": "green"},
+                {"value": 10, "color": "yellow"}
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": 5,
+        "type": "piechart",
+        "title": "Findings Distribution by Severity",
+        "gridPos": {"h": 10, "w": 8, "x": 0, "y": 4},
+        "targets": [
+          {
+            "datasource": {"type": "prometheus", "uid": "PBFA97CFB590B2093"}, "expr": "aya_code_audit_findings",
+            "legendFormat": "{{severity}}",
+            "refId": "A"
+          }
+        ],
+        "options": {
+          "legend": {
+            "displayMode": "table",
+            "placement": "right",
+            "values": ["value", "percent"]
+          },
+          "pieType": "donut",
+          "tooltip": {"mode": "single"}
+        },
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short"
+          },
+          "overrides": [
+            {
+              "matcher": {"id": "byName", "options": "CRITICAL"},
+              "properties": [{"id": "color", "value": {"fixedColor": "dark-red", "mode": "fixed"}}]
+            },
+            {
+              "matcher": {"id": "byName", "options": "HIGH"},
+              "properties": [{"id": "color", "value": {"fixedColor": "orange", "mode": "fixed"}}]
+            },
+            {
+              "matcher": {"id": "byName", "options": "MEDIUM"},
+              "properties": [{"id": "color", "value": {"fixedColor": "yellow", "mode": "fixed"}}]
+            },
+            {
+              "matcher": {"id": "byName", "options": "LOW"},
+              "properties": [{"id": "color", "value": {"fixedColor": "blue", "mode": "fixed"}}]
+            }
+          ]
+        }
+      },
+      {
+        "id": 6,
+        "type": "bargauge",
+        "title": "Audit Runs by Status",
+        "gridPos": {"h": 10, "w": 8, "x": 8, "y": 4},
+        "targets": [
+          {
+            "datasource": {"type": "prometheus", "uid": "PBFA97CFB590B2093"}, "expr": "aya_code_audit_runs",
+            "legendFormat": "{{status}}",
+            "refId": "A"
+          }
+        ],
+        "options": {
+          "orientation": "horizontal",
+          "displayMode": "gradient",
+          "showUnfilled": true
+        },
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short",
+            "color": {"mode": "palette-classic"}
+          },
+          "overrides": [
+            {
+              "matcher": {"id": "byName", "options": "completed"},
+              "properties": [{"id": "color", "value": {"fixedColor": "green", "mode": "fixed"}}]
+            },
+            {
+              "matcher": {"id": "byName", "options": "failed"},
+              "properties": [{"id": "color", "value": {"fixedColor": "red", "mode": "fixed"}}]
+            },
+            {
+              "matcher": {"id": "byName", "options": "running"},
+              "properties": [{"id": "color", "value": {"fixedColor": "blue", "mode": "fixed"}}]
+            }
+          ]
+        }
+      },
+      {
+        "id": 7,
+        "type": "table",
+        "title": "Recent Audit Runs",
+        "gridPos": {"h": 10, "w": 8, "x": 16, "y": 4},
+        "targets": [
+          {
+            "datasource": {"type": "grafana-postgresql-datasource", "uid": "postgres-aya_rag"},
+            "format": "table",
+            "rawSql": "SELECT run_id, repo_name, status, total_findings, execution_time_seconds, start_time FROM code_audit_runs ORDER BY start_time DESC LIMIT 10",
+            "refId": "A"
+          }
+        ],
+        "options": {
+          "showHeader": true,
+          "footer": {"show": false}
+        }
+      },
+      {
+        "id": 8,
+        "type": "timeseries",
+        "title": "Total Findings Over Time",
+        "gridPos": {"h": 8, "w": 24, "x": 0, "y": 14},
+        "targets": [
+          {
+            "datasource": {"type": "prometheus", "uid": "PBFA97CFB590B2093"}, "expr": "sum(aya_code_audit_findings)",
+            "legendFormat": "Total Findings",
+            "refId": "A"
+          },
+          {
+            "datasource": {"type": "prometheus", "uid": "PBFA97CFB590B2093"}, "expr": "aya_code_audit_findings{severity=\"CRITICAL\"}",
+            "legendFormat": "Critical",
+            "refId": "B"
+          },
+          {
+            "datasource": {"type": "prometheus", "uid": "PBFA97CFB590B2093"}, "expr": "aya_code_audit_findings{severity=\"HIGH\"}",
+            "legendFormat": "High",
+            "refId": "C"
+          }
+        ],
+        "options": {
+          "tooltip": {"mode": "multi"},
+          "legend": {"displayMode": "table", "placement": "bottom", "showLegend": true}
+        },
+        "fieldConfig": {
+          "defaults": {
+            "custom": {
+              "drawStyle": "line",
+              "lineInterpolation": "smooth",
+              "lineWidth": 2,
+              "fillOpacity": 10,
+              "stacking": {"mode": "none"}
+            },
+            "unit": "short",
+            "color": {"mode": "palette-classic"}
+          }
+        }
+      }
+    ]
+  },
+  "overwrite": true
+}

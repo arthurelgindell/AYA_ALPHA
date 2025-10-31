@@ -12,7 +12,7 @@
       "args": [
         "-y",
         "@modelcontextprotocol/server-postgres",
-        "postgresql://yugabyte:yugabyte@127.0.0.1:5433/aya_rag_prod"
+        "postgresql://postgres:Power$$336633$$@localhost:5432/aya_rag"
       ]
     },
     "postgres_original": {
@@ -44,6 +44,18 @@
       "args": ["/Users/arthurdell/AYA/Agent_Turbo/scripts/lm_studio_mcp.py"],
       "env": {
         "LM_STUDIO_URL": "http://localhost:1234/v1"
+      }
+    },
+    "qodana": {
+      "command": "/Users/arthurdell/AYA/mcp_servers/qodana-mcp/venv/bin/python",
+      "args": ["/Users/arthurdell/AYA/mcp_servers/qodana-mcp/server.py"],
+      "env": {
+        "QODANA_IMAGE": "jetbrains/qodana-python:latest",
+        "POSTGRES_HOST": "localhost",
+        "POSTGRES_PORT": "5432",
+        "POSTGRES_DB": "aya_rag",
+        "POSTGRES_USER": "postgres",
+        "PGPASSWORD": "Power$$336633$$"
       }
     }
   }

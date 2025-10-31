@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.aya.patroni-beta</string>
+    
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/bin/python3</string>
+        <string>-m</string>
+        <string>patroni</string>
+        <string>/Volumes/DATA/AYA/services/patroni/patroni-beta.yml</string>
+    </array>
+    
+    <key>WorkingDirectory</key>
+    <string>/Volumes/DATA/AYA/services/patroni</string>
+    
+    <key>StandardOutPath</key>
+    <string>/Volumes/DATA/AYA/logs/patroni-beta.log</string>
+    
+    <key>StandardErrorPath</key>
+    <string>/Volumes/DATA/AYA/logs/patroni-beta.log</string>
+    
+    <key>RunAtLoad</key>
+    <true/>
+    
+    <key>KeepAlive</key>
+    <true/>
+    
+    <key>ProcessType</key>
+    <string>Background</string>
+</dict>
+</plist>

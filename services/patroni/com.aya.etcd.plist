@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.aya.etcd</string>
+    
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/local/bin/etcd</string>
+        <string>--config-file</string>
+        <string>/usr/local/etc/etcd/etcd.conf</string>
+    </array>
+    
+    <key>WorkingDirectory</key>
+    <string>/usr/local/var/lib/etcd</string>
+    
+    <key>StandardOutPath</key>
+    <string>/Users/arthurdell/Library/Logs/etcd.log</string>
+    
+    <key>StandardErrorPath</key>
+    <string>/Users/arthurdell/Library/Logs/etcd.log</string>
+    
+    <key>RunAtLoad</key>
+    <true/>
+    
+    <key>KeepAlive</key>
+    <true/>
+    
+    <key>ProcessType</key>
+    <string>Background</string>
+</dict>
+</plist>

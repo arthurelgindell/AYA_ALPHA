@@ -13,10 +13,10 @@ echo "Started: $(date)"
 echo ""
 
 # Configuration
-MODEL_PATH="/Users/arthurdell/GLADIATOR/models/DavidBianco/Foundation-Sec-8B-Instruct-int8"
-DATA_DIR="/Users/arthurdell/GLADIATOR/datasets/blue_team_training"
-OUTPUT_DIR="/Users/arthurdell/GLADIATOR/checkpoints/blue_team_8b"
-LOG_DIR="/Users/arthurdell/GLADIATOR/logs/blue_team_training"
+MODEL_PATH="/Users/arthurdell/AYA/projects/GLADIATOR/blue_team/models/DavidBianco/Foundation-Sec-8B-Instruct-int8"
+DATA_DIR="/Users/arthurdell/AYA/projects/GLADIATOR/blue_team/datasets/blue_team_training"
+OUTPUT_DIR="/Users/arthurdell/AYA/projects/GLADIATOR/blue_team/checkpoints/blue_team_8b"
+LOG_DIR="/Users/arthurdell/AYA/projects/GLADIATOR/blue_team/logs/blue_team_training"
 
 # Training parameters
 ITERATIONS=500

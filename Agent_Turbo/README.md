@@ -3,6 +3,21 @@
 This file is locked to prevent unauthorized changes
 
 This is a Human with AI automated software development solution that leverages a rigorously verified platform infrastructure—powered by Apple Silicon: 2 X Mac Studio M3 Ultra's (ALPHA: with 80 GPU cores, 32 CPUs, and 512 GB of RAM) + (BETA: with 80 GPU cores, 32 CPUs, and 256 GB of RAM). It integrates best-of-breed online automation tools and technologies, selected via thorough research and validation, to achieve functional excellence and deliver truth-driven, fully operational, end-to-end integrated systems.
+
+## ⚡ QUICK START - Agent Turbo Initialization
+
+**For ANY AI agent working with AYA - start here**:
+
+```bash
+cd /Users/arthurdell/AYA/Agent_Turbo/core && python3 agent_turbo.py verify
+```
+
+**Expected**: `✅ AGENT_TURBO: VERIFIED AND OPERATIONAL` (3 seconds)
+
+**If initialization fails**: See `/Users/arthurdell/AYA/AGENT_TURBO_QUICKSTART.md`
+
+**Database**: PostgreSQL 18 (port 5432, database: `aya_rag`)
+
 ---
 
 ## Prime Directives
@@ -183,22 +198,25 @@ Firecrawl : fc-b641c64dbb3b4962909c2f8f04c524ba--
 
 ## Overview
 
-AGENT_TURBO is the project's unified high-performance knowledge system, providing token optimization and session memory capabilities with MLX GPU acceleration.
+AGENT_TURBO is the project's unified high-performance knowledge system, providing token optimization and session memory capabilities with MLX GPU acceleration, backed by PostgreSQL 18 database.
 
 ## Architecture
 
 ### Core Components
-- **agent_turbo.py**: Main unified implementation with SQLite storage and MLX GPU acceleration
+- **agent_turbo.py**: Main unified implementation with PostgreSQL 18 storage and MLX GPU acceleration
+- **postgres_connector.py**: PostgreSQL 18 connection with automatic failover and pooling
 - **agent_turbo_gpu.py**: GPU optimization for MLX operations
 - **utils.py**: Shared utility functions
 - **agent_turbo_startup.sh**: System initialization script
 
 ### Key Features
-- **RAM Disk**: 100GB RAM disk for ultra-fast I/O
-- **GPU Acceleration**: MLX Metal acceleration (160 GPU cores)
+- **PostgreSQL 18**: Production database server (port 5432)
+- **RAM Disk**: 100GB RAM disk for ultra-fast I/O caching
+- **GPU Acceleration**: MLX Metal acceleration (80 GPU cores per node, 160 total)
+- **pgvector**: Semantic search with vector embeddings
 - **Memory Mapping**: Preloaded file cache for instant access
 - **Token Optimization**: 1000x performance target
-- **Verification Protocol**: Bulletproof testing
+- **Verification Protocol**: Bulletproof testing with real data flow
 
 ## Directory Structure
 
@@ -248,11 +266,13 @@ python3 core/agent_turbo.py stats
 
 ## Requirements
 
-- **Python**: 3.9.23 (exact version matching)
-- **MLX**: 0.29.1 with Metal acceleration
-- **RAM**: 100GB available for RAM disk
-- **GPU**: Apple Silicon with 160+ GPU cores
-- **Storage**: SQLite with WAL mode
+- **Python**: 3.9+ (system python3)
+- **PostgreSQL**: 18.0+
+- **MLX**: 0.29.1+ with Metal acceleration
+- **psycopg2**: PostgreSQL adapter with pgvector support
+- **RAM**: 100GB available for RAM disk cache
+- **GPU**: Apple Silicon with 80+ GPU cores
+- **Storage**: PostgreSQL 18 storage (aya_rag database)
 
 ## Status
 

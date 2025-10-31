@@ -60,16 +60,28 @@ class LMStudioMCPServer:
     def generate_text(self, prompt: str, max_tokens: int = 100) -> dict:
         """Generate text using LM Studio."""
         try:
-            result = self.lm_client.generate(prompt, max_tokens=max_tokens)
+            result = self.lm_client.generate_text(prompt, max_tokens=max_tokens)
             return {"status": "success", "result": result}
         except Exception as e:
             return {"status": "error", "error": str(e)}
     
     def create_embedding(self, text: str) -> dict:
-        """Create embedding using LM Studio."""
+        """Create embedding using existing embedding service on port 8765."""
         try:
-            result = self.lm_client.create_embedding(text)
-            return {"status": "success", "embedding": result}
+            import requests
+            response = requests.post(
+                "http://localhost:8765/embed",
+                json={"text": text},
+                timeout=10
+            )
+            if response.status_code == 200:
+                data = response.json()
+                return {
+                    "status": "success",
+                    "embedding": data['embedding']
+                }
+            else:
+                return {"status": "error", "error": f"HTTP {response.status_code}"}
         except Exception as e:
             return {"status": "error", "error": str(e)}
     

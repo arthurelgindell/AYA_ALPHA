@@ -1,0 +1,102 @@
+version: '3.8'
+
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus-beta
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    restart: unless-stopped
+    network_mode: host
+
+  grafana-beta:
+    image: grafana/grafana:latest
+    container_name: grafana-beta
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SERVER_ROOT_URL=http://beta.tail5f2bae.ts.net:3000
+      - GF_DATABASE_TYPE=postgres
+      - GF_DATABASE_HOST=127.0.0.1:5432
+      - GF_DATABASE_NAME=aya_rag
+      - GF_DATABASE_USER=postgres
+      - GF_DATABASE_PASSWORD=Power$$336633$$
+      - GF_SECURITY_ADMIN_USER=arthur
+      - GF_SECURITY_ADMIN_PASSWORD=AyaGrafana2025!
+      - GF_INSTALL_PLUGINS=grafana-piechart-panel,grafana-worldmap-panel,grafana-clock-panel
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_AUTH_ANONYMOUS_ENABLED=false
+    volumes:
+      - ./dashboards:/var/lib/grafana/dashboards:ro
+      - ./provisioning:/etc/grafana/provisioning:ro
+      - grafana-data:/var/lib/grafana
+    restart: unless-stopped
+    network_mode: host
+    depends_on:
+      - prometheus
+    
+  postgres-exporter-beta:
+    image: prometheuscommunity/postgres-exporter:latest
+    container_name: postgres-exporter-beta
+    environment:
+      - DATA_SOURCE_NAME=postgresql://postgres:Power$$336633$$@localhost:5432/aya_rag?sslmode=disable
+    ports:
+      - "9187:9187"
+    restart: unless-stopped
+    network_mode: host
+    
+  node-exporter-beta:
+    image: prom/node-exporter:latest
+    container_name: node-exporter-beta
+    command:
+      - '--path.rootfs=/host'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc|private|var/folders)($$|/)'
+      - '--no-collector.arp'
+      - '--no-collector.bcache'
+      - '--no-collector.bonding'
+      - '--no-collector.conntrack'
+      - '--no-collector.edac'
+      - '--no-collector.entropy'
+      - '--no-collector.fibrechannel'
+      - '--no-collector.hwmon'
+      - '--no-collector.infiniband'
+      - '--no-collector.ipvs'
+      - '--no-collector.mdadm'
+      - '--no-collector.nfs'
+      - '--no-collector.nfsd'
+      - '--no-collector.nvme'
+      - '--no-collector.powersupplyclass'
+      - '--no-collector.rapl'
+      - '--no-collector.schedstat'
+      - '--no-collector.selinux'
+      - '--no-collector.sockstat'
+      - '--no-collector.softnet'
+      - '--no-collector.stat'
+      - '--no-collector.tapestats'
+      - '--no-collector.textfile'
+      - '--no-collector.thermal_zone'
+      - '--no-collector.timex'
+      - '--no-collector.udp_queues'
+      - '--no-collector.vmstat'
+      - '--no-collector.xfs'
+      - '--no-collector.zfs'
+    volumes:
+      - /:/host:ro
+    ports:
+      - "9100:9100"
+    restart: unless-stopped
+    network_mode: host
+
+volumes:
+  prometheus-data:
+  grafana-data:
+

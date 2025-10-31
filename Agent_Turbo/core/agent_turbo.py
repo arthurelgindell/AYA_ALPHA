@@ -40,42 +40,50 @@ try:
     import mlx.core as mx
     import mlx.nn as nn
     GPU_AVAILABLE = True
-    # Set default device to GPU for maximum performance
-    if mx.metal.is_available():
-        mx.set_default_device(mx.gpu)
+    GPU_CORES = 0
     
-    # Fix GPU core detection for Apple M3 Ultra
-    device_info = mx.metal.device_info()
-    device_name = device_info.get('device_name', '')
-    
-    # Map device names to known GPU core counts
-    if 'M3 Ultra' in device_name:
-        GPU_CORES = 80  # M3 Ultra has 80 GPU cores
-    elif 'M3 Max' in device_name:
-        GPU_CORES = 40  # M3 Max has 40 GPU cores
-    elif 'M3 Pro' in device_name:
-        GPU_CORES = 18  # M3 Pro has 18 GPU cores
-    elif 'M3' in device_name:
-        GPU_CORES = 10  # M3 has 10 GPU cores
-    elif 'M2 Ultra' in device_name:
-        GPU_CORES = 76  # M2 Ultra has 76 GPU cores
-    elif 'M2 Max' in device_name:
-        GPU_CORES = 38  # M2 Max has 38 GPU cores
-    elif 'M2 Pro' in device_name:
-        GPU_CORES = 19  # M2 Pro has 19 GPU cores
-    elif 'M2' in device_name:
-        GPU_CORES = 10  # M2 has 10 GPU cores
-    elif 'M1 Ultra' in device_name:
-        GPU_CORES = 64  # M1 Ultra has 64 GPU cores
-    elif 'M1 Max' in device_name:
-        GPU_CORES = 32  # M1 Max has 32 GPU cores
-    elif 'M1 Pro' in device_name:
-        GPU_CORES = 16  # M1 Pro has 16 GPU cores
-    elif 'M1' in device_name:
-        GPU_CORES = 8   # M1 has 8 GPU cores
-    else:
-        # Fallback to MLX detection (often returns 0)
-        GPU_CORES = device_info.get('gpu_cores', 0)
+    try:
+        # Set default device to GPU for maximum performance
+        if mx.metal.is_available():
+            mx.set_default_device(mx.gpu)
+        
+        # Fix GPU core detection for Apple M3 Ultra
+        device_info = mx.metal.device_info()
+        device_name = device_info.get('device_name', '')
+        
+        # Map device names to known GPU core counts
+        if 'M3 Ultra' in device_name:
+            GPU_CORES = 80  # M3 Ultra has 80 GPU cores
+        elif 'M3 Max' in device_name:
+            GPU_CORES = 40  # M3 Max has 40 GPU cores
+        elif 'M3 Pro' in device_name:
+            GPU_CORES = 18  # M3 Pro has 18 GPU cores
+        elif 'M3' in device_name:
+            GPU_CORES = 10  # M3 has 10 GPU cores
+        elif 'M2 Ultra' in device_name:
+            GPU_CORES = 76  # M2 Ultra has 76 GPU cores
+        elif 'M2 Max' in device_name:
+            GPU_CORES = 38  # M2 Max has 38 GPU cores
+        elif 'M2 Pro' in device_name:
+            GPU_CORES = 19  # M2 Pro has 19 GPU cores
+        elif 'M2' in device_name:
+            GPU_CORES = 10  # M2 has 10 GPU cores
+        elif 'M1 Ultra' in device_name:
+            GPU_CORES = 64  # M1 Ultra has 64 GPU cores
+        elif 'M1 Max' in device_name:
+            GPU_CORES = 32  # M1 Max has 32 GPU cores
+        elif 'M1 Pro' in device_name:
+            GPU_CORES = 16  # M1 Pro has 16 GPU cores
+        elif 'M1' in device_name:
+            GPU_CORES = 8   # M1 has 8 GPU cores
+        else:
+            # Fallback to MLX detection (often returns 0)
+            GPU_CORES = device_info.get('gpu_cores', 0)
+    except Exception as e:
+        # Metal device initialization failed, continue without GPU
+        GPU_AVAILABLE = False
+        GPU_CORES = 0
+        print(f"Warning: MLX GPU initialization failed: {e}", file=sys.stderr)
         
 except ImportError:
     GPU_AVAILABLE = False
@@ -176,7 +184,12 @@ class AgentTurbo:
         
         # Initialize LM Studio client
         try:
-            from core.lm_studio_client import LMStudioClient
+            # Try multiple import paths for robustness
+            try:
+                from core.lm_studio_client import LMStudioClient
+            except ImportError:
+                from lm_studio_client import LMStudioClient
+            
             self.lm_studio_client = LMStudioClient()
             if not silent:
                 print("🚀 LM Studio client initialized")
@@ -339,7 +352,7 @@ class AgentTurbo:
         existing = self.db.execute_query(
             'SELECT id FROM agent_knowledge WHERE content_hash = %s',
             (content_hash,),
-            fetch=True
+            fetch='all'
         )
         
         if existing:
@@ -366,9 +379,9 @@ class AgentTurbo:
         try:
             result = self.db.execute_query(
                 query,
-                (content_hash, content, embedding_vector, len(content.split()), 
+                (content_hash, content, embedding_vector, len(content.split()),
                  source_session, knowledge_type),
-                fetch=True
+                fetch='all'
             )
             
             preview = content[:80] + '...' if len(content) > 80 else content
@@ -425,7 +438,7 @@ class AgentTurbo:
             results = self.db.execute_query(
                 sql,
                 (query_vector, query_vector, limit),
-                fetch=True
+                fetch='all'
             )
             
             if not results:
@@ -547,14 +560,14 @@ class AgentTurbo:
             # Count knowledge entries in PostgreSQL
             count_result = self.db.execute_query(
                 'SELECT COUNT(*) as count FROM agent_knowledge',
-                fetch=True
+                fetch='all'
             )
             count = count_result[0]['count'] if count_result else 0
             
             # Count entries with embeddings
             embedded_result = self.db.execute_query(
                 'SELECT COUNT(*) as count FROM agent_knowledge WHERE embedding IS NOT NULL',
-                fetch=True
+                fetch='all'
             )
             embedded_count = embedded_result[0]['count'] if embedded_result else 0
             
@@ -627,7 +640,7 @@ class AgentTurbo:
             print("🔍 Verifying Agent Turbo PostgreSQL integration...")
             
             # Test 1: PostgreSQL connection
-            test_query = self.db.execute_query('SELECT 1 as test', fetch=True)
+            test_query = self.db.execute_query('SELECT 1 as test', fetch='all')
             if not test_query or test_query[0]['test'] != 1:
                 print("❌ PostgreSQL connection failed")
                 return False
@@ -645,7 +658,7 @@ class AgentTurbo:
             verify_query = self.db.execute_query(
                 'SELECT COUNT(*) as count FROM agent_knowledge WHERE content LIKE %s',
                 ('%VERIFICATION TEST%',),
-                fetch=True
+                fetch='all'
             )
             if not verify_query or verify_query[0]['count'] == 0:
                 print("❌ Data not persisted in PostgreSQL")

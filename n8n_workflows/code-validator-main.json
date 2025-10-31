@@ -1,0 +1,173 @@
+{
+  "name": "Code Validator - Main Validation Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "code-validate",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-trigger",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300],
+      "webhookId": "code-validator-main"
+    },
+    {
+      "parameters": {
+        "command": "python3",
+        "arguments": "/Users/arthurdell/AYA/services/code_validator_n8n.py",
+        "options": {
+          "stdin": "={{ JSON.stringify($json.body) }}"
+        }
+      },
+      "id": "execute-validator",
+      "name": "Execute Code Validator",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO code_validations (\n    validation_id, file_path, filename, agent_name,\n    validation_time, model_used, response_time,\n    issues_detected, severity_counts, enforcement_action,\n    review_text, code_hash, n8n_execution_id, success\n) VALUES (\n    $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14\n)",
+        "additionalFields": {
+          "queryParameters": "={{ [$json.validation_id, $json.file_path, $json.filename, $json.agent_name, $json.timestamp, $json.model_used, $json.response_time, $json.issues_detected, JSON.stringify($json.severity_counts), $json.enforcement_action, $json.review, $json.code_hash, $json.n8n_execution_id, $json.success] }}"
+        }
+      },
+      "id": "log-to-db",
+      "name": "Log to PostgreSQL",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2,
+      "position": [650, 300],
+      "credentials": {
+        "postgres": {
+          "id": "1",
+          "name": "PostgreSQL aya_rag"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "block-condition",
+              "leftValue": "={{ $json.enforcement_action }}",
+              "rightValue": "block",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "check-enforcement",
+      "name": "Check Enforcement",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [850, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"success\": false, \"error\": \"Code validation blocked\", \"validation\": $json } }}",
+        "options": {
+          "responseCode": 403
+        }
+      },
+      "id": "block-response",
+      "name": "Block Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1050, 200]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "success-response",
+      "name": "Success Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1050, 400]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Execute Code Validator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Code Validator": {
+      "main": [
+        [
+          {
+            "node": "Log to PostgreSQL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log to PostgreSQL": {
+      "main": [
+        [
+          {
+            "node": "Check Enforcement",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Enforcement": {
+      "main": [
+        [
+          {
+            "node": "Block Response",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Success Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-10-30T02:00:00.000Z",
+  "versionId": "1"
+}
+

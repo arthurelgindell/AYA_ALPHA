@@ -1,0 +1,18 @@
+version: "1.0"
+linter: jetbrains/qodana-python:latest
+include:
+  - Agent_Turbo/
+  - services/
+  - gladiator-workflows/
+  - scripts/
+exclude:
+  - archive_*/
+  - .venv/
+  - __pycache__/
+  - node_modules/
+  - .git/
+  - archive_*/
+failThreshold: 100
+profile:
+  name: AYA Code Quality
+

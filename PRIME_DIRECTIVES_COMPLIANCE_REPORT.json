@@ -1,0 +1,116 @@
+{
+  "checks": {
+    "agent_landing_db": {
+      "status": "PASS",
+      "version": "5.0",
+      "has_prime_directives": true,
+      "is_current": true,
+      "error": null
+    },
+    "project_structure": {
+      "status": "FAIL",
+      "violations": [
+        "/Users/arthurdell/GLADIATOR",
+        "/Users/arthurdell/.nvm",
+        "/Users/arthurdell/homebrew",
+        "/Users/arthurdell/N8N",
+        "/Users/arthurdell/JITM"
+      ]
+    },
+    "documentation_references": {
+      "status": "PASS",
+      "missing_references": []
+    },
+    "code_violations": {
+      "status": "FAIL",
+      "violations": [
+        {
+          "file": "/Users/arthurdell/AYA/Agent_Turbo/scripts/lm_studio_mcp.py",
+          "line": 54,
+          "pattern": "return\\s*\\{\\s*[\"\\']status[\"\\']\\s*:\\s*[\"\\']success[\"\\']",
+          "description": "Mock success response",
+          "content": "return {\"status\": \"success\", \"models\": models}"
+        },
+        {
+          "file": "/Users/arthurdell/AYA/Agent_Turbo/scripts/lm_studio_mcp.py",
+          "line": 64,
+          "pattern": "return\\s*\\{\\s*[\"\\']status[\"\\']\\s*:\\s*[\"\\']success[\"\\']",
+          "description": "Mock success response",
+          "content": "return {\"status\": \"success\", \"result\": result}"
+        },
+        {
+          "file": "/Users/arthurdell/AYA/Agent_Turbo/scripts/mcp_integration_setup.py",
+          "line": 132,
+          "pattern": "return\\s*\\{\\s*[\"\\']status[\"\\']\\s*:\\s*[\"\\']success[\"\\']",
+          "description": "Mock success response",
+          "content": "return {\"status\": \"success\", \"stats\": stats}"
+        },
+        {
+          "file": "/Users/arthurdell/AYA/Agent_Turbo/scripts/mcp_integration_setup.py",
+          "line": 161,
+          "pattern": "return\\s*\\{\\s*[\"\\']status[\"\\']\\s*:\\s*[\"\\']success[\"\\']",
+          "description": "Mock success response",
+          "content": "return {\"status\": \"success\", \"gpu\": gpu_info}"
+        },
+        {
+          "file": "/Users/arthurdell/AYA/Agent_Turbo/scripts/mcp_integration_setup.py",
+          "line": 178,
+          "pattern": "return\\s*\\{\\s*[\"\\']status[\"\\']\\s*:\\s*[\"\\']success[\"\\']",
+          "description": "Mock success response",
+          "content": "return {\"status\": \"success\", \"cache_dir\": \"not_found\"}"
+        },
+        {
+          "file": "/Users/arthurdell/AYA/Agent_Turbo/scripts/mcp_integration_setup.py",
+          "line": 289,
+          "pattern": "return\\s*\\{\\s*[\"\\']status[\"\\']\\s*:\\s*[\"\\']success[\"\\']",
+          "description": "Mock success response",
+          "content": "return {\"status\": \"success\", \"models\": models}"
+        },
+        {
+          "file": "/Users/arthurdell/AYA/Agent_Turbo/scripts/mcp_integration_setup.py",
+          "line": 299,
+          "pattern": "return\\s*\\{\\s*[\"\\']status[\"\\']\\s*:\\s*[\"\\']success[\"\\']",
+          "description": "Mock success response",
+          "content": "return {\"status\": \"success\", \"result\": result}"
+        },
+        {
+          "file": "/Users/arthurdell/AYA/Agent_Turbo/scripts/mcp_integration_setup.py",
+          "line": 307,
+          "pattern": "return\\s*\\{\\s*[\"\\']status[\"\\']\\s*:\\s*[\"\\']success[\"\\']",
+          "description": "Mock success response",
+          "content": "return {\"status\": \"success\", \"embedding\": result}"
+        },
+        {
+          "file": "/Users/arthurdell/AYA/Agent_Turbo/scripts/mcp_server.py",
+          "line": 48,
+          "pattern": "return\\s*\\{\\s*[\"\\']status[\"\\']\\s*:\\s*[\"\\']success[\"\\']",
+          "description": "Mock success response",
+          "content": "return {\"status\": \"success\", \"stats\": stats}"
+        },
+        {
+          "file": "/Users/arthurdell/AYA/Agent_Turbo/scripts/mcp_server.py",
+          "line": 79,
+          "pattern": "return\\s*\\{\\s*[\"\\']status[\"\\']\\s*:\\s*[\"\\']success[\"\\']",
+          "description": "Mock success response",
+          "content": "return {\"status\": \"success\", \"gpu\": gpu_info}"
+        },
+        {
+          "file": "/Users/arthurdell/AYA/Agent_Turbo/scripts/mcp_server.py",
+          "line": 97,
+          "pattern": "return\\s*\\{\\s*[\"\\']status[\"\\']\\s*:\\s*[\"\\']success[\"\\']",
+          "description": "Mock success response",
+          "content": "return {\"status\": \"success\", \"cache_dir\": \"not_found\"}"
+        },
+        {
+          "file": "/Users/arthurdell/AYA/projects/GLADIATOR/red_team_max_throttle.py",
+          "line": 184,
+          "pattern": "#\\s*This will",
+          "description": "Future-tense comment",
+          "content": "# This will push BETA's 80 GPU cores and 32 CPU cores"
+        }
+      ]
+    }
+  },
+  "overall_status": "FAIL",
+  "timestamp": "/Users/arthurdell/AYA"
+}

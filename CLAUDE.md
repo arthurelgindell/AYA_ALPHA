@@ -2,11 +2,173 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## 🚀 NEW AGENT? START HERE!
+
+**Read this first**: `/Users/arthurdell/AYA/AGENT_LANDING.md`
+
+This is your zero-token initialization guide with:
+- LM Studio Tailscale access (ALPHA & BETA)
+- Agent Turbo quick start
+- Database connection info
+- Infrastructure overview
+- Common tasks and examples
+
+**Owner**: Arthur (remember this name)
+
+---
+
+## 🔴 AYA BULLET PROOF PRIME DIRECTIVES
+
+**MANDATORY COMPLIANCE**: All operations governed by AYA BULLET PROOF PRIME DIRECTIVES
+
+**Master Document**: `/Users/arthurdell/AYA/AYA_PRIME_DIRECTIVES.md`
+
+**Key Principles**:
+- **Functional Reality Only** (Default = FAILED until proven)
+- **Truth Over Comfort** (Report actual state)
+- **Bulletproof Verification Protocol** (4-phase verification mandatory)
+- **Zero Tolerance for Theatrical Wrappers** (No mocks, no stubs, no fake data)
+
+**Database Entry Point**: Query `agent_landing` table (version 5.0) in `aya_rag` database for complete Prime Directives context on initialization.
+
+**Full Reference**: See `/Users/arthurdell/AYA/AYA_PRIME_DIRECTIVES.md` for complete governance framework
+
+---
+
+## ⚠️ IMPORTANT: DATABASE STATUS (October 29, 2025)
+
+**PostgreSQL 18 is the production database. YugabyteDB has been decommissioned.**
+
+- **Production**: PostgreSQL 18 on port 5432 with database `aya_rag`
+- **User**: postgres
+- **Status**: All data verified intact (27,924 chunks + agent data)
+- **Agent Turbo**: 128 knowledge entries with 100% embedding coverage
+- **Tailscale Access**: ✅ psql -h alpha.tail5f2bae.ts.net -p 5432 -U postgres -d aya_rag
+- **Remote Performance**: 78ms from AIR (excellent for remote operations)
+- **Guide**: `/Users/arthurdell/AYA/POSTGRES_TAILSCALE_ACCESS.md`
+
+## ✅ AGENT TURBO - CURSOR READY (October 29, 2025)
+
+**Agent Turbo is fully initialized and operational for Cursor IDE with GPU acceleration!**
+
+- **Status**: ✅ VERIFIED AND OPERATIONAL
+- **GPU**: ✅ MLX enabled (80 cores - M3 Ultra)
+- **Database**: PostgreSQL 18 (121 knowledge entries, 100% embedding coverage)
+- **Quick Reference**: `/Users/arthurdell/AYA/AGENT_TURBO_CURSOR_QUICKREF.md`
+- **Full Guide**: `/Users/arthurdell/AYA/AGENT_TURBO_CURSOR_READY.md`
+- **GPU Fix Report**: `/Users/arthurdell/AYA/MLX_GPU_FIX_VERIFIED.md`
+
+**One-line verification**:
+```bash
+cd /Users/arthurdell/AYA/Agent_Turbo/core && python3 agent_turbo.py verify
+# Requires: required_permissions: ["all"] in Cursor
+# Expected: ✅ MLX GPU acceleration enabled (80 cores)
+```
+
+## ⭐ LM STUDIO - EXCEPTIONAL CODING SKILLS VERIFIED (October 29, 2025)
+
+**LM Studio models tested and verified with EXCEPTIONAL coding capabilities!**
+
+- **Status**: ✅ 5 MODELS LOADED AND VERIFIED
+- **API**: http://localhost:1234/v1 (OpenAI-compatible)
+- **Models**: qwen3-coder-480b, qwen3-next-80b-mlx, foundation-sec-8b
+- **Coding Rating**: ⭐⭐⭐⭐⭐ EXCEPTIONAL (5/5)
+- **Verification Report**: `/Users/arthurdell/AYA/LM_STUDIO_CODING_VERIFICATION.md`
+
+**Tests Passed**:
+- ✅ Data Structures (LRU Cache with O(1))
+- ✅ Async Programming (Producer-Consumer)
+- ✅ Database Optimization (100M+ rows)
+- ✅ Security Analysis (SQL injection detection)
+- ✅ Distributed Systems (Rate limiter with Redis)
+
+**Quick Test**:
+```bash
+curl -s http://localhost:1234/v1/models | python3 -m json.tool
+# Expected: 5 models including qwen3-coder and qwen3-next-mlx
+```
+
+## 🔧 LM STUDIO MCP & CORS STATUS (October 29, 2025)
+
+**Custom MCP implementation verified - needs bug fixes!**
+
+- **CORS**: ✅ Enabled (wildcard `*`)
+- **MCP (Native)**: ❌ Not in LM Studio
+- **MCP (Custom)**: ⚠️ 85% Operational (2 bugs found)
+- **Tool Calling**: ✅ Supported (MCP foundation)
+- **Network**: ✅ Internal (10GbE) + External (Tailscale)
+- **Full Report**: `/Users/arthurdell/AYA/LM_STUDIO_MCP_VERIFICATION_REPORT.md`
+
+**Status**:
+- ✅ LM Studio Client works perfectly
+- ⚠️ MCP Server has method mismatches (fixable in ~10 min)
+- ⚠️ Agent Turbo integration not initializing (import path issue)
+
+**Critical Fixes Needed**:
+1. MCP server line 63: Change `generate()` to `generate_text()`
+2. MCP server line 71: Add `create_embedding()` method
+3. Agent Turbo line 187: Fix import path for LM Studio client
+
+## 🌐 TAILSCALE LM STUDIO ACCESS (October 29, 2025)
+
+**Both ALPHA and BETA LM Studio accessible from anywhere on Tailnet!**
+
+- **ALPHA**: ✅ https://alpha.tail5f2bae.ts.net/v1/ (5 models, 480B coder)
+- **BETA**: ✅ https://beta.tail5f2bae.ts.net/v1/ (7 models)
+- **Access From**: AIR, mobile, future Gamma - any Tailscale client
+- **Latency**: ~17ms via Tailscale, ~15ms via 10GbE, ~10ms localhost
+- **Security**: Tailnet-only (TLS encrypted, no public access)
+- **Full Guide**: `/Users/arthurdell/AYA/TAILSCALE_LM_STUDIO_ACCESS_GUIDE.md`
+
+**Quick Test**:
+```bash
+# From any Tailscale client
+curl -k https://alpha.tail5f2bae.ts.net/v1/models
+curl -k https://beta.tail5f2bae.ts.net/v1/models
+```
+
+**Python Example**:
+```python
+import requests
+r = requests.post("https://alpha.tail5f2bae.ts.net/v1/chat/completions", 
+                  verify=False, json={"model":"qwen3-coder-480b-a35b-instruct",
+                  "messages":[{"role":"user","content":"Hello"}]})
+print(r.json()['choices'][0]['message']['content'])
+```
+
+## 🔍 CODE VALIDATOR - CROSS-NODE AUTOMATED REVIEW (October 29, 2025)
+
+**Automated code validation using ALPHA's LM Studio accessible from all nodes!**
+
+- **Default Model**: qwen3-next-80b-a3b-instruct-mlx (80B, 4.6x faster than 480B)
+- **Access**: Tailscale from any node (ALPHA, BETA, Gamma, AIR)
+- **Performance**: 3-4s per review (ALPHA), 4-5s (cross-node via Tailscale)
+- **Quality**: ⭐⭐⭐⭐⭐ Exceptional (finds SQL injection, bugs, best practices)
+- **Status**: ✅ PRODUCTION READY (installed on ALPHA)
+- **Guide**: `/Users/arthurdell/AYA/CODE_VALIDATOR_DEPLOYMENT_GUIDE.md`
+
+**Quick Usage**:
+```bash
+# Validate any code file
+./scripts/validate validate --file script.py
+
+# Run test
+./scripts/validate test
+
+# Works from ALPHA (localhost), BETA/Gamma/AIR (Tailscale)
+```
+
+**Model Comparison** (tested with vulnerable code):
+- qwen3-next-80b-mlx: 3.74s, 15 issues found ⭐ **DEFAULT**
+- qwen3-coder-480b: 17.14s, 15 issues found (same quality, 4.6x slower)
+
+---
+
 ## AYA Platform Overview
 
-AYA is a production multi-agent orchestration platform featuring Agent Turbo (core orchestration), PostgreSQL HA cluster (centralized state), distributed computing (ALPHA/BETA Mac Studio nodes), and GitHub Actions CI/CD on self-hosted runners.
+AYA is a production multi-agent orchestration platform featuring Agent Turbo (core orchestration), PostgreSQL 18 database (centralized state), distributed computing (ALPHA/BETA Mac Studio nodes), and GitHub Actions CI/CD on self-hosted runners.
 
-**Critical Principle**: This platform enforces strict functional reality - if it doesn't run and produce queryable results, it doesn't exist. All operations use actual PostgreSQL, no mocks, no theatrical wrappers.
+**Critical Principle**: This platform enforces strict functional reality - if it doesn't run and produce queryable results, it doesn't exist. All operations use actual PostgreSQL 18, no mocks, no theatrical wrappers.
 
 ## Quick Reference by Machine
 
@@ -38,10 +200,10 @@ ssh beta.tail5f2bae.ts.net "docker ps && launchctl list | grep agent-turbo"
 - Path: `/Users/arthurdell/AYA/` (same as ALPHA)
 - No Agent Turbo workers running locally
 - No Docker containers
-- No PostgreSQL HA cluster locally
+- No local database (uses PostgreSQL 18 on ALPHA)
 - Primary use: Monitoring and control of ALPHA/BETA
 
-### ALPHA (Mac Studio M3 Ultra - Primary PostgreSQL)
+### ALPHA (Mac Studio M3 Ultra - PostgreSQL Primary)
 
 ```bash
 # Working directory
@@ -51,21 +213,21 @@ cd /Users/arthurdell/AYA/
 cd /Users/arthurdell/AYA/Agent_Turbo/core
 python3 agent_turbo.py verify
 
-# Database operations (local PostgreSQL PRIMARY)
-PGPASSWORD='Power$$336633$$' /Library/PostgreSQL/18/bin/psql -U postgres -d aya_rag
+# Database operations (PostgreSQL 18 on port 5432)
+PGPASSWORD='Power$$336633$$' psql -h localhost -p 5432 -U postgres -d aya_rag
 
-# Check role in cluster
-curl -s http://localhost:8008/patroni | python3 -m json.tool | grep role
+# Check PostgreSQL status
+ps aux | grep postgres | grep -v grep
 ```
 
 **ALPHA Characteristics**:
 - Path: `/Users/arthurdell/AYA/` (on 16TB boot/home drive)
 - Storage: 16TB internal SSD (boot/system/home - no separate DATA volume)
-- PostgreSQL HA cluster: PRIMARY node
+- PostgreSQL 18: Production database (primary instance)
 - Agent Turbo workers: 10 workers running
 - Blue team training and planner execution
 
-### BETA (Mac Studio M3 Ultra - Standby PostgreSQL)
+### BETA (Mac Studio M3 Ultra - Worker Node)
 
 ```bash
 # Working directory (NOTE: Different from ALPHA!)
@@ -75,8 +237,8 @@ cd /Volumes/DATA/AYA/
 cd /Volumes/DATA/AYA/Agent_Turbo/core
 python3 agent_turbo.py verify
 
-# Database operations (local PostgreSQL STANDBY)
-PGPASSWORD='Power$$336633$$' /Library/PostgreSQL/18/bin/psql -U postgres -d aya_rag
+# Database operations (remote PostgreSQL 18 on ALPHA)
+ssh alpha.tail5f2bae.ts.net "PGPASSWORD='Power$$336633$$' psql -h localhost -p 5432 -U postgres -d aya_rag"
 
 # Check LM Studio models
 curl http://localhost:1234/v1/models | python3 -m json.tool
@@ -87,8 +249,8 @@ docker ps --format "table {{.Names}}\t{{.Status}}"
 
 **BETA Characteristics**:
 - Path: `/Volumes/DATA/AYA/` (on separate 15TB DATA volume - not boot drive)
-- PostgreSQL HA cluster: SYNC_STANDBY node
-- Agent Turbo workers: 10 workers running (⚠️ high failure rate)
+- No local database (uses PostgreSQL 18 on ALPHA via Tailscale)
+- Agent Turbo workers: 10 workers running
 - Red team generation and LLM inference
 - Large dataset storage (GLADIATOR, models)
 - Docker containers (red_combat, n8n-beta)
@@ -99,6 +261,56 @@ docker ps --format "table {{.Names}}\t{{.Status}}"
 - **AIR**: `/Users/arthurdell/AYA/` (boot drive - no separate DATA volume)
 
 ## System Architecture
+
+### **🚀 AGENT TURBO INITIALIZATION - START HERE**
+
+**For any new AI agent working with AYA, initialize Agent Turbo FIRST**:
+
+```bash
+# Quick initialization (3 seconds)
+cd /Users/arthurdell/AYA/Agent_Turbo/core && python3 agent_turbo.py verify
+```
+
+**Expected Output**: `✅ AGENT_TURBO: VERIFIED AND OPERATIONAL`
+
+**If initialization fails**, see: `/Users/arthurdell/AYA/AGENT_TURBO_QUICKSTART.md`
+
+**System Requirements**:
+- PostgreSQL 18 running on port 5432
+- MLX GPU acceleration (80 cores)
+
+---
+
+### PostgreSQL 18 Database
+
+**Status**: PRODUCTION DATABASE (PostgreSQL 18 decommissioned October 29, 2025)
+
+**Connection Details**:
+- Host: localhost (127.0.0.1 on ALPHA)
+- Port: 5432
+- Database: `aya_rag`
+- User: `postgres`
+- Password: `Power$$336633$$`
+
+**Quick Commands**:
+```bash
+# Connect to PostgreSQL 18
+PGPASSWORD='Power$$336633$$' psql -h localhost -p 5432 -U postgres -d aya_rag
+
+# Check PostgreSQL status
+ps aux | grep postgres | grep -v grep
+
+# View PostgreSQL version
+PGPASSWORD='Power$$336633$$' psql -h localhost -p 5432 -U postgres -d aya_rag -c "SELECT version();"
+```
+
+**Architecture**:
+- Deployment: PostgreSQL 18 with Patroni HA cluster
+- Primary: ALPHA (active)
+- Standby: BETA (replica)
+- Extensions: pgvector, uuid-ossp
+
+---
 
 ### Core Components
 
@@ -145,52 +357,7 @@ docker ps --format "table {{.Names}}\t{{.Status}}"
   - Monitoring and secondary operations
   - No local workers, PostgreSQL, or Docker
 
-### PostgreSQL HA Cluster
-
-**Architecture**: Patroni-managed High Availability cluster (NOT simple replication)
-
-**Technology Stack**:
-- PostgreSQL 18.0
-- Patroni (automatic failover orchestration)
-- etcd (distributed consensus for cluster coordination)
-- Synchronous streaming replication
-
-**Cluster Configuration**:
-- Both ALPHA and BETA run PostgreSQL
-- Either node can be primary (automatic failover)
-- Synchronous replication ensures zero data loss
-- etcd cluster: alpha.tail5f2bae.ts.net:2379, beta.tail5f2bae.ts.net:2379
-
-**Critical Connection Rule**: Workers and applications ALWAYS connect to `localhost:5432` (never Tailscale remote addresses). Each node has its own local PostgreSQL that's part of the HA cluster.
-
-**Cluster Management**:
-```bash
-# Check cluster status via REST API (recommended)
-curl -s http://localhost:8008/patroni | python3 -m json.tool
-curl -s http://alpha.tail5f2bae.ts.net:8008/cluster | python3 -m json.tool
-
-# Identify current node
-hostname  # Returns: alpha.tail5f2bae.ts.net or beta.tail5f2bae.ts.net
-
-# Check if this node is primary or standby
-PGPASSWORD='Power$$336633$$' /Library/PostgreSQL/18/bin/psql -U postgres -d aya_rag -c "SELECT pg_is_in_recovery();"
-# Returns: f (false) = PRIMARY, t (true) = STANDBY
-
-# Check replication status (run on PRIMARY)
-PGPASSWORD='Power$$336633$$' /Library/PostgreSQL/18/bin/psql -U postgres -d aya_rag -c "
-SELECT client_addr, state, sync_state, replay_lag
-FROM pg_stat_replication;"
-
-# Alternative: Use patronictl if in PATH
-# patronictl -c /Volumes/DATA/AYA/services/patroni/patroni-alpha.yml list
-```
-
-**Configuration Files**:
-- ALPHA: `/Users/arthurdell/AYA/services/patroni/patroni-alpha.yml`
-- BETA: `/Volumes/DATA/AYA/services/patroni/patroni-beta.yml`
-- Note: Configs are in project directory, NOT `/etc/patroni.yml`
-
-### Database Schema (PostgreSQL aya_rag)
+### Database Schema (PostgreSQL 18 aya_rag)
 
 **Infrastructure Tables**:
 - `system_nodes` - Hardware specifications and status
@@ -214,6 +381,232 @@ FROM pg_stat_replication;"
 - `docker_documentation`, `crush_documentation`, `mlx_documentation`
 - `zapier_documentation`, `n8n_documentation`, `langchain_documentation`, `tailscale_documentation`
 - Total: 7,441 documents, 11.2M words, ~330MB
+
+## Tailscale Serve & LM Studio Configuration
+
+### Tailscale Serve on ALPHA
+
+**Service**: LM Studio API exposed via Tailscale Serve
+**URL**: `https://alpha.tail5f2bae.ts.net`
+**Backend**: `http://127.0.0.1:1234`
+**Protocol**: HTTPS with Tailscale-issued TLS certificates
+**Access**: Tailnet members only (not public internet)
+
+**Configuration**:
+```bash
+/Applications/Tailscale.app/Contents/MacOS/Tailscale serve --bg --https 443 http://127.0.0.1:1234
+```
+
+**Check Status**:
+```bash
+/Applications/Tailscale.app/Contents/MacOS/Tailscale serve status
+```
+
+**Disable** (if needed):
+```bash
+/Applications/Tailscale.app/Contents/MacOS/Tailscale serve --https=443 off
+```
+
+### Tailscale Serve on BETA
+
+**Service**: LM Studio API exposed via Tailscale Serve
+**URL**: `https://beta.tail5f2bae.ts.net`
+**Backend**: `http://127.0.0.1:1234`
+**Access**: Tailnet members only
+
+### LM Studio on ALPHA
+
+**Installation**: ✅ Installed at `/Applications/LM Studio.app`
+**Server Port**: `1234`
+**Network Binding**: All interfaces (`*:1234`)
+
+#### Access Methods
+
+1. **Localhost** (fastest for local operations):
+   ```bash
+   curl http://127.0.0.1:1234/v1/models
+   ```
+
+2. **Direct 10 GbE** (fastest for cross-node):
+   ```bash
+   # From BETA
+   curl http://192.168.0.80:1234/v1/models
+   ```
+
+3. **Tailscale Serve** (portable remote access):
+   ```bash
+   # From any tailnet node
+   curl -k https://alpha.tail5f2bae.ts.net/v1/models
+   ```
+
+#### Available Models
+
+- `qwen3-next-80b-a3b-instruct-mlx` - Latest Qwen 80B model
+- `qwen3-coder-480b-a35b-instruct` - Massive 480B coding model
+- `text-embedding-nomic-embed-text-v1.5` - Embedding model
+- `foundation-sec-8b-instruct-int8` - Security-focused 8B model
+
+### LM Studio on BETA
+
+**Installation**: ✅ Installed
+**Server Port**: `1234`
+**Network Binding**: All interfaces
+
+#### Access Methods
+
+1. **Localhost**: `http://127.0.0.1:1234/v1`
+2. **Direct 10 GbE**: `http://192.168.0.20:1234/v1`
+3. **Tailscale Serve**: `https://beta.tail5f2bae.ts.net`
+
+#### Available Models
+
+- `qwen3-next-80b-a3b-instruct-mlx`
+- `qwen3-14b-mlx`
+- `qwen2.5-coder-14b-instruct-mlx`
+- `llama-3.3-70b-instruct`
+- `tinyllama-1.1b-chat-v1.0-mlx`
+
+### CORS & Tool Calling Status
+
+#### CORS: ✅ ENABLED (Wildcard Origins)
+
+LM Studio ships with CORS enabled by default:
+```http
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Headers: *
+```
+
+**Implications**:
+- ✅ Browser-based dashboards work immediately
+- ✅ No proxy needed for web UIs
+- ⚠️ ANY website can access your LLM (if network-accessible)
+- 🔒 Mitigated by: Firewall + Tailscale network isolation
+
+**Check CORS headers**:
+```bash
+curl -s -I http://localhost:1234/v1/models | grep -i "access-control"
+```
+
+#### Tool Calling: ✅ SUPPORTED
+
+LM Studio supports OpenAI-compatible tool/function calling:
+
+**Test**:
+```bash
+curl -s http://localhost:1234/v1/chat/completions -X POST \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model":"qwen3-next-80b-a3b-instruct-mlx",
+    "messages":[{"role":"user","content":"test"}],
+    "tools":[{
+      "type":"function",
+      "function":{"name":"test","description":"test tool"}
+    }]
+  }' | python3 -m json.tool
+```
+
+**Result**: Returns `tool_calls` array in response (foundation for MCP-like functionality)
+
+#### MCP (Model Context Protocol): ❌ NOT NATIVELY SUPPORTED
+
+- No dedicated MCP GUI configuration
+- No `/v1/mcp` endpoint
+- Tool calling provides the foundation for custom MCP implementation
+
+**Build Custom MCP Tools**:
+```python
+tools = [
+    {
+        "type": "function",
+        "function": {
+            "name": "query_database",
+            "description": "Query PostgreSQL 18",
+            "parameters": {
+                "type": "object",
+                "properties": {"sql": {"type": "string"}},
+                "required": ["sql"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "read_file",
+            "description": "Read file from GLADIATOR datasets",
+            "parameters": {
+                "type": "object",
+                "properties": {"path": {"type": "string"}},
+                "required": ["path"]
+            }
+        }
+    }
+]
+```
+
+### Network Performance
+
+#### 10 Gigabit Ethernet
+- **ALPHA**: 192.168.0.80 (MTU 9000, 10Gbase-T, full-duplex)
+- **BETA**: 192.168.0.20 (MTU 9000, 10Gbase-T, full-duplex)
+- **Latency**: ~0.4ms average
+- **Throughput**: 10 Gbps physical
+
+#### LM Studio Latency Measurements
+- **Localhost**: ~10ms
+- **Direct 10 GbE**: ~15ms (ALPHA ↔ BETA)
+- **Tailscale Serve**: ~17ms (2ms overhead)
+
+**Recommendation**: Use direct 10 GbE for production Agent Turbo inference, Tailscale for remote/AIR access.
+
+### Integration Examples
+
+#### Agent Turbo Integration (ALPHA → ALPHA)
+```python
+import requests
+
+response = requests.post(
+    "http://127.0.0.1:1234/v1/chat/completions",
+    json={
+        "model": "qwen3-next-80b-a3b-instruct-mlx",
+        "messages": [{"role": "user", "content": "Query"}]
+    }
+)
+```
+
+#### Agent Turbo Integration (BETA → ALPHA)
+```python
+# Use direct 10 GbE for best performance
+response = requests.post(
+    "http://192.168.0.80:1234/v1/chat/completions",
+    json={
+        "model": "qwen3-coder-480b-a35b-instruct",
+        "messages": [{"role": "user", "content": "Generate code"}]
+    }
+)
+```
+
+#### n8n Workflow Integration
+```json
+{
+  "url": "http://192.168.0.80:1234/v1/chat/completions",
+  "method": "POST",
+  "body": {
+    "model": "qwen3-next-80b-a3b-instruct-mlx",
+    "messages": [{"role": "user", "content": "{{ $json.prompt }}"}]
+  }
+}
+```
+
+### Documentation
+
+**ALPHA Configuration**:
+- `/Users/arthurdell/AYA/ALPHA_TAILSCALE_LM_STUDIO_STATUS.md` - Complete status
+- `/Users/arthurdell/AYA/ALPHA_LM_STUDIO_CORS_MCP_FINDINGS.md` - CORS/MCP investigation
+
+**BETA Configuration** (via SSH):
+- `/Volumes/DATA/AYA/TAILSCALE_SERVE_TAILDROP_SETUP_2025-10-28.md`
+- `/Volumes/DATA/AYA/LM_STUDIO_DUAL_ACCESS_CONFIGURATION.md`
+- `/Volumes/DATA/AYA/LM_STUDIO_CORS_MCP_EXPERT_GUIDE.md` (40KB expert guide)
 
 ## Distributed Task Execution
 
@@ -392,17 +785,22 @@ python3 test_parallel_execution.py     # Test distributed workers
 
 ### Database Operations
 
+**Note**: PostgreSQL 18 is now the primary database. PostgreSQL 18 is deprecated.
+
 ```bash
-# Connect to PostgreSQL (always use localhost on each node)
-PGPASSWORD='Power$$336633$$' /Library/PostgreSQL/18/bin/psql -U postgres -d aya_rag
+# Connect to PostgreSQL 18 (always use localhost/127.0.0.1)
+PGPASSWORD='Power$$336633$$' /Users/arthurdell/AYA/PostgreSQL 18 \
+  -h 127.0.0.1 -p 5432 -U PostgreSQL 18 -d aya_rag
 
 # Check database size and table count
-PGPASSWORD='Power$$336633$$' /Library/PostgreSQL/18/bin/psql -U postgres -d aya_rag -c "
+PGPASSWORD='Power$$336633$$' /Users/arthurdell/AYA/PostgreSQL 18 \
+  -h 127.0.0.1 -p 5432 -U PostgreSQL 18 -d aya_rag -c "
 SELECT pg_size_pretty(pg_database_size('aya_rag')) as size,
        (SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='public') as tables;"
 
 # Check active agent sessions
-PGPASSWORD='Power$$336633$$' /Library/PostgreSQL/18/bin/psql -U postgres -d aya_rag -c "
+PGPASSWORD='Power$$336633$$' /Users/arthurdell/AYA/PostgreSQL 18 \
+  -h 127.0.0.1 -p 5432 -U PostgreSQL 18 -d aya_rag -c "
 SELECT session_id, agent_platform, agent_role, status, created_at
 FROM agent_sessions
 WHERE status = 'active'
@@ -410,14 +808,16 @@ ORDER BY created_at DESC
 LIMIT 10;"
 
 # Check recent tasks
-PGPASSWORD='Power$$336633$$' /Library/PostgreSQL/18/bin/psql -U postgres -d aya_rag -c "
+PGPASSWORD='Power$$336633$$' /Users/arthurdell/AYA/PostgreSQL 18 \
+  -h 127.0.0.1 -p 5432 -U PostgreSQL 18 -d aya_rag -c "
 SELECT task_id, task_type, status, task_description
 FROM agent_tasks
 ORDER BY created_at DESC
 LIMIT 10;"
 
 # View audit trail
-PGPASSWORD='Power$$336633$$' /Library/PostgreSQL/18/bin/psql -U postgres -d aya_rag -c "
+PGPASSWORD='Power$$336633$$' /Users/arthurdell/AYA/PostgreSQL 18 \
+  -h 127.0.0.1 -p 5432 -U PostgreSQL 18 -d aya_rag -c "
 SELECT action_type, success, executed_at
 FROM agent_actions
 ORDER BY executed_at DESC

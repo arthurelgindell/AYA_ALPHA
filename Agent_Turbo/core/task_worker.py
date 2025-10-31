@@ -64,6 +64,9 @@ class TaskWorker:
         # Database connection
         self.db = PostgreSQLConnector()
         
+        # Load Prime Directives from agent_landing table (v5.0)
+        self.prime_directives_loaded = self._load_prime_directives()
+        
         # State tracking
         self.running = False
         self.active_tasks = 0
@@ -80,6 +83,10 @@ class TaskWorker:
         print(f"   Poll Interval: {self.poll_interval}s")
         print(f"   Claude CLI: {self.claude_path}")
         print(f"   Database Host: {self.db.db_config['host']}")
+        if self.prime_directives_loaded:
+            print(f"   ✅ Prime Directives loaded (v5.0)")
+        else:
+            print(f"   ⚠️  Prime Directives not loaded")
     
     def _find_claude_cli(self) -> str:
         """Find Claude CLI executable in common locations."""
@@ -113,6 +120,56 @@ class TaskWorker:
         print(f"   Active tasks: {self.active_tasks}")
         print(f"   Stopping worker...")
         self.running = False
+    
+    def _load_prime_directives(self) -> bool:
+        """
+        Load Prime Directives from agent_landing table (v5.0).
+        
+        Prime Directive #5 Compliance: Verify Prime Directives are available
+        before worker starts processing tasks.
+        
+        Returns:
+            bool: True if Prime Directives loaded successfully
+        """
+        try:
+            result = self.db.execute_query("""
+                SELECT version, content 
+                FROM agent_landing 
+                WHERE is_current = true 
+                ORDER BY id DESC 
+                LIMIT 1
+            """)
+            
+            if result and len(result) > 0:
+                version = result[0].get('version')
+                content = result[0].get('content', '')
+                
+                # Verify Prime Directives markers are present
+                required_markers = [
+                    'AYA BULLET PROOF PRIME DIRECTIVES',
+                    'FUNCTIONAL REALITY ONLY',
+                    'BULLETPROOF VERIFICATION PROTOCOL'
+                ]
+                
+                if all(marker in content for marker in required_markers):
+                    # Store Prime Directives reference (full content available via DB query)
+                    self.prime_directives_version = version
+                    # Verify version is 5.0 or higher
+                    if version >= '5.0':
+                        return True
+                    else:
+                        print(f"⚠️  agent_landing version {version} is older than required 5.0")
+                        return False
+                else:
+                    print(f"⚠️  Prime Directives markers not found in agent_landing v{version}")
+                    return False
+            else:
+                print(f"⚠️  No current agent_landing record found")
+                return False
+                
+        except Exception as e:
+            print(f"⚠️  Failed to load Prime Directives: {e}")
+            return False
     
     def claim_next_task(self) -> Optional[Dict]:
         """

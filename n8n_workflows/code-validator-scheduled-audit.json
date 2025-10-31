@@ -1,0 +1,148 @@
+{
+  "name": "Code Validator - Scheduled Daily Audit",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 2 * * *"
+            }
+          ]
+        }
+      },
+      "id": "daily-trigger",
+      "name": "Daily at 2 AM",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT \n    DATE(validation_time) as date,\n    COUNT(*) as files_validated,\n    SUM((severity_counts->>'CRITICAL')::INTEGER) as critical_issues,\n    SUM((severity_counts->>'HIGH')::INTEGER) as high_issues,\n    SUM((severity_counts->>'MEDIUM')::INTEGER) as medium_issues,\n    SUM((severity_counts->>'LOW')::INTEGER) as low_issues,\n    SUM(CASE WHEN enforcement_action = 'block' THEN 1 ELSE 0 END) as blocked_operations,\n    AVG(response_time) as avg_response_time\nFROM code_validations\nWHERE DATE(validation_time) = CURRENT_DATE - INTERVAL '1 day'\nGROUP BY DATE(validation_time)",
+        "options": {}
+      },
+      "id": "query-metrics",
+      "name": "Query Daily Metrics",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2,
+      "position": [450, 300],
+      "credentials": {
+        "postgres": {
+          "id": "1",
+          "name": "PostgreSQL aya_rag"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO compliance_metrics (\n    date, files_validated, critical_issues, high_issues,\n    medium_issues, low_issues, blocked_operations, avg_response_time, compliance_score\n) VALUES (\n    $1, $2, $3, $4, $5, $6, $7, $8, $9\n)\nON CONFLICT (date) DO UPDATE SET\n    files_validated = EXCLUDED.files_validated,\n    critical_issues = EXCLUDED.critical_issues,\n    high_issues = EXCLUDED.high_issues,\n    medium_issues = EXCLUDED.medium_issues,\n    low_issues = EXCLUDED.low_issues,\n    blocked_operations = EXCLUDED.blocked_operations,\n    avg_response_time = EXCLUDED.avg_response_time,\n    compliance_score = CASE \n        WHEN EXCLUDED.critical_issues = 0 AND EXCLUDED.high_issues <= 3 THEN 100.0\n        WHEN EXCLUDED.critical_issues = 0 THEN 90.0 - (EXCLUDED.high_issues * 5)\n        ELSE 50.0 - (EXCLUDED.critical_issues * 10)\n    END,\n    updated_at = NOW()",
+        "additionalFields": {
+          "queryParameters": "={{ [$json.date, $json.files_validated || 0, $json.critical_issues || 0, $json.high_issues || 0, $json.medium_issues || 0, $json.low_issues || 0, $json.blocked_operations || 0, $json.avg_response_time || 0, null] }}"
+        }
+      },
+      "id": "update-metrics",
+      "name": "Update Compliance Metrics",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2,
+      "position": [650, 300],
+      "credentials": {
+        "postgres": {
+          "id": "1",
+          "name": "PostgreSQL aya_rag"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "template": "<!DOCTYPE html>\n<html>\n<head><title>Daily Code Validation Report</title></head>\n<body>\n<h1>Daily Code Validation Report</h1>\n<p><strong>Date:</strong> {{ $json.date }}</p>\n<h2>Summary</h2>\n<ul>\n    <li><strong>Files Validated:</strong> {{ $json.files_validated || 0 }}</li>\n    <li><strong>Critical Issues:</strong> {{ $json.critical_issues || 0 }}</li>\n    <li><strong>High Issues:</strong> {{ $json.high_issues || 0 }}</li>\n    <li><strong>Medium Issues:</strong> {{ $json.medium_issues || 0 }}</li>\n    <li><strong>Blocked Operations:</strong> {{ $json.blocked_operations || 0 }}</li>\n    <li><strong>Average Response Time:</strong> {{ Math.round(($json.avg_response_time || 0) * 100) / 100 }}s</li>\n</ul>\n</body>\n</html>",
+        "options": {}
+      },
+      "id": "format-report",
+      "name": "Format Report",
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1,
+      "position": [850, 300]
+    },
+    {
+      "parameters": {
+        "fromEmail": "n8n@aya.local",
+        "toEmail": "arthur@aya.local",
+        "subject": "Daily Code Validation Report - {{ $json.date }}",
+        "emailType": "html",
+        "message": "={{ $json.html }}",
+        "options": {}
+      },
+      "id": "send-email",
+      "name": "Send Email Report",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2,
+      "position": [1050, 300],
+      "credentials": {
+        "smtp": {
+          "id": "1",
+          "name": "SMTP Account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Daily at 2 AM": {
+      "main": [
+        [
+          {
+            "node": "Query Daily Metrics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Query Daily Metrics": {
+      "main": [
+        [
+          {
+            "node": "Update Compliance Metrics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Compliance Metrics": {
+      "main": [
+        [
+          {
+            "node": "Format Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Report": {
+      "main": [
+        [
+          {
+            "node": "Send Email Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-10-30T02:00:00.000Z",
+  "versionId": "1"
+}
+

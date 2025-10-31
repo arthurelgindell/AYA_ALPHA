@@ -1,5 +1,21 @@
 # AYA QUICK REFERENCE CARD
-**Session**: claude_code_planner_484911c2 | **Date**: Oct 25, 2025
+**Session**: claude_code_planner_484911c2 | **Date**: Oct 30, 2025
+
+## 🔴 AYA BULLET PROOF PRIME DIRECTIVES
+
+**MANDATORY COMPLIANCE**: All operations governed by AYA BULLET PROOF PRIME DIRECTIVES
+
+**Master Document**: `/Users/arthurdell/AYA/AYA_PRIME_DIRECTIVES.md`
+
+**Key Principles**:
+- **Functional Reality Only** (Default = FAILED until proven)
+- **Truth Over Comfort** (Report actual state)
+- **Bulletproof Verification Protocol** (4-phase verification mandatory)
+- **Zero Tolerance for Theatrical Wrappers** (No mocks, no stubs, no fake data)
+
+**Full Reference**: See `/Users/arthurdell/AYA/AYA_PRIME_DIRECTIVES.md` for complete governance framework
+
+---
 
 ## DATABASE (Source of Truth)
 ```bash

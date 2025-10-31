@@ -1,0 +1,74 @@
+{
+  "service_name": "AYA Code Validator",
+  "version": "1.0.0",
+  "created": "2025-10-29",
+  
+  "default_model": "qwen3-next-80b-a3b-instruct-mlx",
+  "fallback_model": "qwen3-coder-480b-a35b-instruct",
+  
+  "models": {
+    "qwen3-next-80b-a3b-instruct-mlx": {
+      "name": "Qwen3 Next 80B MLX",
+      "size": "80B parameters",
+      "context": 262144,
+      "speed": "fast (3-5s per review)",
+      "optimization": "MLX-optimized for Apple Silicon",
+      "best_for": "General code review, automated checks",
+      "recommended": true
+    },
+    "qwen3-coder-480b-a35b-instruct": {
+      "name": "Qwen3 Coder 480B",
+      "size": "480B parameters",
+      "context": 262144,
+      "speed": "slower (15-20s per review)",
+      "optimization": "None",
+      "best_for": "Complex code analysis, deep reviews",
+      "recommended": false
+    }
+  },
+  
+  "endpoints": {
+    "alpha_tailscale": "https://alpha.tail5f2bae.ts.net/v1",
+    "alpha_10gbe": "http://192.168.0.80:1234/v1",
+    "alpha_localhost": "http://localhost:1234/v1",
+    "beta_tailscale": "https://beta.tail5f2bae.ts.net/v1",
+    "beta_10gbe": "http://192.168.0.20:1234/v1"
+  },
+  
+  "access_priority": {
+    "on_alpha": "localhost",
+    "on_beta_to_alpha": "10gbe",
+    "on_air_to_alpha": "tailscale",
+    "on_gamma_to_alpha": "tailscale",
+    "default": "tailscale"
+  },
+  
+  "supported_languages": [
+    "python",
+    "javascript",
+    "typescript",
+    "bash",
+    "shell",
+    "go",
+    "rust",
+    "java",
+    "c",
+    "cpp"
+  ],
+  
+  "validation_rules": {
+    "max_file_size_kb": 500,
+    "timeout_seconds": 120,
+    "max_tokens_response": 1000,
+    "temperature": 0.3,
+    "concurrent_reviews": 8
+  },
+  
+  "integration": {
+    "agent_turbo": true,
+    "git_hooks": true,
+    "cli": true,
+    "api_server": false
+  }
+}
+

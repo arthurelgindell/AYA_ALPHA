@@ -1,0 +1,18 @@
+Log file created at: 2025/10/29 14:28:58
+Current UTC time: 2025/10/29 10:28:58
+Running on machine: ALPHA.local
+Application fingerprint: version 2.19.2.0 build 121 revision f5330e713fe6eb3a66ee76ba34d3c71585845056 build_type RELEASE built at 06 Sep 2023 18:58:08 GMT
+Running duration (h:mm:ss): 0:00:00
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+W1029 14:28:58.794312 4278306816 hybrid_clock.cc:133] HybridClock initialized in local mode (OS X only). Not suitable for distributed clusters.
+W1029 14:28:58.795231 1890988032 catalog_manager.cc:1583] Failed to get current config: Illegal state (yb/master/catalog_manager.cc:11849): Node fbd622a1f4a544f983a58d31431987d2 peer not initialized.
+W1029 14:28:58.796710 1895002112 catalog_manager.cc:1583] Failed to get current config: Illegal state (yb/master/catalog_manager.cc:11849): Node fbd622a1f4a544f983a58d31431987d2 peer not initialized.
+W1029 14:28:58.804133 1902456832 catalog_manager_bg_tasks.cc:173] Catalog manager background task thread going to sleep: Service unavailable (yb/master/scoped_leader_shared_lock.cc:92): Catalog manager is not initialized. State: 1
+W1029 14:29:02.274837 1903030272 permissions_manager.cc:1027] Multiple security configs found when loading sys catalog
+W1029 14:29:02.579288 1905324032 catalog_manager.cc:8169] T 00000000000000000000000000000000 P fbd622a1f4a544f983a58d31431987d2: Invalid tablet report from 1bc80c76376544caba9a6c3e0ddbb285: Received an incremental tablet report when a full one was needed
+W1029 15:08:00.261536 1905897472 yb_rpc.cc:335] Call yb.master.MasterService.WaitForYsqlBackendsCatalogVersion 127.0.0.1:53528 => 127.0.0.1:7100 (request call id 16264) took 20003ms (client timeout 24998ms).
+W1029 15:08:59.299222 1907044352 yb_rpc.cc:335] Call yb.master.MasterService.WaitForYsqlBackendsCatalogVersion 127.0.0.1:53527 => 127.0.0.1:7100 (request call id 30687) took 19999ms (client timeout 24998ms).
+W1029 15:17:07.263711 1901309952 yb_rpc.cc:335] Call yb.master.MasterService.WaitForYsqlBackendsCatalogVersion 127.0.0.1:53514 => 127.0.0.1:7100 (request call id 39966) took 20001ms (client timeout 24998ms).
+W1029 15:17:27.457646 1908764672 yb_rpc.cc:335] Call yb.master.MasterService.WaitForYsqlBackendsCatalogVersion 127.0.0.1:53530 => 127.0.0.1:7100 (request call id 40791) took 20003ms (client timeout 24998ms).
+W1029 15:17:55.608007 1903030272 yb_rpc.cc:335] Call yb.master.MasterService.WaitForYsqlBackendsCatalogVersion 127.0.0.1:53515 => 127.0.0.1:7100 (request call id 44557) took 20003ms (client timeout 24998ms).
+W1029 15:18:37.331251 1907044352 yb_rpc.cc:335] Call yb.master.MasterService.WaitForYsqlBackendsCatalogVersion 127.0.0.1:53528 => 127.0.0.1:7100 (request call id 54209) took 20003ms (client timeout 24998ms).
